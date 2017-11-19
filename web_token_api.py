@@ -18,29 +18,29 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 import models
 from models import validarEmail
-from models import Empresa, Usuarios, Tweet, Product
+from models import Company, User, Quotation, QuotationRow, AdditionalExpense, Customer, Tool, Personnel, Event 
 
 ###############
-# Products
+# QuotationAPI
 ###############
-@endpoints.api(name='products_api', version='v1', description='products endpoints')
-class ProductsApi(remote.Service):
+@endpoints.api(name='QuotationAPI', version='v1', description='quotations endpoints')
+class QuotationAPI(remote.Service):
 
-  ######## Add products ##########
-  @endpoints.method(ProductInput, CodeMessage, path='products/insert', http_method='POST', name='products.insert')
-  def product_add(cls, request):
+  ######## Add quotation ##########
+  @endpoints.method(QuotationInput, CodeMessage, path='quotation/insert', http_method='POST', name='quotation.insert')
+  def quotation_add(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
-      user = Usuarios.get_by_id(token['user_id'])
-      
-      myProduct = Product()
+      user = User.get_by_id(token['user_id'])
 
-      if myProduct.product_m(request, user.key) == 0:
+      myQuotation = Quotation() 
+
+      if myQuotation.quotation_m(request, user.key) == 0:
         codigo = 1
       else:
         codigo = -3
 
-      message = CodeMessage(code=codigo, message='Product added')
+      message = CodeMessage(code=codigo, message='Quotation added')
    
     except jwt.DecodeError:
       message = CodeMessage(code=-2, message='Invalid token')
@@ -49,97 +49,100 @@ class ProductsApi(remote.Service):
     
     return message
 
-  @endpoints.method(TokenKey, ProductList, path='products/get', http_method='POST', name='products.get')
-  def product_get(cls, request):
+  @endpoints.method(TokenKey, QuotationList, path='quotation/get', http_method='POST', name='quotation.get')
+  def quotation_get(cls, request):
     try:                 
       
       token = jwt.decode(request.tokenint, 'secret')  #checa token
-      productentity = ndb.Key(urlsafe = request.entityKey)
-      product = Product.get_by_id(productentity.id()) #obtiene usuario
+      quotationEntity = ndb.Key(urlsafe = request.entityKey)
+      quotation = Quotation.get_by_id(quotationEntity.id()) #obtiene usuario
       
-      lista = []  #crea lista
-      lstMessage = ProductList(code=1) # crea objeto mensaje
-      lista.append(ProductUpdate(token='', 
-                                 entityKey= product.entityKey,
-                                 #empresa_key = user.empresa_key.urlsafe(),
-                                 code = product.code,
-                                 description = product.description,
-                                 urlImage = product.urlImage)) # agrega a la lista
+      list = []  #crea lista
+      listMessage = QuotationList(code = 1) # crea objeto mensaje
+      list.append(QuotationUpdate(token = '', 
+                                  companyKey = quotation.companyKey,
+                                  iD = quotation.iD,
+                                  date = quotation.date,
+                                  isFinal = quotation.isFinal,
+                                  subtotal = quotation.subtotal,
+                                  revenueFactor = quotation.revenueFactor,
+                                  iva = quotation.iva,
+                                  discount = quotation.discount,
+                                  total = quotation.total,
+                                  metricPlus = quotation.metricPlus))
 
-      lstMessage.data = lista #ASIGNA a la salida la lista
-      message = lstMessage
+      listMessage.data = list #ASIGNA a la salida la lista
+      message = listMessage
     
     except jwt.DecodeError:
-      message = UserList(code=-1, data=[]) #token invalido
+      message = UserList(code = -1, data = []) #token invalido
     
     except jwt.ExpiredSignatureError:
-      message = UserList(code=-2, data=[]) #token expiro
+      message = UserList(code = -2, data = []) #token expiro
     
     return message
 
-
-######## list products ##########
-
-  @endpoints.method(Token, ProductList, path='products/list', http_method='POST', name='products.list')
-  def product_list(cls, request):
+  @endpoints.method(Token, QuotationList, path='quotation/list', http_method='POST', name='quotation.list')
+  def quotation_list(cls, request):
     try:
       
       token = jwt.decode(request.tokenint, 'secret')  #checa token
-      user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
-      lista = []  #crea lista
-      lstMessage = ProductList(code=1) # crea objeto mensaje
-      lstBd = Product.query().fetch() # recupera de base de datos
+      user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+      list = []  #create list
+      listMessage = QuotationList(code = 1) # crea objeto mensaje
+      listBd = Quotation.query().fetch() # recupera de base de datos
       
-      for i in lstBd: # recorre
-        lista.append(ProductUpdate(token='', entityKey = i.entityKey,
-                                #empresa_key=user.empresa_key.urlsafe(),
-                                code = i.code,
-                                description = i.description,
-                                urlImage = i.urlImage)) # agrega a la lista
-      
-      lstMessage.data = lista # la manda al messa
-      message = lstMessage #regresa
+      for i in listBd: # iterate
+        list.append(QuotationUpdate(token='', 
+                                    companyKey = i.companyKey,
+                                    iD = i.iD,
+                                    date = i.date,
+                                    isFinal = i.isFinal,
+                                    subtotal = i.subtotal,
+                                    revenueFactor = i.revenueFactor,
+                                    iva = i.iva,
+                                    discount = i.discount,
+                                    total = i.total,
+                                    metricPlus = i.metricPlus))
+      listMessage.data = list 
+      message = listMessage
       
     except jwt.DecodeError:
-      message = ProductList(code=-1, data=[]) #token invalido
+      message = ProductList(code = -1, data = []) #token invalido
     except jwt.ExpiredSignatureError:
-      message = ProductList(code=-2, data=[]) #token expiro
+      message = ProductList(code = -2, data = []) #token expiro
     return message
 
-  @endpoints.method(ProductUpdate, CodeMessage, path='products/update', http_method='POST', name='products.update')
+  @endpoints.method(QuotationUpdate, CodeMessage, path='quotation/update', http_method='POST', name='quotation.update')
   #siempre lleva cls y request
-  def product_update(cls, request):
+  def quotation_update(cls, request):
     try:
-      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
-      user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
-      product = Product()
+      token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      quotation = Quotation()
 
-      # empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
-      if product.product_m(request, user.key) == 0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+      if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py en la seccion de USUARIOS
         codigo = 1
       
       else:
         codigo = -3
-        #la funcion josue_m puede actualizar e insertar
-        #depende de la ENTRADA de este endpoint method
       
-      message = CodeMessage(code = 1, message='Sus cambios han sido guardados exitosamente')
+      message = CodeMessage(code = 1, message = 'The quotation has been updated')
     except jwt.DecodeError:
-      message = CodeMessage(code = -2, message='Invalid token')
+      message = CodeMessage(code = -2, message = 'Invalid token')
     except jwt.ExpiredSignatureError:
-      message = CodeMessage(code = -1, message='Token expired')
+      message = CodeMessage(code = -1, message = 'Token expired')
     return message
 
-  @endpoints.method(TokenKey, CodeMessage, path='products/delete', http_method='POST', name='products.delete')
-  #siempre lleva cls y request
-  def product_remove(cls, request):
+  @endpoints.method(TokenKey, CodeMessage, path='quotation/delete', http_method='POST', name='quotation.delete')
+  def quotation_remove(cls, request):
     
     try:
 
-      token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-      productEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntitKey
-      productEntity.delete()#BORRA
-      message = CodeMessage(code = 1, message = 'Succesfully deleted')
+      token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+      quotationEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
+      quotationEntity.delete() #Delete the quotation
+      message = CodeMessage(code = 1, message = 'The quotation was succesfully deleted')
     
     except jwt.DecodeError:
       message = CodeMessage(code = -2, message = 'Invalid token')
@@ -150,38 +153,37 @@ class ProductsApi(remote.Service):
     return message
 
 ###############
-# Usuarios
+# UserAPI
 ###############
-@endpoints.api(name='usuarios_api', version='v1', description='usuarios endpoints')
-class UsuariosApi(remote.Service):
-###############get the info of one########
- @endpoints.method(TokenKey, UserList, path='users/get', http_method='POST', name='users.get')
- def users_get(cls, request):
-  try:                 
-   token = jwt.decode(request.tokenint, 'secret')  #checa token
-   userentity = ndb.Key(urlsafe=request.entityKey)
-   user = Usuarios.get_by_id(userentity.id()) #obtiene usuario
-            #user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
-   lista = []  #crea lista
-   lstMessage = UserList(code=1) # crea objeto mensaje
-   lista.append(UserUpdate(token='', 
-    entityKey= user.entityKey,
-    #empresa_key = user.empresa_key.urlsafe(),
-    email = user.email))
-   lstMessage.data = lista#ASIGNA a la salida la lista
-   message = lstMessage
-  except jwt.DecodeError:
-   message = UserList(code=-1, data=[]) #token invalido
-  except jwt.ExpiredSignatureError:
-   message = UserList(code=-2, data=[]) #token expiro
-  return message
+@endpoints.api(name = 'UserAPI', version = 'v1', description = 'users endpoints')
+class UserAPI(remote.Service):
+  @endpoints.method(TokenKey, UserList, path='user/get', http_method='POST', name='user.get')
+  def users_get(cls, request):
+    try:                 
+    
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      userentity = ndb.Key(urlsafe = request.entityKey)
+      user = Usuarios.get_by_id(userentity.id()) #obtiene usuario
+      lista = []  #crea lista
+      lstMessage = UserList(code = 1) # crea objeto mensaje
+      lista.append(UserUpdate(token = '', 
+                              entityKey = user.entityKey,
+                              #empresa_key = user.empresa_key.urlsafe(),
+                              email = user.email))
+      lstMessage.data = lista#ASIGNA a la salida la lista
+      message = lstMessage
+      
+    except jwt.DecodeError:
+      message = UserList(code=-1, data=[]) #token invalido
+    except jwt.ExpiredSignatureError:
+      message = UserList(code=-2, data=[]) #token expiro
+    
+    return message
 
-
-########################## list###################
-#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
-  @endpoints.method(Token, UserList, path='users/list', http_method='POST', name='users.list')
+  @endpoints.method(Token, UserList, path='user/list', http_method='POST', name='user.list')
   def lista_usuarios(cls, request):
     try:
+      
       token = jwt.decode(request.tokenint, 'secret')  #checa token
       user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
       lista = []  #crea lista
@@ -190,9 +192,9 @@ class UsuariosApi(remote.Service):
       
       for i in lstBd: # recorre
         lista.append(UserUpdate(token='',
-        entityKey=i.entityKey,
-        #empresa_key=user.empresa_key.urlsafe(),
-        email=i.email)) # agrega a la lista
+                                entityKey=i.entityKey,
+                                #empresa_key=user.empresa_key.urlsafe(),
+                                email=i.email)) # agrega a la lista
       
       lstMessage.data = lista # la manda al messa
       message = lstMessage #regresa
@@ -204,7 +206,7 @@ class UsuariosApi(remote.Service):
     
     return message
 
-  @endpoints.method(TokenKey, CodeMessage, path='users/delete', http_method='POST', name='users.delete')
+  @endpoints.method(TokenKey, CodeMessage, path='user/delete', http_method='POST', name='user.delete')
   #siempre lleva cls y request
   def user_remove(cls, request):
     try:
@@ -224,7 +226,7 @@ class UsuariosApi(remote.Service):
 
 # insert
 #                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
-  @endpoints.method(UserInput, CodeMessage, path='users/insert', http_method='POST', name='users.insert')
+  @endpoints.method(UserInput, CodeMessage, path='user/insert', http_method='POST', name='user.insert')
   def user_add(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
@@ -253,80 +255,83 @@ class UsuariosApi(remote.Service):
     return message
 
 
-##login##
+  @endpoints.method(EmailPasswordMessage, TokenMessage, path='user/login', http_method='POST', name='user.login')
+  def users_login(cls, request):
+    try:
+      
+      user = User.query(User.email == request.email).fetch() #obtiene el usuario dado el email
+      if not user or len(user) == 0: #si no encuentra user saca
+        raise NotFoundException()
+      
+      user = user[0] 
+      companyKey = user.companyKey.urlsafe() # regresa como mensaje el empresa key
+      
+      if not user.verify_password(request.password): # checa la contrasena
+        raise NotFoundException()
 
- @endpoints.method(EmailPasswordMessage, TokenMessage, path='users/login', http_method='POST', name='users.login')
- def users_login(cls, request):
-  try:
-   user = Usuarios.query(Usuarios.email == request.email).fetch() #obtiene el usuario dado el email
-   if not user or len(user) == 0: #si no encuentra user saca
-    raise NotFoundException()
-   user = user[0] 
-   keye = user.empresa_key.urlsafe() # regresa como mensaje el empresa key
-   if not user.verify_password(request.password): # checa la contrasena
-    raise NotFoundException()
+      token = jwt.encode({'user_id': user.key.id(), 'exp': time.time() + 43200}, 'secret') #crea el token
+      message = TokenMessage(token = token, message = companyKey, code = 1) # regresa token
+    
+    except NotFoundException:
+      message = TokenMessage(token = None, message = 'Wrong username or password', code = -1)
+    
+    return message
 
-   token = jwt.encode({'user_id': user.key.id(), 'exp': time.time() + 43200}, 'secret') #crea el token
-   message = TokenMessage(token=token, message=keye, code=1) # regresa token
-  except NotFoundException:
-   message = TokenMessage(token=None, message='Wrong username or password', code=-1)
-  return message
+  @endpoints.method(UserUpdate, CodeMessage, path = 'user/update', http_method = 'POST', name = 'user.update')
+  def user_update(cls, request):
+    try:
+      
+      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+      user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
+      
+      if user.usuario_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+        codigo = 1
+      
+      else:
+        codigo = -3
 
-##update##
-# update
-#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
- @endpoints.method(UserUpdate, CodeMessage, path='user/update', http_method='POST', name='user.update')
-#siempre lleva cls y request
- def user_update(cls, request):
-  try:
-   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
-   user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
-   empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
-   if user.usuario_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
-    codigo=1
-   else:
-    codigo=-3
-      #la funcion josue_m puede actualizar e insertar
-      #depende de la ENTRADA de este endpoint method
-   message = CodeMessage(code=1, message='Sus cambios han sido guardados exitosamente')
-  except jwt.DecodeError:
-   message = CodeMessage(code=-2, message='Invalid token')
-  except jwt.ExpiredSignatureError:
-   message = CodeMessage(code=-1, message='Token expired')
-  return message
+      message = CodeMessage(code = 1, message = 'Sus cambios han sido guardados exitosamente')
+    
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
 
 ###########################
-#### Empresa
+#### Company
 ###########################
 
 ## Google Cloud Endpoint
-@endpoints.api(name='empresas_api', version='v1', description='empresas REST API')
-class EmpresasApi(remote.Service):
-
+@endpoints.api(name='CompanyAPI', version='v1', description='companies endpoints')
+class CompanyAPI(remote.Service):
 
 # get one
 
- @endpoints.method(TokenKey, EmpresaList, path='empresa/get', http_method='POST', name='empresa.get')
-#siempre lleva cls y request
- def empresa_get(cls, request):
-  try:
-   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-      #Obtiene el elemento dado el entityKey
-   empresaentity = ndb.Key(urlsafe=request.entityKey)
-      #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
-      #empresaentity.get().empresa_key.urlsafe() para poder optener el EntityKey
-     ##### ejemplo real
-    ####### message = EmpresaList(code=1, data=[EmpresaUpdate(token='Succesfully get', nombre_empresa=empresaentity.get().nombre_empresa, empresa_key=empresaentity.get().empresa_key.urlsafe(), entityKey=empresaentity.get().entityKey)])
-   message = EmpresaList(code=1, data = [EmpresaUpdate(token='Succesfully get',
-    entityKey = empresaentity.get().entityKey,
-    codigo_empresa=empresaentity.get().codigo_empresa, 
-    nombre_empresa = empresaentity.get().nombre_empresa)])
+  @endpoints.method(TokenKey, EmpresaList, path='empresa/get', http_method='POST', name='empresa.get')
+  #siempre lleva cls y request
+  def empresa_get(cls, request):
+    try:
+    token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+        #Obtiene el elemento dado el entityKey
+    empresaentity = ndb.Key(urlsafe=request.entityKey)
+        #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
+        #empresaentity.get().empresa_key.urlsafe() para poder optener el EntityKey
+      ##### ejemplo real
+      ####### message = EmpresaList(code=1, data=[EmpresaUpdate(token='Succesfully get', nombre_empresa=empresaentity.get().nombre_empresa, empresa_key=empresaentity.get().empresa_key.urlsafe(), entityKey=empresaentity.get().entityKey)])
+    message = EmpresaList(code=1, data = [EmpresaUpdate(token='Succesfully get',
+      entityKey = empresaentity.get().entityKey,
+      codigo_empresa=empresaentity.get().codigo_empresa, 
+      nombre_empresa = empresaentity.get().nombre_empresa)])
 
-  except jwt.DecodeError:
-   message = EmpresaList(code=-1, data=[])
-  except jwt.ExpiredSignatureError:
-   message = EmpresaList(code=-2, data=[])
-  return message
+    except jwt.DecodeError:
+    message = EmpresaList(code=-1, data=[])
+    except jwt.ExpiredSignatureError:
+    message = EmpresaList(code=-2, data=[])
+    return message
 
 
 

@@ -59,12 +59,12 @@ class User(CustomBaseModel):
         return hash_helper.hexdigest() == self.password
 
     def user_m(self, data, companyKey):
-        user = User()#Crea una variable de tipo Base de datos
-        user.populate(data)#Llena la variables con los datos dados por el request en main.py
+        user = User() #Crea una variable de tipo User
+        user.populate(data) #Llena la variables con los datos dados por el request en main.py
         user.companyKey = companyKey
         user.status = 1
-        user.hash_password()#encripta la contrasena
-        user.put()#inserta o hace un update depende del main.py
+        user.hash_password() #encripta la contrasena
+        user.put() #inserta o hace un update depende del main.py
         
         return 0
 
