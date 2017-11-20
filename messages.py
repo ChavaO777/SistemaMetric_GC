@@ -7,17 +7,17 @@ class MessageNone(messages.Message):
 # Input messages
 #Recibe el token para validar
 class Token(messages.Message):
-    tokenint = messages.StringField(1, required=True)
+    tokenint = messages.StringField(1, required = True)
 
 #Recibe el token y un entityKey de cualquier base de datos para validar
 class TokenKey(messages.Message):
-    tokenint = messages.StringField(1, required=True)
-    entityKey = messages.StringField(2, required=True)
+    tokenint = messages.StringField(1, required = True)
+    entityKey = messages.StringField(2, required = True)
 
 #Recibe el email y contrasena para la creacion de token
 class EmailPasswordMessage(messages.Message):
-    email = messages.StringField(1, required=True)
-    password = messages.StringField(2, required=True)
+    email = messages.StringField(1, required = True)
+    password = messages.StringField(2, required = True)
 
 # Output messages
 #regresa un token
@@ -42,23 +42,22 @@ class UserUpdate(messages.Message):
     token = messages.StringField(1)
     email = messages.StringField(2)
     password = messages.StringField(3)
-    entityKey = messages.StringField(4, required=True)
+    entityKey = messages.StringField(4, required = True)
 
 class UserList(messages.Message):
     code = messages.IntegerField(1)
-    data = messages.MessageField(UserUpdate, 2, repeated=True)
+    data = messages.MessageField(UserUpdate, 2, repeated = True)
 
 ##### Company #####
 class CompanyInput(messages.Message):
-    token = messages.StringField(1, required=True) 
-    codigo_empresa = messages.StringField(2)
-    nombre_empresa = messages.StringField(3)
+    token = messages.StringField(1, required = True) 
+    code = messages.StringField(2)
+    name = messages.StringField(3)
 
 class CompanyUpdate(messages.Message):
     token = messages.StringField(1, required = True)
-    entityKey = messages.StringField(2, required = True)
-    code = messages.StringField(3)
-    nombre_empresa = messages.StringField(4)
+    code = messages.StringField(2)
+    name = messages.StringField(3)
 
 class CompanyList(messages.Message):
     code = messages.IntegerField(1)
@@ -93,4 +92,4 @@ class QuotationUpdate(messages.Message):
 
 class QuotationList(messages.Message):
     code = messages.IntegerField(1)
-    data = messages.MessageField(EmpresaUpdate, 2, repeated=True)
+    data = messages.MessageField(QuotationUpdate, 2, repeated = True)

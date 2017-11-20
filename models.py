@@ -245,31 +245,44 @@ class Event(CustomBaseModel):
         event.put() #inserta o hace un update depende del main.py
         return 0
 
-#### create demo
+def validarEmail(email):
 
-# def validarEmail(email):
-#     emailv = Usuarios.query(Usuarios.email == email)
-#     if not emailv.get():
-#         return False
-#     else:
-#         return True
+    user = User.query(User.email == email)
+    # if not user.get():
+    #     return False
+    # else:
+    #     return True
 
-# #### create root Company
+    return user.get()
 
-# if validarEmail("adsoft@kubeet.com") == False:
-#     empresaAdmin = Company(
-#       codigo_empresa = 'kubeet',
-#       nombre_empresa="kubeet srl de cv",
-#     )
-#     empresaAdmin.put()
+#### create root Empresa
+if validarEmail("adsoft@kubeet.com") == False:
+    
+    empresaAdmin = Company(code = 'kubeet', name = "kubeet srl de cv")
+    empresaAdmin.put()
 
-# #### create root user  
+    #### create root user  
+    keyadmincol = ndb.Key(urlsafe=empresaAdmin.entityKey)
+    admin = User(companyKey = keyadmincol,
+                 name = "Adsoft",
+                 email = "adsoft@kubeet.com",
+                 password = "qubit")
 
-#     keyadmincol = ndb.Key(urlsafe=empresaAdmin.entityKey)
-#     admin = User(
-#         empresa_key = keyadmincol,
-#         email="adsoft@kubeet.com",
-#         password="qubit",
-#     )
-#     admin.hash_password()
-#     admin.put()
+    admin.hash_password()
+    admin.put()
+
+#### create another user
+if validarEmail("salvador@orozco.in") == False:
+    
+    empresaOther = Company(code = 'orvis', name = "orvis srl de cv")
+    empresaOther.put()
+
+    #### create another user 
+    keyadmincolOther = ndb.Key(urlsafe=empresaOther.entityKey)
+    adminOther = User(companyKey = keyadmincolOther,
+                      name = "Salvador",
+                      email = "salvador@orozco.in",
+                      password = "12345")
+
+    adminOther.hash_password()
+    adminOther.put()

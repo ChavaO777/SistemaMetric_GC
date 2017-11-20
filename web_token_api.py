@@ -11,7 +11,7 @@ from CustomExceptions import NotFoundException
 from messages import EmailPasswordMessage, TokenMessage, CodeMessage, Token, TokenKey, MessageNone
 from messages import CompanyInput, CompanyUpdate, CompanyList
 from messages import UserInput, UserUpdate, UserList
-from messages import ProductInput, ProductUpdate, ProductList
+from messages import QuotationInput, QuotationUpdate, QuotationList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -302,27 +302,22 @@ class CompanyAPI(remote.Service):
 
 # get one
 
-  @endpoints.method(TokenKey, EmpresaList, path='empresa/get', http_method='POST', name='empresa.get')
+  @endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
   #siempre lleva cls y request
   def empresa_get(cls, request):
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-          #Obtiene el elemento dado el entityKey
       empresaentity = ndb.Key(urlsafe=request.entityKey)
-          #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
-          #empresaentity.get().empresa_key.urlsafe() para poder optener el EntityKey
-        ##### ejemplo real
-        ####### message = EmpresaList(code=1, data=[EmpresaUpdate(token='Succesfully get', nombre_empresa=empresaentity.get().nombre_empresa, empresa_key=empresaentity.get().empresa_key.urlsafe(), entityKey=empresaentity.get().entityKey)])
-      message = EmpresaList(code = 1, 
-                            data = [EmpresaUpdate(token='Succesfully get',
+      message = CompanyList(code = 1, 
+                            data = [CompanyUpdate(token='Succesfully get',
                                                   entityKey = empresaentity.get().entityKey,
                                                   codigo_empresa=empresaentity.get().codigo_empresa, 
                                                   nombre_empresa = empresaentity.get().nombre_empresa)])
 
     except jwt.DecodeError:
-      message = EmpresaList(code = -1, data = [])
+      message = CompanyList(code = -1, data = [])
     except jwt.ExpiredSignatureError:
-      message = EmpresaList(code = -2, data = [])
+      message = CompanyList(code = -2, data = [])
     
     return message
 
@@ -342,36 +337,36 @@ class CompanyAPI(remote.Service):
     return message
 
   # insert
-  @endpoints.method(EmpresaInput, CodeMessage, path='empresa/insert', http_method='POST', name='empresa.insert')
+  @endpoints.method(CompanyInput, CodeMessage, path='empresa/insert', http_method='POST', name='empresa.insert')
   def empresa_add(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
       user = User.get_by_id(token['user_id'])#obtiene el usuario models.py 
-      myempresa = Empresa()
+      myCompany = Company()
       
-      if myempresa.empresa_m(request)==0: 
+      if myCompany.company_m(request) == 0: 
         codigo = 1
       
       else:
         codigo = -3
       
-      message = CodeMessage(code=codigo, message='Succesfully added')
+      message = CodeMessage(code = codigo, message = 'Succesfully added')
       
-      except jwt.DecodeError:
-        message = CodeMessage(code=-2, message='Invalid token')
-      except jwt.ExpiredSignatureError:
-        message = CodeMessage(code=-1, message='Token expired')
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
       
       return message
 
-  @endpoints.method(EmpresaUpdate, CodeMessage, path='empresa/update', http_method='POST', name='empresa.update')
+  @endpoints.method(CompanyUpdate, CodeMessage, path='empresa/update', http_method='POST', name='empresa.update')
   def empresa_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN 
       user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
           #empresakey = ndb.Key(urlsafe=request.empresa_key)#convierte el string dado a entityKey
-      myempresa = Empresa()
-      if myempresa.empresa_m(request)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+      myempresa = Company()
+      if myempresa.company_m(request)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
         codigo = 1
       else:
         codigo = -3
@@ -383,18 +378,18 @@ class CompanyAPI(remote.Service):
     
     return message
 
-  @endpoints.method(Token, EmpresaList, path='empresa/list', http_method='POST', name='empresa.list')
+  @endpoints.method(Token, CompanyList, path='empresa/list', http_method='POST', name='empresa.list')
   #siempre lleva cls y request
   def empresa_list(cls, request):
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
       user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
       lista = [] #crea lista para guardar contenido de la BD
-      lstMessage = EmpresaList(code=1) #CREA el mensaje de salida
-      lstBdEmpresa = Empresa.query().fetch() #obtiene de la base de datos
+      lstMessage = CompanyList(code=1) #CREA el mensaje de salida
+      lstBdCompany = Company.query().fetch() #obtiene de la base de datos
       
-      for i in lstBdEmpresa: #recorre la base de datos
-        lista.append(EmpresaUpdate(token='', 
+      for i in lstBdCompany: #recorre la base de datos
+        lista.append(CompanyUpdate(token='', 
                                    entityKey = i.entityKey,
                                    codigo_empresa=i.codigo_empresa, 
                                    nombre_empresa = i.nombre_empresa))
@@ -402,11 +397,11 @@ class CompanyAPI(remote.Service):
       lstMessage.data = lista #ASIGNA a la salida la lista
       message = lstMessage
     except jwt.DecodeError:
-      message = EmpresaList(code=-1, data=[])
+      message = CompanyList(code=-1, data=[])
     except jwt.ExpiredSignatureError:
-      message = EmpresaList(code=-2, data=[])
+      message = CompanyList(code=-2, data=[])
     
     return message
 
-application = endpoints.api_server([UserApi, CompanyApi, ProductsApi], restricted = False)
+application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI], restricted = False)
 
