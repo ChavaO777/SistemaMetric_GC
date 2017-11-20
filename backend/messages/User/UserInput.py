@@ -1,0 +1,12 @@
+from protorpc import messages
+from protorpc import message_types
+
+class MessageNone(messages.Message):
+    inti = messages.StringField(1)
+
+#USERS
+class UserInput(messages.Message):
+    token = messages.StringField(1) 
+    companyKey = messages.StringField(2)
+    email = messages.StringField(3)
+    password = messages.StringField(4)
