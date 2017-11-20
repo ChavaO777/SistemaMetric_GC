@@ -12,7 +12,7 @@ function login()
     $("#password").val());
 	
     alert(myData.toJsonString());
-    
+
     try{
 
         jQuery.ajax({
@@ -27,6 +27,7 @@ function login()
             success: function (response) {
                 sessionStorage.token = response.token;
                 $(".msg").html("<p>"+sessionStorage.token+"</p>");
+                window.location = "/";
             },
             error: function (error) {
                 alert(error);
