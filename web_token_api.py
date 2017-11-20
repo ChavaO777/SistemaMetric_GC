@@ -12,6 +12,7 @@ from messages import EmailPasswordMessage, TokenMessage, CodeMessage, Token, Tok
 from messages import CompanyInput, CompanyUpdate, CompanyList
 from messages import UserInput, UserUpdate, UserList
 from messages import QuotationInput, QuotationUpdate, QuotationList
+from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -149,6 +150,139 @@ class QuotationAPI(remote.Service):
       quotationEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
       quotationEntity.delete() #Delete the quotation
       message = CodeMessage(code = 1, message = 'The quotation was succesfully deleted')
+    
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+###############
+# QuotationRowAPI
+###############
+@endpoints.api(name='quotation_row_api', version='v1', description='quotation rows endpoints')
+class QuotationRowAPI(remote.Service):
+
+  ######## Add quotation row ##########
+  @endpoints.method(QuotationRowInput, CodeMessage, path = 'quotationRow/insert', http_method = 'POST', name = 'quotationRow.insert')
+  def quotationRow_add(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+      user = User.get_by_id(token['user_id'])
+
+      myQuotationRow = QuotationRow() 
+
+      if myQuotationRow.quotationRow_m(request, user.key) == 0:
+        codigo = 1
+      else:
+        codigo = -3
+
+      message = CodeMessage(code = codigo, message = 'Quotation Row added')
+   
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, QuotationRowList, path = 'quotationRow/get', http_method = 'POST', name = 'quotationRow.get')
+  def quotationRow_get(cls, request):
+    try:                 
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      quotationRowEntity = ndb.Key(urlsafe = request.entityKey)
+      quotationRow = QuotationRow.get_by_id(quotationRowEntity.id()) #obtiene usuario
+      
+      list = []  #crea lista
+      listMessage = QuotationRowList(code = 1) # crea objeto mensaje
+      list.append(QuotationRowUpdate(token = '', 
+                                     userKey = quotationRow.userKey.urlsafe(),
+                                     quotationKey = quotationRow.quotationKey.urlsafe(),
+                                     resourceKey = quotationRow.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
+                                     iD = quotationRow.iD,
+                                     quantity = quotationRow.quantity,
+                                     days = quotationRow.days,
+                                     amount = quotationRow.amount,
+                                     entityKey = quotationRow.entityKey))
+
+      listMessage.data = list #ASIGNA a la salida la lista
+      message = listMessage
+    
+    except jwt.DecodeError:
+      message = QuotationRowList(code = -1, data = []) #token invalido
+    
+    except jwt.ExpiredSignatureError:
+      message = QuotationRowList(code = -2, data = []) #token expiro
+    
+    return message
+
+  @endpoints.method(Token, QuotationRowList, path = 'quotationRow/list', http_method = 'POST', name = 'quotationRow.list')
+  def quotationRow_list(cls, request):
+    try:
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+      list = []  #create list
+      listMessage = QuotationRowList(code = 1) # crea objeto mensaje
+      listBd = QuotationRow.query().fetch() # recupera de base de datos
+      
+      for i in listBd: # iterate
+        list.append(QuotationRowUpdate(token = '', 
+                                       userKey = i.userKey.urlsafe(),
+                                       quotationKey = i.quotationKey.urlsafe(),
+                                       resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
+                                       iD = i.iD,
+                                       quantity = i.quantity,
+                                       days = i.days,
+                                       amount = i.amount,
+                                       entityKey = i.entityKey))
+      listMessage.data = list 
+      message = listMessage
+      
+    except jwt.DecodeError:
+      message = QuotationRowList(code = -1, data = []) #token invalido
+    except jwt.ExpiredSignatureError:
+      message = QuotationRowList(code = -2, data = []) #token expiro
+    return message
+
+  @endpoints.method(QuotationRowUpdate, CodeMessage, path='quotationRow/update', http_method='POST', name='quotationRow.update')
+  def quotationRow_update(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      
+      # Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
+      quotationRowEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      quotationRowEntity.delete() #Delete the quotation
+      
+      quotationRow = QuotationRow()
+
+      if quotationRow.quotationRow_m(request, user.key) == 0: #llama a la funcion declarada en models.py en la seccion de USUARIOS
+        codigo = 1
+      
+      else:
+        codigo = -3
+      
+      message = CodeMessage(code = 1, message = 'The quotation row has been updated')
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, CodeMessage, path = 'quotationRow/delete', http_method = 'POST', name = 'quotationRow.delete')
+  def quotationRow_remove(cls, request):
+    
+    try:
+
+      token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+      quotationRowEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
+      quotationRowEntity.delete() #Delete the quotation
+      message = CodeMessage(code = 1, message = 'The quotation row was succesfully deleted')
     
     except jwt.DecodeError:
       message = CodeMessage(code = -2, message = 'Invalid token')
@@ -402,5 +536,5 @@ class CompanyAPI(remote.Service):
     
     return message
 
-application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI], restricted = False)
+application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI], restricted = False)
 

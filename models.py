@@ -102,14 +102,16 @@ class Quotation(CustomBaseModel):
 #### QuotationRow ####
 class QuotationRow(CustomBaseModel):
     _message_fields_schema = ('userKey', 
-                              'entityKey', # This entity key is the key of a tool or a personnel
+                              'quotationKey',
+                              'resourceKey', # This entity key is the key of a tool or a personnel
                               'iD', 
                               'quantity',
                               'days',
                               'amount')
 
     userKey = ndb.KeyProperty(kind = User)
-    entityKey = ndb.StringProperty(); # Save it as a string because it can either be a Personnel key or a Tool key
+    quotationKey = ndb.KeyProperty(kind = Quotation)
+    resourceKey = ndb.StringProperty(); # Save it as a string because it can either be a Personnel key or a Tool key
     iD = ndb.StringProperty();
     quantity = ndb.IntegerProperty();
     days = ndb.IntegerProperty();

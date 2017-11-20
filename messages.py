@@ -94,3 +94,29 @@ class QuotationUpdate(messages.Message):
 class QuotationList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(QuotationUpdate, 2, repeated = True)
+
+##### Quotation Row #####
+class QuotationRowInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    quotationKey = messages.StringField(3)
+    resourceKey = messages.StringField(4)
+    iD = messages.StringField(5)
+    quantity = messages.IntegerField(6)
+    days = messages.IntegerField(7)
+    amount = messages.IntegerField(8)
+
+class QuotationRowUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    quotationKey = messages.StringField(3)
+    resourceKey = messages.StringField(4)
+    iD = messages.StringField(5)
+    quantity = messages.IntegerField(6)
+    days = messages.IntegerField(7)
+    amount = messages.IntegerField(8)
+    entityKey = messages.StringField(9, required = True)
+
+class QuotationRowList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(QuotationRowUpdate, 2, repeated = True)
