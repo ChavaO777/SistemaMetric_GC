@@ -23,7 +23,7 @@ class CustomBaseModel(EndpointsModel):
 class Quotation(CustomBaseModel):
     _message_fields_schema = ('userKey', 
                               'eventKey',
-                              'iD', 
+                              '_id', 
                               'date',
                               'isFinal',
                               'subtotal',
@@ -36,7 +36,7 @@ class Quotation(CustomBaseModel):
 
     userKey = ndb.KeyProperty(kind = User)
     eventKey = ndb.KeyProperty(kind = Event)
-    iD = ndb.StringProperty()
+    _id = ndb.StringProperty()
     date = ndb.DateTimeProperty()
     isFinal = ndb.BooleanProperty()
     subtotal = ndb.FloatProperty()
