@@ -67,7 +67,7 @@ class LoginHandler(webapp2.RequestHandler):
 
         template_context = {}
         self.response.out.write(
-            self._render_template('login.html', template_context))
+            self._render_template('./frontend/public/login.html', template_context))
 
     def _render_template(self, template_name, context=None):
         if context is None:
@@ -84,8 +84,7 @@ class MainHandler(webapp2.RequestHandler):
 
         template_context = {}
         self.response.out.write(
-            self._render_template('index.html', template_context))
-
+            self._render_template('./frontend/public/index.html', template_context))
 
     def _render_template(self, template_name, context=None):
         if context is None:

@@ -86,7 +86,6 @@ class MainHandler(webapp2.RequestHandler):
         self.response.out.write(
             self._render_template('index.html', template_context))
 
-
     def _render_template(self, template_name, context=None):
         if context is None:
             context = {}

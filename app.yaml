@@ -17,10 +17,10 @@ handlers:
 #  upload: favicon\.ico
 
 - url: /app
-  static_dir: app
+  static_dir: frontend/app
 
 - url: /css
-  static_dir: css
+  static_dir: frontend/public/css
 
 - url: /fonts
   static_dir: fonts
