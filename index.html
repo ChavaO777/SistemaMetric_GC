@@ -1,172 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="utf-8">
-
-	<!-- Template site title
-   ================================================== -->
-	<title>Tweets - Responsive Business template</title>
-
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="keywords" content="">
-	<meta name="description" content="">
-
-	<!-- Bootstrap CSS
-   ================================================== -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-
-	<!-- Animate CSS
-   ================================================== -->
-	<link rel="stylesheet" href="css/animate.min.css">
-
-	<!-- Font Icons
-   ================================================== -->
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/et-line-font.css">
-
-	<!-- Nivo Lightbox CSS
-   ================================================== -->
-	<link rel="stylesheet" href="css/nivo-lightbox.css">
-	<link rel="stylesheet" href="css/nivo_themes/default/default.css">
-
-	<!-- Owl Carousel CSS
-   ================================================== -->
-   	<link rel="stylesheet" href="css/owl.theme.css">
-	<link rel="stylesheet" href="css/owl.carousel.css">
-
-	<!-- Main CSS
-   ================================================== -->
-	<link rel="stylesheet" href="css/style.css">
-
-	<!-- Google web font 
-   ================================================== -->	
-	<link href='https://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
-<script type="text/javascript">
-
-</script>
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Metric Producciones</title>
+	<link rel="shortcut icon" href="logos/ico.ico">
+	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
+<body>
 
-<body onload="getData()" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
-
-
-<!-- Preloader section
-================================================== -->
-<section class="preloader">
-	<div class="sk-three-bounce">
-      	<div class="sk-child sk-bounce1"></div>
-      	<div class="sk-child sk-bounce2"></div>
-     	 <div class="sk-child sk-bounce3"></div>
+	<div class="bg">
 	</div>
-</section>
 
-
-<!-- Navigation section
-================================================== -->
-<section class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
-	<div class="container">
-
-		<div class="navbar-header">
-			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-			</button>
-			<a href="#" class="navbar-brand">Tweets</a>
+	<div class="menu">
+		<div class="logo">
+			 <span>M E T R I C</span>
+			<p>Sistema de cotizaciones</p>
+			<a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
 		</div>
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right main-navigation">
-				<li><a href="#home" class="smoothScroll">Home</a></li>
-				<li><a href="#tweets" class="smoothScroll">Tweets</a></li>
-				<li><a href="/login" class="smoothScroll">Login</a></li>
-				
-			</ul>
+		<div class="nav">
+			<a href="#" class="active">Inicio</a>
+			<a href="cotizaciones.html">Cotizaciones</a>
+			<a href="#">Eventos</a>	
+			<a href="personal.html">Personal</a>
+			<a href="clientes.html">Clientes</a>
+			<a href="#">Herramientas</a>
+			<a href="cotizadores.html">Cotizadores</a>
 		</div>
-
+		<a href="#" class="back btn btn-red">Cerrar sesión</a>
 	</div>
-</section>
 
-
-<!-- Home section
-================================================== -->
-<section id="home" class="parallax-section">
-	<div class="container">
-		<div class="row">
-
-			<div class="col-md-offset-2 col-md-8 col-sm-12">
-				
-				<h2 class="wow bounceIn">Tweets demo</h2>
-				<p class="wow fadeIn" data-wow-delay="0.3s">web-token Api</p>
-				<a href="/login" class="btn btn-default section-btn smoothScroll wow fadeInUp" data-wow-delay="0.6s">Login</a>
-				<a href="#tweets" class="btn btn-danger section-btn smoothScroll wow fadeInUp hidden-xs" data-wow-delay="0.6s">View tweets</a>
+	<div class="content">
+		<div class="hero">
+			<div class="hero-title">
+				Proximas cotizaciones
 			</div>
-
-		</div>
-	</div>		
-</section>
-
-
-<!-- tweet section
-================================================== -->
-<section id="tweets" class="parallax-section">
-	<div class="container">
-		<div class="row" id="divTeam">
-
-			<!-- Section title
-			================================================== -->
-			<div class="col-md-8 col-sm-8">
-				<div class="section-title">
-					<h3>Tweet List</h3>
+			<div class="hero-content">
+				<div class="hero-element">
+					<div class="hero-date">
+						Sabado, 9 de septiembre
+					</div>
+					<div class="hero-id">
+						9352
+					</div>
 				</div>
-			</div>	
-
-			<div class="col-md-12 col-sm-12"></div>
-
-		</div>
-	</div>
-</section>
-
-
-<!-- copyright section
-================================================== -->
-<section id="copyright">
-	<div class="container">
-		<div class="row">
-
-			<div class="col-md-12 col-sm-12">
-				<div class="copyright-text wow fadeInUp" data-wow-delay="0.9s">
-					<ul class="social-icon">
-						<li><a href="#" class="fa fa-facebook wow fadeIn" data-wow-delay="0.3s"></a></li>
-						<li><a href="#" class="fa fa-twitter wow fadeIn" data-wow-delay="0.6s"></a></li>
-						<li><a href="#" class="fa fa-dribbble wow fadeIn" data-wow-delay="0.9s"></a></li>
-						<li><a href="#" class="fa fa-behance wow fadeIn" data-wow-delay="1s"></a></li>
-					</ul>
-					<p> &copy; 2017 | Tweets Demo - by adsoftsito.</p>
+				<div class="hero-element">
+					<div class="hero-date">
+						Domingo, 10 de septiembre
+					</div>
+					<div class="hero-id">
+						9343
+					</div>
+				</div>
+				<div class="hero-element">
+					<div class="hero-date">
+						Martes, 12 de septiembre
+					</div>
+					<div class="hero-id">
+						912378
+					</div>
 				</div>
 			</div>
-
+		</div>
+		<div class="hero">
+			<div class="hero-title">
+				Proximos eventos
+			</div>
+			<div class="hero-content">
+				<div class="hero-element">
+					<div class="hero-date">
+						Sabado, 9 de septiembre
+					</div>
+					<div class="hero-id">
+						9352
+					</div>
+				</div>
+				<div class="hero-element">
+					<div class="hero-date">
+						Domingo, 10 de septiembre
+					</div>
+					<div class="hero-id">
+						9343
+					</div>
+				</div>
+				<div class="hero-element">
+					<div class="hero-date">
+						Martes, 12 de septiembre
+					</div>
+					<div class="hero-id">
+						912378
+					</div>
+				</div>
+			</div>		
 		</div>
 	</div>
-</section>
+	
+	<div id="notifications" class="btn btn-green">
+		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
+	</div>
 
+	<script src="https://use.fontawesome.com/5144437903.js"></script>
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous">
+	</script>
+	<script type="text/javascript">
+		$(function(){
+		    $('.nav a').click(function(){
+		        $('.nav .active').removeClass('active'); // remove the class from the currently selected
+		        $(this).addClass('active'); // add the class to the newly clicked link
+		    });
 
-<!-- Javascript 
-================================================== -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.nav.js"></script>
-<script src="js/jquery.parallax.js"></script>
-<script src="js/nivo-lightbox.min.js"></script>
-<script src="js/counter.js"></script>
-<script src="js/smoothscroll.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/wow.min.js"></script>
-<script src="js/custom.js"></script>
+		    $('.logo a').click(function(){
+		    	$('.menu').css("height", "100%");
+		    	$('.menu .back').css("display", "block");
+		    	$('.menu .nav').css("display", "block");
+		    });
 
-<script src="app/getpublicdata.js"></script>
-
-
-
+		    /*
+		    $('.menu .nav a').click(function(){
+		    	$('.nav').css("opacity", "0");
+		    	$('.back').css("opacity", "0");
+		    	$('.menu').css("background", "transparent");
+		    });
+		    */
+		});
+	</script>
 </body>
 </html>
