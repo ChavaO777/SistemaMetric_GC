@@ -31,19 +31,21 @@ class Quotation(CustomBaseModel):
                               'iva',
                               'discount',
                               'total',
-                              'metricPlus')
+                              'metricPlus',
+                              'version')
 
     userKey = ndb.KeyProperty(kind = User)
     eventKey = ndb.KeyProperty(kind = Event)
-    iD = ndb.StringProperty();
-    date = ndb.DateTimeProperty();
-    isFinal = ndb.BooleanProperty();
-    subtotal = ndb.FloatProperty();
-    revenueFactor = ndb.FloatProperty();
-    iva = ndb.FloatProperty();
-    discount = ndb.FloatProperty();
-    total = ndb.FloatProperty();
-    metricPlus = ndb.StringProperty();
+    iD = ndb.StringProperty()
+    date = ndb.DateTimeProperty()
+    isFinal = ndb.BooleanProperty()
+    subtotal = ndb.FloatProperty()
+    revenueFactor = ndb.FloatProperty()
+    iva = ndb.FloatProperty()
+    discount = ndb.FloatProperty()
+    total = ndb.FloatProperty()
+    metricPlus = ndb.StringProperty()
+    version = ndb.IntegerProperty()
  
     def quotation_m(self, data, userKey):
         quotation = Quotation() #Crea una variable de tipo Quotation
