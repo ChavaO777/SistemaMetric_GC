@@ -1,4 +1,13 @@
-import {User} from '../models/user.model'
+//import {User} from '../models/user.model'
+function User() {
+    this.email = null;
+    this.password = null;
+    this.name = null;
+    this.lastName = null;
+    this.toJsonString = function () {
+      return JSON.stringify(this);
+    };
+}
 function login() {
   var user = new User();
   user.email = $("#email").val();
@@ -169,7 +178,7 @@ function update() {
     alert(error);
   }
 }
-function delete() {
+function remove() {
   var email = $("#email").val();
   try{
     jQuery.ajax({

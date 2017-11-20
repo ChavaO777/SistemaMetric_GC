@@ -1,4 +1,4 @@
-import {Tool} from '../models/tool.model'
+//import {Tool} from '../models/tool.model'
 function create() {
   var tool = new Tool();
   tool.id = $('#id').val();
