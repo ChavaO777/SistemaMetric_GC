@@ -14,6 +14,7 @@ from messages import UserInput, UserUpdate, UserList
 from messages import QuotationInput, QuotationUpdate, QuotationList
 from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
 from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
+from messages import CustomerInput, CustomerUpdate, CustomerList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -293,9 +294,9 @@ class QuotationRowAPI(remote.Service):
     
     return message
 
-###############
+######################
 # AdditionalExpenseAPI
-###############
+########################
 @endpoints.api(name='additional_expense_api', version='v1', description='additional expenses endpoints')
 class AdditionalExpenseAPI(remote.Service):
 
@@ -424,6 +425,140 @@ class AdditionalExpenseAPI(remote.Service):
     return message
 
 ###############
+# CustomerAPI
+###############
+@endpoints.api(name='customer_api', version='v1', description='customers endpoints')
+class CustomerAPI(remote.Service):
+
+  ######## Add customer ##########
+  @endpoints.method(CustomerInput, CodeMessage, path = 'customer/insert', http_method = 'POST', name = 'customer.insert')
+  def customer_add(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+      user = User.get_by_id(token['user_id'])
+
+      myCustomer = Customer()
+
+      if myCustomer.customer_m(request, user.key) == 0:
+        codigo = 1
+      else:
+        codigo = -3
+
+      message = CodeMessage(code = codigo, message = 'The customer was added')
+   
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, CustomerList, path = 'customer/get', http_method = 'POST', name = 'customer.get')
+  def customer_get(cls, request):
+    try:                 
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      customerEntity = ndb.Key(urlsafe = request.entityKey)
+      customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
+      
+      list = []  #crea lista
+      listMessage = CustomerList(code = 1) # crea objeto mensaje
+      list.append(CustomerUpdate(token = '', 
+                                 userKey = customer.userKey.urlsafe(),
+                                 iD = customer.iD,
+                                 email = customer.email,
+                                 type = customer.type,
+                                 name = customer.name,
+                                 rfc = customer.rfc,
+                                 phone = customer.phone,
+                                 entityKey = customer.entityKey))
+
+      listMessage.data = list #ASIGNA a la salida la lista
+      message = listMessage
+    
+    except jwt.DecodeError:
+      message = CustomerList(code = -1, data = []) #token invalido
+    
+    except jwt.ExpiredSignatureError:
+      message = CustomerList(code = -2, data = []) #token expiro
+    
+    return message
+
+  @endpoints.method(Token, CustomerList, path = 'customer/list', http_method = 'POST', name = 'customer.list')
+  def customer_list(cls, request):
+    try:
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+      list = []  #create list
+      listMessage = CustomerList(code = 1) # crea objeto mensaje
+      listBd = Customer.query().fetch() # recupera de base de datos
+      
+      for i in listBd: # iterate
+        list.append(CustomerUpdate(token = '',
+                                   userKey = i.userKey.urlsafe(),
+                                   iD = i.iD,
+                                   email = i.email,
+                                   type = i.type,
+                                   name = i.name,
+                                   rfc = i.rfc,
+                                   phone = i.phone,
+                                   entityKey = i.entityKey))
+      
+      listMessage.data = list 
+      message = listMessage
+      
+    except jwt.DecodeError:
+      message = CustomerList(code = -1, data = []) #token invalido
+    except jwt.ExpiredSignatureError:
+      message = CustomerList(code = -2, data = []) #token expiro
+    return message
+
+  @endpoints.method(CustomerUpdate, CodeMessage, path='customer/update', http_method='POST', name='customer.update')
+  def customer_update(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+      
+      # Hacky fix to avoid duplicates -> Delete the customer and then insert a new one. TO DO: fix this!!
+      customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      customerEntity.delete() #Delete the customer
+      
+      customer = Customer()
+
+      if customer.customer_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+        codigo = 1
+      
+      else:
+        codigo = -3
+      
+      message = CodeMessage(code = 1, message = 'The customer has been updated')
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, CodeMessage, path = 'customer/delete', http_method = 'POST', name = 'customer.delete')
+  def customer_remove(cls, request):
+    
+    try:
+
+      token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+      customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      customerEntity.delete() #Delete the quotation
+      message = CodeMessage(code = 1, message = 'The customer was succesfully deleted')
+    
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+###############
 # UserAPI
 ###############
 @endpoints.api(name = 'user_api', version = 'v1', description = 'users endpoints')
@@ -504,10 +639,10 @@ class UserAPI(remote.Service):
         else:
           codigo = -3
         
-        message = CodeMessage(code = codigo, message = 'Succesfully added')
+        message = CodeMessage(code = codigo, message = 'The user was succesfully added')
     
       else:
-        message = CodeMessage(code = -4, message = 'El email ya ha sido registrado')
+        message = CodeMessage(code = -4, message = 'That email has already been registered')
     
     except jwt.DecodeError:
       message = CodeMessage(code = -2, message = 'Invalid token')
@@ -667,5 +802,5 @@ class CompanyAPI(remote.Service):
     
     return message
 
-application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI, AdditionalExpenseAPI], restricted = False)
+application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI, AdditionalExpenseAPI, CustomerAPI], restricted = False)
 

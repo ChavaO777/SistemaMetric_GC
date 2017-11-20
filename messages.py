@@ -142,3 +142,29 @@ class AdditionalExpenseUpdate(messages.Message):
 class AdditionalExpenseList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(AdditionalExpenseUpdate, 2, repeated = True)
+
+##### Customer #####
+class CustomerInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    email = messages.StringField(4)
+    type = messages.StringField(5)
+    name = messages.StringField(6)
+    rfc = messages.StringField(7)
+    phone = messages.StringField(8)
+
+class CustomerUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    email = messages.StringField(4)
+    type = messages.StringField(5)
+    name = messages.StringField(6)
+    rfc = messages.StringField(7)
+    phone = messages.StringField(8)
+    entityKey = messages.StringField(9, required = True)
+
+class CustomerList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(CustomerUpdate, 2, repeated = True)
