@@ -120,6 +120,7 @@ class QuotationAPI(remote.Service):
       token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
       user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
       
+      # Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
       quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
       quotationEntity.delete() #Delete the quotation
       
