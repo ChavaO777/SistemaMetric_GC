@@ -10,6 +10,7 @@ from google.appengine.api import mail
 from google.appengine.ext.webapp import blobstore_handlers
 
 from User import User
+from Event import Event
 
 class CustomBaseModel(EndpointsModel):
     def populate(self, data):
@@ -21,7 +22,8 @@ class CustomBaseModel(EndpointsModel):
 #### Quotation ####
 class Quotation(CustomBaseModel):
     _message_fields_schema = ('userKey', 
-                              'iD', 
+                              'eventKey',
+                              '_id', 
                               'date',
                               'isFinal',
                               'subtotal',
@@ -29,18 +31,21 @@ class Quotation(CustomBaseModel):
                               'iva',
                               'discount',
                               'total',
-                              'metricPlus')
+                              'metricPlus',
+                              'version')
 
     userKey = ndb.KeyProperty(kind = User)
-    iD = ndb.StringProperty();
-    date = ndb.DateTimeProperty();
-    isFinal = ndb.BooleanProperty();
-    subtotal = ndb.FloatProperty();
-    revenueFactor = ndb.FloatProperty();
-    iva = ndb.FloatProperty();
-    discount = ndb.FloatProperty();
-    total = ndb.FloatProperty();
-    metricPlus = ndb.StringProperty();
+    eventKey = ndb.KeyProperty(kind = Event)
+    _id = ndb.StringProperty()
+    date = ndb.DateTimeProperty()
+    isFinal = ndb.BooleanProperty()
+    subtotal = ndb.FloatProperty()
+    revenueFactor = ndb.FloatProperty()
+    iva = ndb.FloatProperty()
+    discount = ndb.FloatProperty()
+    total = ndb.FloatProperty()
+    metricPlus = ndb.StringProperty()
+    version = ndb.IntegerProperty()
  
     def quotation_m(self, data, userKey):
         quotation = Quotation() #Crea una variable de tipo Quotation

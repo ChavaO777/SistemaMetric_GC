@@ -10,7 +10,7 @@ import json
 import os
 import jinja2
 
-from models import Company, User, Quotation
+from models import AdditionalExpense, Company, User, Quotation, 
 
 jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
