@@ -11,25 +11,31 @@ function login()
     $("#email").val(), 
     $("#password").val());
 	
-  alert(myData.toJsonString());
+    alert(myData.toJsonString());
 
-	 jQuery.ajax({
-         type: "POST",
-         url: "http://localhost:8080/_ah/api/usuarios_api/v1/users/login",
-         data: myData.toJsonString(),
-         contentType: "application/json; charset=utf-8",
-         dataType: "json",
-         before: function(){
-              $(".msg").html("<p>Esperando respuesta...</p>");
-         },
-         success: function (response) {
-              sessionStorage.token = response.token;
-              $(".msg").html("<p>"+sessionStorage.token+"</p>");
-         },
-         error: function (error) {
-              alert(error);
-         }
+    try{
 
-     });
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/user_api/v1/user/login",
+            data: myData.toJsonString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                sessionStorage.token = response.token;
+                $(".msg").html("<p>"+sessionStorage.token+"</p>");
+            },
+            error: function (error) {
+                alert(error);
+            }
 
+        });
+    }
+    catch(error){
+
+        alert(error);
+    }
 }
