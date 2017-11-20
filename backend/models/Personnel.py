@@ -21,6 +21,8 @@ class CustomBaseModel(EndpointsModel):
 #### Personnel ####
 class Personnel(CustomBaseModel):
     _message_fields_schema = ('companyKey', 
+                              'name',
+                              'lastName',
                               'stage',
                               'specialty',
                               'comment',
@@ -28,6 +30,8 @@ class Personnel(CustomBaseModel):
                               'tariffUnit')
 
     companyKey = ndb.KeyProperty(kind = Company)
+    name = ndb.StringProperty()
+    lastName = ndb.StringProperty()
     stage = ndb.StringProperty()
     specialty = ndb.StringProperty()
     comment = ndb.StringProperty()
