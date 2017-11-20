@@ -17,6 +17,7 @@ from messages import QuotationInput, QuotationUpdate, QuotationList
 from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
 from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
 from messages import CustomerInput, CustomerUpdate, CustomerList
+from messages import ToolInput, ToolUpdate, ToolList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -438,7 +439,7 @@ class AdditionalExpenseAPI(remote.Service):
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
 			additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
-			additionalExpenseEntity.delete() #Delete the quotation
+			additionalExpenseEntity.delete() #Delete the additional expense e
 			message = CodeMessage(code = 1, message = 'The additional expense was succesfully deleted')
 		
 		except jwt.DecodeError:
@@ -575,8 +576,150 @@ class CustomerAPI(remote.Service):
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
 			customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
-			customerEntity.delete() #Delete the quotation
+			customerEntity.delete() #Delete the customer
 			message = CodeMessage(code = 1, message = 'The customer was succesfully deleted')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+###############
+# ToolAPI
+###############
+@endpoints.api(name='tool_api', version='v1', description='tools endpoints')
+class ToolAPI(remote.Service):
+
+	######## Add tool ##########
+	@endpoints.method(ToolInput, CodeMessage, path = 'tool/insert', http_method = 'POST', name = 'tool.insert')
+	def tool_add(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])
+
+			myTool = Tool()
+
+			if myTool.tool_m(request, user.key) == 0:
+				codigo = 1
+			else:
+				codigo = -3
+
+			message = CodeMessage(code = codigo, message = 'The tool was added')
+	
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, ToolList, path = 'tool/get', http_method = 'POST', name = 'tool.get')
+	def tool_get(cls, request):
+		try:                 
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
+			
+			list = []  #crea lista
+			listMessage = ToolList(code = 1) # crea objeto mensaje
+			list.append(ToolUpdate(token = '', 
+								   userKey = tool.userKey.urlsafe(),
+								   iD = tool.iD,
+								   category = tool.category,
+								   type = tool.type,
+								   brand = tool.brand,
+								   model = tool.model,
+								   pricePerDay = tool.pricePerDay,
+								   quantity = tool.quantity,
+								   available = tool.available,
+								   comment = tool.comment,
+								   entityKey = tool.entityKey))
+
+			listMessage.data = list #ASIGNA a la salida la lista
+			message = listMessage
+    
+		except jwt.DecodeError:
+			message = ToolList(code = -1, data = []) #token invalido
+		
+		except jwt.ExpiredSignatureError:
+			message = ToolList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(Token, ToolList, path = 'tool/list', http_method = 'POST', name = 'tool.list')
+	def tool_list(cls, request):
+		try:
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+			list = []  #create list
+			listMessage = ToolList(code = 1) # crea objeto mensaje
+			listBd = Tool.query().fetch() # recupera de base de datos
+			
+			for i in listBd: # iterate
+				list.append(ToolUpdate(token = '', 
+									   userKey = i.userKey.urlsafe(),
+									   iD = i.iD,
+									   category = i.category,
+									   type = i.type,
+									   brand = i.brand,
+									   model = i.model,
+									   pricePerDay = i.pricePerDay,
+									   quantity = i.quantity,
+									   available = i.available,
+									   comment = i.comment,
+									   entityKey = i.entityKey))
+			
+			listMessage.data = list 
+			message = listMessage
+      
+		except jwt.DecodeError:
+			message = ToolList(code = -1, data = []) #token invalido
+		except jwt.ExpiredSignatureError:
+			message = ToolList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(ToolUpdate, CodeMessage, path='tool/update', http_method='POST', name='tool.update')
+	def customer_update(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+
+			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
+			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			tool = Tool.get_by_id(toolEntity.id()) #get the tool
+			toolEntity.delete() #Delete the tool
+
+			tool = Tool()
+
+			if tool.tool_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+				codigo = 1
+			
+			else:
+				codigo = -3
+			
+			message = CodeMessage(code = 1, message = 'The tool has been successfully updated')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, CodeMessage, path = 'tool/delete', http_method = 'POST', name = 'tool.delete')
+	def tool_remove(cls, request):
+		
+		try:
+
+			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			toolEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			toolEntity.delete() #Delete the tool
+			message = CodeMessage(code = 1, message = 'The tool was succesfully deleted')
 		
 		except jwt.DecodeError:
 			message = CodeMessage(code = -2, message = 'Invalid token')
@@ -828,5 +971,11 @@ class CompanyAPI(remote.Service):
     
     return message
 
-application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI, AdditionalExpenseAPI, CustomerAPI], restricted = False)
+application = endpoints.api_server([UserAPI, 
+								    CompanyAPI, 
+									QuotationAPI, 
+									QuotationRowAPI, 
+									AdditionalExpenseAPI, 
+									CustomerAPI,
+									ToolAPI], restricted = False)
 

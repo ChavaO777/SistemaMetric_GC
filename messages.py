@@ -168,3 +168,35 @@ class CustomerUpdate(messages.Message):
 class CustomerList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(CustomerUpdate, 2, repeated = True)
+
+##### Tool #####
+class ToolInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    category = messages.StringField(4)
+    type = messages.StringField(5)
+    brand = messages.StringField(6)
+    model = messages.StringField(7)
+    pricePerDay = messages.FloatField(8)
+    quantity = messages.IntegerField(9)
+    available = messages.IntegerField(10)
+    comment = messages.StringField(11)
+
+class ToolUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    category = messages.StringField(4)
+    type = messages.StringField(5)
+    brand = messages.StringField(6)
+    model = messages.StringField(7)
+    pricePerDay = messages.FloatField(8)
+    quantity = messages.IntegerField(9)
+    available = messages.IntegerField(10)
+    comment = messages.StringField(11)
+    entityKey = messages.StringField(12, required = True)
+
+class ToolList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(ToolUpdate, 2, repeated = True)

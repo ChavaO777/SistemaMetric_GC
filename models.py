@@ -184,7 +184,7 @@ class Tool(CustomBaseModel):
                               'available',
                               'comment')
 
-    userKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = User)
     iD = ndb.StringProperty()
     category = ndb.StringProperty()
     type = ndb.StringProperty()
