@@ -1,4 +1,5 @@
-import {User} from '../models/user.model'
+var User = require('../models/user.model');
+// import {User} from '../models/user.model'
 function login() {
   var user = new User();
   user.email = $("#email").val();
