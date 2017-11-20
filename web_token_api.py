@@ -119,6 +119,10 @@ class QuotationAPI(remote.Service):
     try:
       token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
       user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      
+      quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      quotationEntity.delete() #Delete the quotation
+      
       quotation = Quotation()
 
       if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py en la seccion de USUARIOS
