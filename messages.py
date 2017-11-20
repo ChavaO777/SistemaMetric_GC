@@ -120,3 +120,25 @@ class QuotationRowUpdate(messages.Message):
 class QuotationRowList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(QuotationRowUpdate, 2, repeated = True)
+
+##### Additional Expense #####
+class AdditionalExpenseInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    quotationKey = messages.StringField(3)
+    description = messages.StringField(4)
+    price = messages.FloatField(5)
+    comment = messages.StringField(6)
+
+class AdditionalExpenseUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    userKey = messages.StringField(2)
+    quotationKey = messages.StringField(3)
+    description = messages.StringField(4)
+    price = messages.FloatField(5)
+    comment = messages.StringField(6)
+    entityKey = messages.StringField(7, required = True)
+
+class AdditionalExpenseList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(AdditionalExpenseUpdate, 2, repeated = True)

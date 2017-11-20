@@ -127,14 +127,16 @@ class QuotationRow(CustomBaseModel):
 #### AdditionalExpense ####
 class AdditionalExpense(CustomBaseModel):
     _message_fields_schema = ('userKey', 
+                              'quotationKey',
                               'description',
                               'price',
                               'comment')
 
     userKey = ndb.KeyProperty(kind = User)
+    quotationKey = ndb.KeyProperty(kind = Quotation)
     description = ndb.StringProperty()
     price = ndb.FloatProperty();
-    comment = ndb.FloatProperty();
+    comment = ndb.StringProperty();
 
     ### Quotation ####
     def additionalExpense_m(self, data, userKey):

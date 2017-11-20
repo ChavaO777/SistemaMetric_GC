@@ -13,6 +13,7 @@ from messages import CompanyInput, CompanyUpdate, CompanyList
 from messages import UserInput, UserUpdate, UserList
 from messages import QuotationInput, QuotationUpdate, QuotationList
 from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
+from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -119,7 +120,7 @@ class QuotationAPI(remote.Service):
   def quotation_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
-      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
       
       # Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
       quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
@@ -127,7 +128,7 @@ class QuotationAPI(remote.Service):
       
       quotation = Quotation()
 
-      if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py en la seccion de USUARIOS
+      if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
         codigo = 1
       
       else:
@@ -252,15 +253,15 @@ class QuotationRowAPI(remote.Service):
   def quotationRow_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
-      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
       
-      # Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
+      # Hacky fix to avoid duplicates -> Delete the quotation row and then insert a new one. TO DO: fix this!!
       quotationRowEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
       quotationRowEntity.delete() #Delete the quotation
       
       quotationRow = QuotationRow()
 
-      if quotationRow.quotationRow_m(request, user.key) == 0: #llama a la funcion declarada en models.py en la seccion de USUARIOS
+      if quotationRow.quotationRow_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
         codigo = 1
       
       else:
@@ -281,8 +282,138 @@ class QuotationRowAPI(remote.Service):
 
       token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
       quotationRowEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
-      quotationRowEntity.delete() #Delete the quotation
+      quotationRowEntity.delete() #Delete the quotation row
       message = CodeMessage(code = 1, message = 'The quotation row was succesfully deleted')
+    
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+###############
+# AdditionalExpenseAPI
+###############
+@endpoints.api(name='additional_expense_api', version='v1', description='additional expenses endpoints')
+class AdditionalExpenseAPI(remote.Service):
+
+  ######## Add additional expense ##########
+  @endpoints.method(AdditionalExpenseInput, CodeMessage, path = 'additionalExpense/insert', http_method = 'POST', name = 'additionalExpense.insert')
+  def additionalExpense_add(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+      user = User.get_by_id(token['user_id'])
+
+      myAdditionalExpense = AdditionalExpense()
+
+      if myAdditionalExpense.additionalExpense_m(request, user.key) == 0:
+        codigo = 1
+      else:
+        codigo = -3
+
+      message = CodeMessage(code = codigo, message = 'Additional Expense added')
+   
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, AdditionalExpenseList, path = 'additionalExpense/get', http_method = 'POST', name = 'additionalExpense.get')
+  def additionalExpense_get(cls, request):
+    try:                 
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)
+      additionalExpense = AdditionalExpense.get_by_id(additionalExpenseEntity.id()) #obtiene usuario
+      
+      list = []  #crea lista
+      listMessage = AdditionalExpenseList(code = 1) # crea objeto mensaje
+      list.append(AdditionalExpenseUpdate(token = '', 
+                                          userKey = additionalExpense.userKey.urlsafe(),
+                                          quotationKey = additionalExpense.quotationKey.urlsafe(),
+                                          description = additionalExpense.description,
+                                          price = additionalExpense.price,
+                                          comment = additionalExpense.comment,
+                                          entityKey = additionalExpense.entityKey))
+
+      listMessage.data = list #ASIGNA a la salida la lista
+      message = listMessage
+    
+    except jwt.DecodeError:
+      message = AdditionalExpenseList(code = -1, data = []) #token invalido
+    
+    except jwt.ExpiredSignatureError:
+      message = AdditionalExpenseList(code = -2, data = []) #token expiro
+    
+    return message
+
+  @endpoints.method(Token, AdditionalExpenseList, path = 'additionalExpense/list', http_method = 'POST', name = 'additionalExpense.list')
+  def additionalExpense_list(cls, request):
+    try:
+      
+      token = jwt.decode(request.tokenint, 'secret')  #checa token
+      user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+      list = []  #create list
+      listMessage = AdditionalExpenseList(code = 1) # crea objeto mensaje
+      listBd = AdditionalExpense.query().fetch() # recupera de base de datos
+      
+      for i in listBd: # iterate
+        list.append(AdditionalExpenseUpdate(token = '', 
+                                            userKey = i.userKey.urlsafe(),
+                                            quotationKey = i.quotationKey.urlsafe(),
+                                            description = i.description,
+                                            price = i.price,
+                                            comment = i.comment,
+                                            entityKey = i.entityKey))
+      
+      listMessage.data = list 
+      message = listMessage
+      
+    except jwt.DecodeError:
+      message = AdditionalExpenseList(code = -1, data = []) #token invalido
+    except jwt.ExpiredSignatureError:
+      message = AdditionalExpenseList(code = -2, data = []) #token expiro
+    return message
+
+  @endpoints.method(AdditionalExpenseUpdate, CodeMessage, path='additionalExpense/update', http_method='POST', name='additionalExpense.update')
+  def additionalExpense_update(cls, request):
+    try:
+      token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+      user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+      
+      # Hacky fix to avoid duplicates -> Delete the additional expense and then insert a new one. TO DO: fix this!!
+      additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      additionalExpenseEntity.delete() #Delete the additional expense
+      
+      additionalExpense = AdditionalExpense()
+
+      if additionalExpense.additionalExpense_m(request, user.key) == 0: #llama a la funcion declarada en models.py en 
+        codigo = 1
+      
+      else:
+        codigo = -3
+      
+      message = CodeMessage(code = 1, message = 'The additional expense has been updated')
+    except jwt.DecodeError:
+      message = CodeMessage(code = -2, message = 'Invalid token')
+    except jwt.ExpiredSignatureError:
+      message = CodeMessage(code = -1, message = 'Token expired')
+    
+    return message
+
+  @endpoints.method(TokenKey, CodeMessage, path = 'additionalExpense/delete', http_method = 'POST', name = 'additionalExpense.delete')
+  def additionalExpense_remove(cls, request):
+    
+    try:
+
+      token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+      additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+      additionalExpenseEntity.delete() #Delete the quotation
+      message = CodeMessage(code = 1, message = 'The additional expense was succesfully deleted')
     
     except jwt.DecodeError:
       message = CodeMessage(code = -2, message = 'Invalid token')
@@ -368,7 +499,7 @@ class UserAPI(remote.Service):
       user = User.get_by_id(token['user_id'])
     
       if validarEmail(request.email) == False: #checa si el email esta registrado
-        if user.usuario_m(request, user.empresa_key) == 0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+        if user.usuario_m(request, user.empresa_key) == 0:#llama a la funcion declarada en models.py 
           codigo = 1
         else:
           codigo = -3
@@ -413,10 +544,10 @@ class UserAPI(remote.Service):
     try:
       
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
-      user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py 
       empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
       
-      if user.usuario_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+      if user.usuario_m(request, empresakey)==0:#llama a la funcion declarada en models.py 
         codigo = 1
       
       else:
@@ -499,9 +630,9 @@ class CompanyAPI(remote.Service):
   def company_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN 
-      user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+      user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py 
       myempresa = Company()
-      if myempresa.company_m(request)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+      if myempresa.company_m(request)==0:#llama a la funcion declarada en models.py 
         codigo = 1
       else:
         codigo = -3
@@ -536,5 +667,5 @@ class CompanyAPI(remote.Service):
     
     return message
 
-application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI], restricted = False)
+application = endpoints.api_server([UserAPI, CompanyAPI, QuotationAPI, QuotationRowAPI, AdditionalExpenseAPI], restricted = False)
 
