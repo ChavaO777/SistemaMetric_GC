@@ -23,29 +23,10 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 import models
 from models import validarEmail
-from models import Company, User, Quotation, QuotationRow, AdditionalExpense, Customer, Tool, Personnel, Event 
+from models import Company, User, Quotation, QuotationRow, AdditionalExpense
+from models import Customer, Tool, Personnel, Event
 
 import logging
-import base64
-def base64_decode(s):
-	'''Add missing padding to string and return the decoded base64 string.'''
-	log = logging.getLogger()
-	s = str(s).strip()
-  
-	try:
-		return base64.b64decode(s)
-	
-	except TypeError:
-		padding = len(s) % 4
-		
-		if padding == 1:
-			log.error("Invalid base64 string: {}".format(s))
-			return ''
-		elif padding == 2:
-			s += b'=='
-		elif padding == 3:
-			s += b'='
-	return base64.b64decode(s)
 
 ###############
 # QuotationAPI
@@ -68,12 +49,12 @@ class QuotationAPI(remote.Service):
 				codigo = -3
 
 			message = CodeMessage(code = codigo, message = 'Quotation added')
-	
+
 		except jwt.DecodeError:
 			message = CodeMessage(code = -2, message = 'Invalid token')
 		except jwt.ExpiredSignatureError:
 			message = CodeMessage(code = -1, message = 'Token expired')
-		
+
 		return message
 
 	@endpoints.method(TokenKey, QuotationList, path = 'quotation/get', http_method = 'POST', name = 'quotation.get')
@@ -81,7 +62,8 @@ class QuotationAPI(remote.Service):
 		try:                 
 		
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			quotationEntity = ndb.Key(urlsafe = request.entityKey)
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)
 			quotation = Quotation.get_by_id(quotationEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
@@ -149,7 +131,8 @@ class QuotationAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
 			
 			# Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
-			quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationEntity.delete() #Delete the quotation
 			
 			quotation = Quotation()
@@ -219,7 +202,8 @@ class QuotationRowAPI(remote.Service):
 		try:                 
 		
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			quotationRowEntity = ndb.Key(urlsafe = request.entityKey)
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)
 			quotationRow = QuotationRow.get_by_id(quotationRowEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
@@ -282,7 +266,8 @@ class QuotationRowAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
 			
 			# Hacky fix to avoid duplicates -> Delete the quotation row and then insert a new one. TO DO: fix this!!
-			quotationRowEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationRowEntity.delete() #Delete the quotation
 			
 			quotationRow = QuotationRow()
@@ -353,7 +338,8 @@ class AdditionalExpenseAPI(remote.Service):
 		try:                 
 		
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)
 			additionalExpense = AdditionalExpense.get_by_id(additionalExpenseEntity.id()) #obtiene usuario
 		
 			list = []  #crea lista
@@ -411,9 +397,9 @@ class AdditionalExpenseAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
-			
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			# Hacky fix to avoid duplicates -> Delete the additional expense and then insert a new one. TO DO: fix this!!
-			additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			additionalExpenseEntity.delete() #Delete the additional expense
 			additionalExpense = AdditionalExpense()
 
@@ -548,7 +534,8 @@ class CustomerAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
 
 			# Hacky fix to avoid duplicates -> Delete the customer and then insert a new one. TO DO: fix this!!
-			customerEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
 			customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
 			customerEntity.delete() #Delete the customer
 
@@ -621,7 +608,7 @@ class ToolAPI(remote.Service):
 		try:                 
       
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginningo of the string
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
 			
@@ -853,9 +840,9 @@ class UserAPI(remote.Service):
 		
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py 
-			empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
+			companyKey = ndb.Key(urlsafe = user.companyKey.urlsafe())#convierte el string dado a entityKey
 			
-			if user.usuario_m(request, empresakey)==0:#llama a la funcion declarada en models.py 
+			if user.usuario_m(request, empresakey) == 0:#llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
