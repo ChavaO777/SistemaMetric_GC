@@ -32,9 +32,10 @@ class Company(CustomBaseModel):
 
 ##### User #####
 class User(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 'email', 'password', 'salt')
+    _message_fields_schema = ('companyKey', 'name', 'email', 'password', 'salt')
 
     companyKey = ndb.KeyProperty(kind = Company)
+    name = ndb.StringProperty()
     email = ndb.StringProperty()
     password = ndb.StringProperty()
     salt = ndb.StringProperty(indexed = False)
@@ -249,9 +250,11 @@ class Event(CustomBaseModel):
         return 0
 
 def validarEmail(email):
-
-    user = User.query(User.email == email)
-    return user.get() ## True if it is not None. False, otherwise
+    emailv = User.query(User.email == email)
+    if not emailv.get():
+        return False
+    else:
+        return True
 
 #### create root Empresa
 if validarEmail("adsoft@kubeet.com") == False:
