@@ -59,7 +59,7 @@ class QuotationAPI(remote.Service):
       list = []  #crea lista
       listMessage = QuotationList(code = 1) # crea objeto mensaje
       list.append(QuotationUpdate(token = '', 
-                                  userKey = quotation.userKey,
+                                  userKey = quotation.userKey.urlsafe(),
                                   iD = quotation.iD,
                                   date = quotation.date,
                                   isFinal = quotation.isFinal,
@@ -68,7 +68,8 @@ class QuotationAPI(remote.Service):
                                   iva = quotation.iva,
                                   discount = quotation.discount,
                                   total = quotation.total,
-                                  metricPlus = quotation.metricPlus))
+                                  metricPlus = quotation.metricPlus,
+                                  entityKey = quotation.entityKey))
 
       listMessage.data = list #ASIGNA a la salida la lista
       message = listMessage
@@ -102,7 +103,8 @@ class QuotationAPI(remote.Service):
                                     iva = i.iva,
                                     discount = i.discount,
                                     total = i.total,
-                                    metricPlus = i.metricPlus))
+                                    metricPlus = i.metricPlus,
+                                    entityKey = i.entityKey))
       listMessage.data = list 
       message = listMessage
       
@@ -113,7 +115,6 @@ class QuotationAPI(remote.Service):
     return message
 
   @endpoints.method(QuotationUpdate, CodeMessage, path='quotation/update', http_method='POST', name='quotation.update')
-  #siempre lleva cls y request
   def quotation_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN

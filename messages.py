@@ -89,6 +89,7 @@ class QuotationUpdate(messages.Message):
     discount = messages.FloatField(9)
     total = messages.FloatField(10)
     metricPlus = messages.StringField(11)
+    entityKey = messages.StringField(12, required = True)
 
 class QuotationList(messages.Message):
     code = messages.IntegerField(1)
