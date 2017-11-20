@@ -21,13 +21,12 @@ class Company(CustomBaseModel):
     _message_fields_schema = ('entityKey', 'code', 'name')
     code = ndb.StringProperty()
     name = ndb.StringProperty()
-    
+
     def company_m(self, data):
-        
         company = Company()#Crea una variable de tipo Company
         company.populate(data)#Llena la variables con los datos dados por el request en main.py
         company.put()#inserta o hace un update depende del main.py
-        
+
         return 0
 
 ##### User #####
@@ -39,15 +38,15 @@ class User(CustomBaseModel):
     email = ndb.StringProperty()
     password = ndb.StringProperty()
     salt = ndb.StringProperty(indexed = False)
-   
+
     def hash_password(self):
         """ Create a cryptographyc random secure salt and hash the password
             using the salt created and store both in the database, the password
             and the salt """
         # Note: The salt must be encoded in base64, otherwise it will
         # cause an exception trying to store non utf-8 characteres
-        self.salt = base64.urlsafe_b64encode(
-            Crypto.Random.get_random_bytes(16))
+        #self.salt = base64.urlsafe_b64encode(Crypto.Random.get_random_bytes(16))
+        self.salt = "not salty enought :("
         hash_helper = SHA256.new()
         hash_helper.update(self.password + self.salt)
         self.password = hash_helper.hexdigest()
@@ -56,7 +55,7 @@ class User(CustomBaseModel):
         """ Verify if the password is correct """
         hash_helper = SHA256.new()
         hash_helper.update(password + self.salt)
-        
+
         return hash_helper.hexdigest() == self.password
 
     def user_m(self, data, companyKey):
@@ -66,13 +65,13 @@ class User(CustomBaseModel):
         user.status = 1
         user.hash_password() #encripta la contrasena
         user.put() #inserta o hace un update depende del main.py
-        
+
         return 0
 
 #### Quotation ####
 class Quotation(CustomBaseModel):
-    _message_fields_schema = ('userKey', 
-                              'iD', 
+    _message_fields_schema = ('userKey',
+                              'iD',
                               'date',
                               'isFinal',
                               'subtotal',
@@ -92,7 +91,7 @@ class Quotation(CustomBaseModel):
     discount = ndb.FloatProperty();
     total = ndb.FloatProperty();
     metricPlus = ndb.StringProperty();
- 
+
     def quotation_m(self, data, userKey):
         quotation = Quotation() #Crea una variable de tipo Quotation
         quotation.populate(data) #Llena la variables con los datos dados por el request en main.py
@@ -102,10 +101,10 @@ class Quotation(CustomBaseModel):
 
 #### QuotationRow ####
 class QuotationRow(CustomBaseModel):
-    _message_fields_schema = ('userKey', 
+    _message_fields_schema = ('userKey',
                               'quotationKey',
                               'resourceKey', # This entity key is the key of a tool or a personnel
-                              'iD', 
+                              'iD',
                               'quantity',
                               'days',
                               'amount')
@@ -127,7 +126,7 @@ class QuotationRow(CustomBaseModel):
 
 #### AdditionalExpense ####
 class AdditionalExpense(CustomBaseModel):
-    _message_fields_schema = ('userKey', 
+    _message_fields_schema = ('userKey',
                               'quotationKey',
                               'description',
                               'price',
@@ -149,7 +148,7 @@ class AdditionalExpense(CustomBaseModel):
 
 #### Customer ####
 class Customer(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('companyKey',
                               'iD',
                               'email',
                               'type',
@@ -174,7 +173,7 @@ class Customer(CustomBaseModel):
 
 #### Tool ####
 class Tool(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('companyKey',
                               'iD',
                               'category',
                               'type',
@@ -205,7 +204,7 @@ class Tool(CustomBaseModel):
 
 #### Personnel ####
 class Personnel(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('companyKey',
                               'iD',
                               'stage',
                               'specialty',
@@ -228,7 +227,7 @@ class Personnel(CustomBaseModel):
 
 #### Event ####
 class Event(CustomBaseModel):
-    _message_fields_schema = ('userKey', 
+    _message_fields_schema = ('userKey',
                               'iD',
                               'date',
                               'days',
@@ -258,11 +257,11 @@ def validarEmail(email):
 
 #### create root Empresa
 if validarEmail("adsoft@kubeet.com") == False:
-    
+
     empresaAdmin = Company(code = 'kubeet', name = "kubeet srl de cv")
     empresaAdmin.put()
 
-    #### create root user  
+    #### create root user
     keyadmincol = ndb.Key(urlsafe=empresaAdmin.entityKey)
     admin = User(companyKey = keyadmincol,
                  name = "Adsoft",
@@ -274,12 +273,13 @@ if validarEmail("adsoft@kubeet.com") == False:
 
 #### create another user
 if validarEmail("salvador@orozco.in") == False:
-    
+
     empresaOther = Company(code = 'orvis', name = "orvis srl de cv")
     empresaOther.put()
 
-    #### create another user 
+    #### create another user
     keyadmincolOther = ndb.Key(urlsafe = empresaOther.entityKey)
+
     adminOther = User(companyKey = keyadmincolOther,
                       name = "Salvador",
                       email = "salvador@orozco.in",
