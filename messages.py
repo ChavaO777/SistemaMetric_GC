@@ -66,7 +66,7 @@ class CompanyList(messages.Message):
 ##### Quotation #####
 class QuotationInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    companyKey = messages.StringField(2)
+    userKey = messages.StringField(2)
     iD = messages.StringField(3)
     date = messages.StringField(4) #DateOrTimeField is not working
     isFinal = messages.BooleanField(5)
@@ -79,7 +79,7 @@ class QuotationInput(messages.Message):
 
 class QuotationUpdate(messages.Message):
     token = messages.StringField(1, required = True)
-    companyKey = messages.StringField(2)
+    userKey = messages.StringField(2)
     iD = messages.StringField(3)
     date = messages.StringField(4) #DateOrTimeField is not working
     isFinal = messages.BooleanField(5)

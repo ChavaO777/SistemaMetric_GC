@@ -59,7 +59,7 @@ class QuotationAPI(remote.Service):
       list = []  #crea lista
       listMessage = QuotationList(code = 1) # crea objeto mensaje
       list.append(QuotationUpdate(token = '', 
-                                  companyKey = quotation.companyKey,
+                                  userKey = quotation.userKey,
                                   iD = quotation.iD,
                                   date = quotation.date,
                                   isFinal = quotation.isFinal,
@@ -93,7 +93,7 @@ class QuotationAPI(remote.Service):
       
       for i in listBd: # iterate
         list.append(QuotationUpdate(token='', 
-                                    companyKey = i.companyKey,
+                                    userKey = i.userKey.urlsafe(),
                                     iD = i.iD,
                                     date = i.date,
                                     isFinal = i.isFinal,
@@ -301,7 +301,7 @@ class UserAPI(remote.Service):
 class CompanyAPI(remote.Service):
 
   @endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
-  def empresa_get(cls, request):
+  def company_get(cls, request):
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
       empresaentity = ndb.Key(urlsafe=request.entityKey)
@@ -319,7 +319,7 @@ class CompanyAPI(remote.Service):
     return message
 
   @endpoints.method(TokenKey, CodeMessage, path='empresa/delete', http_method='POST', name='empresa.delete')
-  def empresa_remove(cls, request):
+  def company_remove(cls, request):
     
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
@@ -333,9 +333,8 @@ class CompanyAPI(remote.Service):
     
     return message
 
-  # insert
   @endpoints.method(CompanyInput, CodeMessage, path='empresa/insert', http_method='POST', name='empresa.insert')
-  def empresa_add(cls, request):
+  def company_add(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
       user = User.get_by_id(token['user_id'])#obtiene el usuario models.py 
@@ -357,11 +356,10 @@ class CompanyAPI(remote.Service):
       return message
 
   @endpoints.method(CompanyUpdate, CodeMessage, path='empresa/update', http_method='POST', name='empresa.update')
-  def empresa_update(cls, request):
+  def company_update(cls, request):
     try:
       token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN 
       user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
-          #empresakey = ndb.Key(urlsafe=request.empresa_key)#convierte el string dado a entityKey
       myempresa = Company()
       if myempresa.company_m(request)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
         codigo = 1
@@ -376,8 +374,7 @@ class CompanyAPI(remote.Service):
     return message
 
   @endpoints.method(Token, CompanyList, path='empresa/list', http_method='POST', name='empresa.list')
-  #siempre lleva cls y request
-  def empresa_list(cls, request):
+  def company_list(cls, request):
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
       user = User.get_by_id(token['user_id']) #obtiene usuario dado el token

@@ -70,7 +70,7 @@ class User(CustomBaseModel):
 
 #### Quotation ####
 class Quotation(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'iD', 
                               'date',
                               'isFinal',
@@ -81,7 +81,7 @@ class Quotation(CustomBaseModel):
                               'total',
                               'metricPlus')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = User)
     iD = ndb.StringProperty();
     date = ndb.DateTimeProperty();
     isFinal = ndb.BooleanProperty();
@@ -92,60 +92,59 @@ class Quotation(CustomBaseModel):
     total = ndb.FloatProperty();
     metricPlus = ndb.StringProperty();
  
-    def quotation_m(self, data, companyKey):
+    def quotation_m(self, data, userKey):
         quotation = Quotation() #Crea una variable de tipo Quotation
         quotation.populate(data) #Llena la variables con los datos dados por el request en main.py
-        quotation.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        quotation.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         quotation.put() #inserta o hace un update depende del main.py
         return 0
 
 #### QuotationRow ####
 class QuotationRow(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'entityKey', # This entity key is the key of a tool or a personnel
                               'iD', 
                               'quantity',
                               'days',
                               'amount')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = User)
     entityKey = ndb.StringProperty(); # Save it as a string because it can either be a Personnel key or a Tool key
     iD = ndb.StringProperty();
     quantity = ndb.IntegerProperty();
     days = ndb.IntegerProperty();
     amount = ndb.IntegerProperty();
 
-    def quotationRow_m(self, data, companyKey):
+    def quotationRow_m(self, data, userKey):
         quotationRow = QuotationRow() #Crea una variable de tipo Quotation Row
         quotationRow.populate(data) #Llena la variables con los datos dados por el request en main.py
-        quotationRow.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        quotationRow.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         quotationRow.put() #inserta o hace un update depende del main.py
         return 0
 
 #### AdditionalExpense ####
 class AdditionalExpense(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'description',
                               'price',
                               'comment')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = User)
     description = ndb.StringProperty()
     price = ndb.FloatProperty();
     comment = ndb.FloatProperty();
 
-
     ### Quotation ####
-    def additionalExpense_m(self, data, companyKey):
+    def additionalExpense_m(self, data, userKey):
         additionalExpense = AdditionalExpense() #Crea una variable de tipo Additional Expense
         additionalExpense.populate(data) #Llena la variables con los datos dados por el request en main.py
-        additionalExpense.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        additionalExpense.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         additionalExpense.put() #inserta o hace un update depende del main.py
         return 0
 
 #### Customer ####
 class Customer(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'iD',
                               'email',
                               'type',
@@ -153,7 +152,7 @@ class Customer(CustomBaseModel):
                               'rfc',
                               'phone')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = User)
     iD = ndb.StringProperty()
     email = ndb.StringProperty()
     type = ndb.StringProperty()
@@ -161,16 +160,16 @@ class Customer(CustomBaseModel):
     rfc = ndb.StringProperty()
     phone = ndb.StringProperty()
 
-    def customer_m(self, data, companyKey):
+    def customer_m(self, data, userKey):
         customer = Customer() #Crea una variable de tipo Customer
         customer.populate(data) #Llena la variables con los datos dados por el request en main.py
-        customer.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        customer.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         customer.put() #inserta o hace un update depende del main.py
         return 0
 
 #### Tool ####
 class Tool(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'iD',
                               'category',
                               'type',
@@ -181,7 +180,7 @@ class Tool(CustomBaseModel):
                               'available',
                               'comment')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = Company)
     iD = ndb.StringProperty()
     category = ndb.StringProperty()
     type = ndb.StringProperty()
@@ -192,56 +191,56 @@ class Tool(CustomBaseModel):
     available = ndb.IntegerProperty()
     comment = ndb.StringProperty()
 
-    def tool_m(self, data, companyKey):
+    def tool_m(self, data, userKey):
         tool = Tool() #Crea una variable de tipo Tool
         tool.populate(data) #Llena la variables con los datos dados por el request en main.py
-        tool.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        tool.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         tool.put() #inserta o hace un update depende del main.py
         return 0
 
 #### Personnel ####
 class Personnel(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'iD',
                               'stage',
                               'specialty',
                               'comment',
                               'pricePerDay')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = Company)
     iD = ndb.StringProperty()
     stage = ndb.StringProperty()
     specialty = ndb.StringProperty()
     comment = ndb.StringProperty()
     pricePerDay = ndb.FloatProperty()
 
-    def personnel_m(self, data, companyKey):
+    def personnel_m(self, data, userKey):
         personnel = Personnel() #Crea una variable de tipo Personnel
         personnel.populate(data) #Llena la variables con los datos dados por el request en main.py
-        personnel.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        personnel.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         personnel.put() #inserta o hace un update depende del main.py
         return 0
 
 #### Event ####
 class Event(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('userKey', 
                               'iD',
                               'date',
                               'days',
                               'place',
                               'hidden')
 
-    companyKey = ndb.KeyProperty(kind = Company)
+    userKey = ndb.KeyProperty(kind = Company)
     iD = ndb.StringProperty()
     date = ndb.DateTimeProperty()
     days = ndb.IntegerProperty()
     place = ndb.StringProperty()
     hidden = ndb.BooleanProperty()
 
-    def event_m(self, data, companyKey):
+    def event_m(self, data, userKey):
         event = Event() #Crea una variable de tipo Event
         event.populate(data) #Llena la variables con los datos dados por el request en main.py
-        event.companyKey = companyKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        event.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
         event.put() #inserta o hace un update depende del main.py
         return 0
 
