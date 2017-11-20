@@ -62,7 +62,7 @@ class QuotationAPI(remote.Service):
 
 			myQuotation = Quotation() 
 
-			if myQuotation.quotation_m(request, user.key) == 0:
+			if myQuotation.quotation_m(request, user.key.urlsafe()) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -154,7 +154,7 @@ class QuotationAPI(remote.Service):
 			
 			quotation = Quotation()
 
-			if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+			if quotation.quotation_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -174,7 +174,7 @@ class QuotationAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			quotationEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
+			quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			quotationEntity.delete() #Delete the quotation
 			message = CodeMessage(code = 1, message = 'The quotation was succesfully deleted')
 			
@@ -200,7 +200,7 @@ class QuotationRowAPI(remote.Service):
 
 			myQuotationRow = QuotationRow() 
 
-			if myQuotationRow.quotationRow_m(request, user.key) == 0:
+			if myQuotationRow.quotationRow_m(request, user.key.urlsafe()) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -287,7 +287,7 @@ class QuotationRowAPI(remote.Service):
 			
 			quotationRow = QuotationRow()
 
-			if quotationRow.quotationRow_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+			if quotationRow.quotationRow_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -307,7 +307,7 @@ class QuotationRowAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			quotationRowEntity = ndb.Key(urlsafe = request.entityKey )#Obtiene el elemento dado el EntityKey
+			quotationRowEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			quotationRowEntity.delete() #Delete the quotation row
 			message = CodeMessage(code = 1, message = 'The quotation row was succesfully deleted')
 		
@@ -334,7 +334,7 @@ class AdditionalExpenseAPI(remote.Service):
 
 			myAdditionalExpense = AdditionalExpense()
 
-			if myAdditionalExpense.additionalExpense_m(request, user.key) == 0:
+			if myAdditionalExpense.additionalExpense_m(request, user.key.urlsafe()) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -415,10 +415,9 @@ class AdditionalExpenseAPI(remote.Service):
 			# Hacky fix to avoid duplicates -> Delete the additional expense and then insert a new one. TO DO: fix this!!
 			additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			additionalExpenseEntity.delete() #Delete the additional expense
-			
 			additionalExpense = AdditionalExpense()
 
-			if additionalExpense.additionalExpense_m(request, user.key) == 0: #llama a la funcion declarada en models.py en 
+			if additionalExpense.additionalExpense_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py en 
 				codigo = 1
 			
 			else:
@@ -462,10 +461,11 @@ class CustomerAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
+			companyKey = user.companyKey
 
 			myCustomer = Customer()
 
-			if myCustomer.customer_m(request, user.key) == 0:
+			if myCustomer.customer_m(request, companyKey) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -490,14 +490,14 @@ class CustomerAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = CustomerList(code = 1) # crea objeto mensaje
 			list.append(CustomerUpdate(token = '', 
-										userKey = customer.userKey.urlsafe(),
-										iD = customer.iD,
-										email = customer.email,
-										type = customer.type,
-										name = customer.name,
-										rfc = customer.rfc,
-										phone = customer.phone,
-										entityKey = customer.entityKey))
+									   companyKey = customer.companyKey.urlsafe(),
+									   iD = customer.iD,
+									   email = customer.email,
+									   type = customer.type,
+									   name = customer.name,
+									   rfc = customer.rfc,
+									   phone = customer.phone,
+									   entityKey = customer.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
 			message = listMessage
@@ -522,14 +522,14 @@ class CustomerAPI(remote.Service):
 			
 			for i in listBd: # iterate
 				list.append(CustomerUpdate(token = '',
-										userKey = i.userKey.urlsafe(),
-										iD = i.iD,
-										email = i.email,
-										type = i.type,
-										name = i.name,
-										rfc = i.rfc,
-										phone = i.phone,
-										entityKey = i.entityKey))
+										   companyKey = i.companyKey.urlsafe(),
+									       iD = i.iD,
+										   email = i.email,
+										   type = i.type,
+										   name = i.name,
+										   rfc = i.rfc,
+										   phone = i.phone,
+										   entityKey = i.entityKey))
 			
 			listMessage.data = list 
 			message = listMessage
@@ -554,7 +554,7 @@ class CustomerAPI(remote.Service):
 
 			customer = Customer()
 
-			if customer.customer_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+			if customer.customer_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -598,10 +598,11 @@ class ToolAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
+			companyKey = user.companyKey
 
 			myTool = Tool()
 
-			if myTool.tool_m(request, user.key) == 0:
+			if myTool.tool_m(request, companyKey) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -620,13 +621,14 @@ class ToolAPI(remote.Service):
 		try:                 
       
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginningo of the string
+			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
 			listMessage = ToolList(code = 1) # crea objeto mensaje
 			list.append(ToolUpdate(token = '', 
-								   userKey = tool.userKey.urlsafe(),
+								   companyKey = tool.companyKey.urlsafe(),
 								   iD = tool.iD,
 								   category = tool.category,
 								   type = tool.type,
@@ -661,7 +663,7 @@ class ToolAPI(remote.Service):
 			
 			for i in listBd: # iterate
 				list.append(ToolUpdate(token = '', 
-									   userKey = i.userKey.urlsafe(),
+									   companyKey = i.companyKey.urlsafe(),
 									   iD = i.iD,
 									   category = i.category,
 									   type = i.type,
@@ -684,19 +686,21 @@ class ToolAPI(remote.Service):
 		return message
 
 	@endpoints.method(ToolUpdate, CodeMessage, path='tool/update', http_method='POST', name='tool.update')
-	def customer_update(cls, request):
+	def tool_update(cls, request):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginningo of the string
+			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #get the tool
 			toolEntity.delete() #Delete the tool
 
 			tool = Tool()
 
-			if tool.tool_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+			if tool.tool_m(request, companyKey) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -738,8 +742,8 @@ class UserAPI(remote.Service):
 		try:                 
 		
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			userentity = ndb.Key(urlsafe = request.entityKey)
-			user = User.get_by_id(userentity.id()) #obtiene usuario
+			userEntity = ndb.Key(urlsafe = request.entityKey)
+			user = User.get_by_id(userEntity.id()) #obtiene usuario
 			lista = []  #crea lista
 			lstMessage = UserList(code = 1) # crea objeto mensaje
 			lista.append(UserUpdate(token = '', 
@@ -875,101 +879,104 @@ class UserAPI(remote.Service):
 @endpoints.api(name='company_api', version='v1', description='companies endpoints')
 class CompanyAPI(remote.Service):
 
-  @endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
-  def company_get(cls, request):
-    try:
-      token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-      empresaentity = ndb.Key(urlsafe=request.entityKey)
-      message = CompanyList(code = 1, 
-                            data = [CompanyUpdate(token='Succesfully get',
-                                                  entityKey = empresaentity.get().entityKey,
-                                                  code = empresaentity.get().code, 
-                                                  name = empresaentity.get().name)])
+	@endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
+	def company_get(cls, request):
+		try:
+			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			companyEntity = ndb.Key(urlsafe = request.entityKey)
+			message = CompanyList(code = 1, 
+								  data = [CompanyUpdate(token='Successful get',
+														entityKey = companyEntity.get().entityKey,
+														code = companyEntity.get().code, 
+														name = companyEntity.get().name)])
 
-    except jwt.DecodeError:
-      message = CompanyList(code = -1, data = [])
-    except jwt.ExpiredSignatureError:
-      message = CompanyList(code = -2, data = [])
-    
-    return message
+		except jwt.DecodeError:
+			message = CompanyList(code = -1, data = [])
+		except jwt.ExpiredSignatureError:
+			message = CompanyList(code = -2, data = [])
+		
+		return message
 
-  @endpoints.method(TokenKey, CodeMessage, path='empresa/delete', http_method='POST', name='empresa.delete')
-  def company_remove(cls, request):
-    
-    try:
-      token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-      empresaentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
-      empresaentity.delete()#BORRA
-      message = CodeMessage(code=1, message='Succesfully deleted')
-    except jwt.DecodeError:
-      message = CodeMessage(code=-2, message='Invalid token')
-    except jwt.ExpiredSignatureError:
-      message = CodeMessage(code=-1, message='Token expired')
-    
-    return message
+	@endpoints.method(TokenKey, CodeMessage, path='empresa/delete', http_method='POST', name='empresa.delete')
+	def company_remove(cls, request):
+		
+		try:
+			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			empresaentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
+			empresaentity.delete()#BORRA
+			message = CodeMessage(code=1, message='Succesfully deleted')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code=-2, message='Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code=-1, message='Token expired')
+		
+		return message
 
-  @endpoints.method(CompanyInput, CodeMessage, path='empresa/insert', http_method='POST', name='empresa.insert')
-  def company_add(cls, request):
-    try:
-      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
-      user = User.get_by_id(token['user_id'])#obtiene el usuario models.py 
-      myCompany = Company()
-      
-      if myCompany.company_m(request) == 0: 
-        codigo = 1
-      
-      else:
-        codigo = -3
-      
-      message = CodeMessage(code = codigo, message = 'Succesfully added')
-      
-    except jwt.DecodeError:
-      message = CodeMessage(code = -2, message = 'Invalid token')
-    except jwt.ExpiredSignatureError:
-      message = CodeMessage(code = -1, message = 'Token expired')
-      
-      return message
+	@endpoints.method(CompanyInput, CodeMessage, path='empresa/insert', http_method='POST', name='empresa.insert')
+	def company_add(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])#obtiene el usuario models.py 
+			myCompany = Company()
+			
+			if myCompany.company_m(request) == 0: 
+				codigo = 1
+			
+			else:
+				codigo = -3
+			
+			message = CodeMessage(code = codigo, message = 'Succesfully added')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
 
-  @endpoints.method(CompanyUpdate, CodeMessage, path='empresa/update', http_method='POST', name='empresa.update')
-  def company_update(cls, request):
-    try:
-      token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN 
-      user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py 
-      myempresa = Company()
-      if myempresa.company_m(request)==0:#llama a la funcion declarada en models.py 
-        codigo = 1
-      else:
-        codigo = -3
-      message = CodeMessage(code=1, message='Sus cambios han sido guardados exitosamente')
-    except jwt.DecodeError:
-      message = CodeMessage(code=-2, message='Invalid token')
-    except jwt.ExpiredSignatureError:
-      message = CodeMessage(code=-1, message='Token expired')
-    
-    return message
+	@endpoints.method(CompanyUpdate, CodeMessage, path='empresa/update', http_method='POST', name='empresa.update')
+	def company_update(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN 
+			user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py 
+			myCompany = Company()
+			
+			if myCompany.company_m(request) == 0:#llama a la funcion declarada en models.py 
+				codigo = 1
+			else:
+				codigo = -3
+			
+			message = CodeMessage(code = 1, message = 'The company was successfully updated')
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
 
-  @endpoints.method(Token, CompanyList, path='empresa/list', http_method='POST', name='empresa.list')
-  def company_list(cls, request):
-    try:
-      token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
-      user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
-      lista = [] #crea lista para guardar contenido de la BD
-      lstMessage = CompanyList(code=1) #CREA el mensaje de salida
-      lstBdCompany = Company.query().fetch() #obtiene de la base de datos
-      
-      for i in lstBdCompany: #recorre la base de datos
-        lista.append(CompanyUpdate(token='', 
-                                   code = i.code, 
-                                   name = i.name))
-          
-      lstMessage.data = lista #ASIGNA a la salida la lista
-      message = lstMessage
-    except jwt.DecodeError:
-      message = CompanyList(code=-1, data=[])
-    except jwt.ExpiredSignatureError:
-      message = CompanyList(code=-2, data=[])
-    
-    return message
+	@endpoints.method(Token, CompanyList, path='empresa/list', http_method='POST', name='empresa.list')
+	def company_list(cls, request):
+		try:
+			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+			lista = [] #crea lista para guardar contenido de la BD
+			lstMessage = CompanyList(code = 1) #CREA el mensaje de salida
+			lstBdCompany = Company.query().fetch() #obtiene de la base de datos
+		
+			for i in lstBdCompany: #recorre la base de datos
+				lista.append(CompanyUpdate(token = '', 
+										   code = i.code, 
+										   name = i.name))
+			
+			lstMessage.data = lista #ASIGNA a la salida la lista
+			message = lstMessage
+		except jwt.DecodeError:
+			message = CompanyList(code = -1, data = [])
+		except jwt.ExpiredSignatureError:
+			message = CompanyList(code = -2, data = [])
+		
+		return message
 
 application = endpoints.api_server([UserAPI, 
 								    CompanyAPI, 

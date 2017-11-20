@@ -34,7 +34,7 @@ class CodeMessage(messages.Message):
 #USERS
 class UserInput(messages.Message):
     token = messages.StringField(1) 
-    empresa_key = messages.StringField(2)
+    companyKey = messages.StringField(2)
     email = messages.StringField(3)
     password = messages.StringField(4)
 
@@ -66,30 +66,28 @@ class CompanyList(messages.Message):
 ##### Quotation #####
 class QuotationInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    iD = messages.StringField(3)
-    date = messages.StringField(4) #DateOrTimeField is not working
-    isFinal = messages.BooleanField(5)
-    subtotal = messages.FloatField(6)
-    revenueFactor = messages.FloatField(7)
-    iva = messages.FloatField(8)
-    discount = messages.FloatField(9)
-    total = messages.FloatField(10)
-    metricPlus = messages.StringField(11)
+    iD = messages.StringField(2)
+    date = messages.StringField(3) #DateOrTimeField is not working
+    isFinal = messages.BooleanField(4)
+    subtotal = messages.FloatField(5)
+    revenueFactor = messages.FloatField(6)
+    iva = messages.FloatField(7)
+    discount = messages.FloatField(8)
+    total = messages.FloatField(9)
+    metricPlus = messages.StringField(10)
 
 class QuotationUpdate(messages.Message):
     token = messages.StringField(1, required = True)
-    userKey = messages.StringField(2)
-    iD = messages.StringField(3)
-    date = messages.StringField(4) #DateOrTimeField is not working
-    isFinal = messages.BooleanField(5)
-    subtotal = messages.FloatField(6)
-    revenueFactor = messages.FloatField(7)
-    iva = messages.FloatField(8)
-    discount = messages.FloatField(9)
-    total = messages.FloatField(10)
-    metricPlus = messages.StringField(11)
-    entityKey = messages.StringField(12, required = True)
+    iD = messages.StringField(2)
+    date = messages.StringField(3) #DateOrTimeField is not working
+    isFinal = messages.BooleanField(4)
+    subtotal = messages.FloatField(5)
+    revenueFactor = messages.FloatField(6)
+    iva = messages.FloatField(7)
+    discount = messages.FloatField(8)
+    total = messages.FloatField(9)
+    metricPlus = messages.StringField(10)
+    entityKey = messages.StringField(11, required = True)
 
 class QuotationList(messages.Message):
     code = messages.IntegerField(1)
@@ -98,24 +96,22 @@ class QuotationList(messages.Message):
 ##### Quotation Row #####
 class QuotationRowInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    quotationKey = messages.StringField(3)
-    resourceKey = messages.StringField(4)
-    iD = messages.StringField(5)
-    quantity = messages.IntegerField(6)
-    days = messages.IntegerField(7)
-    amount = messages.IntegerField(8)
+    quotationKey = messages.StringField(2)
+    resourceKey = messages.StringField(3)
+    iD = messages.StringField(4)
+    quantity = messages.IntegerField(5)
+    days = messages.IntegerField(6)
+    amount = messages.IntegerField(7)
 
 class QuotationRowUpdate(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    quotationKey = messages.StringField(3)
-    resourceKey = messages.StringField(4)
-    iD = messages.StringField(5)
-    quantity = messages.IntegerField(6)
-    days = messages.IntegerField(7)
-    amount = messages.IntegerField(8)
-    entityKey = messages.StringField(9, required = True)
+    quotationKey = messages.StringField(2)
+    resourceKey = messages.StringField(3)
+    iD = messages.StringField(4)
+    quantity = messages.IntegerField(5)
+    days = messages.IntegerField(6)
+    amount = messages.IntegerField(7)
+    entityKey = messages.StringField(8, required = True)
 
 class QuotationRowList(messages.Message):
     code = messages.IntegerField(1)
@@ -124,20 +120,18 @@ class QuotationRowList(messages.Message):
 ##### Additional Expense #####
 class AdditionalExpenseInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    quotationKey = messages.StringField(3)
-    description = messages.StringField(4)
-    price = messages.FloatField(5)
-    comment = messages.StringField(6)
+    quotationKey = messages.StringField(2)
+    description = messages.StringField(3)
+    price = messages.FloatField(4)
+    comment = messages.StringField(5)
 
 class AdditionalExpenseUpdate(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    quotationKey = messages.StringField(3)
-    description = messages.StringField(4)
-    price = messages.FloatField(5)
-    comment = messages.StringField(6)
-    entityKey = messages.StringField(7, required = True)
+    quotationKey = messages.StringField(2)
+    description = messages.StringField(3)
+    price = messages.FloatField(4)
+    comment = messages.StringField(5)
+    entityKey = messages.StringField(6, required = True)
 
 class AdditionalExpenseList(messages.Message):
     code = messages.IntegerField(1)
@@ -146,24 +140,22 @@ class AdditionalExpenseList(messages.Message):
 ##### Customer #####
 class CustomerInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    iD = messages.StringField(3)
-    email = messages.StringField(4)
-    type = messages.StringField(5)
-    name = messages.StringField(6)
-    rfc = messages.StringField(7)
-    phone = messages.StringField(8)
+    iD = messages.StringField(2)
+    email = messages.StringField(3)
+    type = messages.StringField(4)
+    name = messages.StringField(5)
+    rfc = messages.StringField(6)
+    phone = messages.StringField(7)
 
 class CustomerUpdate(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    iD = messages.StringField(3)
-    email = messages.StringField(4)
-    type = messages.StringField(5)
-    name = messages.StringField(6)
-    rfc = messages.StringField(7)
-    phone = messages.StringField(8)
-    entityKey = messages.StringField(9, required = True)
+    iD = messages.StringField(2)
+    email = messages.StringField(3)
+    type = messages.StringField(4)
+    name = messages.StringField(5)
+    rfc = messages.StringField(6)
+    phone = messages.StringField(7)
+    entityKey = messages.StringField(8, required = True)
 
 class CustomerList(messages.Message):
     code = messages.IntegerField(1)
@@ -172,20 +164,19 @@ class CustomerList(messages.Message):
 ##### Tool #####
 class ToolInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
-    iD = messages.StringField(3)
-    category = messages.StringField(4)
-    type = messages.StringField(5)
-    brand = messages.StringField(6)
-    model = messages.StringField(7)
-    pricePerDay = messages.FloatField(8)
-    quantity = messages.IntegerField(9)
-    available = messages.IntegerField(10)
-    comment = messages.StringField(11)
+    iD = messages.StringField(2)
+    category = messages.StringField(3)
+    type = messages.StringField(4)
+    brand = messages.StringField(5)
+    model = messages.StringField(6)
+    pricePerDay = messages.FloatField(7)
+    quantity = messages.IntegerField(8)
+    available = messages.IntegerField(9)
+    comment = messages.StringField(10)
 
 class ToolUpdate(messages.Message):
     token = messages.StringField(1, required = True) 
-    userKey = messages.StringField(2)
+    companyKey = messages.StringField(2, required = True)
     iD = messages.StringField(3)
     category = messages.StringField(4)
     type = messages.StringField(5)
@@ -198,5 +189,36 @@ class ToolUpdate(messages.Message):
     entityKey = messages.StringField(12, required = True)
 
 class ToolList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(ToolUpdate, 2, repeated = True)
+
+##### Personnel #####
+class PersonnelInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    iD = messages.StringField(2)
+    category = messages.StringField(3)
+    type = messages.StringField(4)
+    brand = messages.StringField(5)
+    model = messages.StringField(6)
+    pricePerDay = messages.FloatField(7)
+    quantity = messages.IntegerField(8)
+    available = messages.IntegerField(9)
+    comment = messages.StringField(10)
+
+class PersonnelUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    companyKey = messages.StringField(2, required = True)
+    iD = messages.StringField(3)
+    category = messages.StringField(4)
+    type = messages.StringField(5)
+    brand = messages.StringField(6)
+    model = messages.StringField(7)
+    pricePerDay = messages.FloatField(8)
+    quantity = messages.IntegerField(9)
+    available = messages.IntegerField(10)
+    comment = messages.StringField(11)
+    entityKey = messages.StringField(12, required = True)
+   
+class PersonnelList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(ToolUpdate, 2, repeated = True)
