@@ -21,7 +21,6 @@ class CustomBaseModel(EndpointsModel):
 #### Customer ####
 class Customer(CustomBaseModel):
     _message_fields_schema = ('companyKey', 
-                              'iD',
                               'email',
                               'type',
                               'name',
@@ -29,7 +28,6 @@ class Customer(CustomBaseModel):
                               'phone')
 
     companyKey = ndb.KeyProperty(kind = Company)
-    iD = ndb.StringProperty()
     email = ndb.StringProperty()
     type = ndb.StringProperty()
     name = ndb.StringProperty()

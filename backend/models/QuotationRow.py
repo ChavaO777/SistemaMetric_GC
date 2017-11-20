@@ -33,7 +33,7 @@ class QuotationRow(CustomBaseModel):
     resourceKey = ndb.StringProperty(); # Save it as a string because it can either be a Personnel key or a Tool key
     quantity = ndb.IntegerProperty();
     timeUnits = ndb.IntegerProperty();
-    amount = ndb.IntegerProperty();
+    amount = ndb.FloatProperty();
 
     def quotationRow_m(self, data, userKey):
         quotationRow = QuotationRow() #Crea una variable de tipo Quotation Row

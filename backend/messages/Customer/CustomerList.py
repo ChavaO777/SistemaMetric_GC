@@ -1,6 +1,8 @@
 from protorpc import messages
 from protorpc import message_types
 
+from CustomerUpdate import CustomerUpdate
+
 class MessageNone(messages.Message):
     inti = messages.StringField(1)
 
