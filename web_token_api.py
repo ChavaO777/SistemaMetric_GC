@@ -300,10 +300,7 @@ class UserAPI(remote.Service):
 @endpoints.api(name='company_api', version='v1', description='companies endpoints')
 class CompanyAPI(remote.Service):
 
-# get one
-
   @endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
-  #siempre lleva cls y request
   def empresa_get(cls, request):
     try:
       token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
@@ -311,8 +308,8 @@ class CompanyAPI(remote.Service):
       message = CompanyList(code = 1, 
                             data = [CompanyUpdate(token='Succesfully get',
                                                   entityKey = empresaentity.get().entityKey,
-                                                  codigo_empresa=empresaentity.get().codigo_empresa, 
-                                                  nombre_empresa = empresaentity.get().nombre_empresa)])
+                                                  code = empresaentity.get().code, 
+                                                  name = empresaentity.get().name)])
 
     except jwt.DecodeError:
       message = CompanyList(code = -1, data = [])
@@ -390,9 +387,8 @@ class CompanyAPI(remote.Service):
       
       for i in lstBdCompany: #recorre la base de datos
         lista.append(CompanyUpdate(token='', 
-                                   entityKey = i.entityKey,
-                                   codigo_empresa=i.codigo_empresa, 
-                                   nombre_empresa = i.nombre_empresa))
+                                   code = i.code, 
+                                   name = i.name))
           
       lstMessage.data = lista #ASIGNA a la salida la lista
       message = lstMessage
