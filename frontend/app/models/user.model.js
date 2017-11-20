@@ -1,4 +1,4 @@
-function User() {
+export function User() {
     this.email = null;
     this.password = null;
     this.name = null;
@@ -7,4 +7,3 @@ function User() {
       return JSON.stringify(this);
     };
 };
-export User;
