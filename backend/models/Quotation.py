@@ -10,6 +10,7 @@ from google.appengine.api import mail
 from google.appengine.ext.webapp import blobstore_handlers
 
 from User import User
+from Event import Event
 
 class CustomBaseModel(EndpointsModel):
     def populate(self, data):
@@ -21,6 +22,7 @@ class CustomBaseModel(EndpointsModel):
 #### Quotation ####
 class Quotation(CustomBaseModel):
     _message_fields_schema = ('userKey', 
+                              'eventKey',
                               'iD', 
                               'date',
                               'isFinal',
@@ -32,6 +34,7 @@ class Quotation(CustomBaseModel):
                               'metricPlus')
 
     userKey = ndb.KeyProperty(kind = User)
+    eventKey = ndb.KeyProperty(kind = Event)
     iD = ndb.StringProperty();
     date = ndb.DateTimeProperty();
     isFinal = ndb.BooleanProperty();
