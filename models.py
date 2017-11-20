@@ -24,7 +24,7 @@ class Company(CustomBaseModel):
     
     def company_m(self, data):
         
-        company = Company()#Crea una variable de tipo Base de datos
+        company = Company()#Crea una variable de tipo Company
         company.populate(data)#Llena la variables con los datos dados por el request en main.py
         company.put()#inserta o hace un update depende del main.py
         
@@ -279,7 +279,7 @@ if validarEmail("salvador@orozco.in") == False:
     empresaOther.put()
 
     #### create another user 
-    keyadmincolOther = ndb.Key(urlsafe=empresaOther.entityKey)
+    keyadmincolOther = ndb.Key(urlsafe = empresaOther.entityKey)
     adminOther = User(companyKey = keyadmincolOther,
                       name = "Salvador",
                       email = "salvador@orozco.in",
