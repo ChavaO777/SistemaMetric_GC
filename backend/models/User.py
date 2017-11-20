@@ -20,10 +20,12 @@ class CustomBaseModel(EndpointsModel):
 
 ##### User #####
 class User(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 'email', 'password', 'salt')
+    _message_fields_schema = ('companyKey', 'email', 'name', 'lastName', 'password', 'salt')
 
     companyKey = ndb.KeyProperty(kind = Company)
     email = ndb.StringProperty()
+    name = ndb.StringProperty()
+    lastName = ndb.StringProperty()
     password = ndb.StringProperty()
     salt = ndb.StringProperty(indexed = False)
    

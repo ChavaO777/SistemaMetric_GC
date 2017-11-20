@@ -26,7 +26,8 @@ class Tool(CustomBaseModel):
                               'type',
                               'brand',
                               'model',
-                              'pricePerDay',
+                              'tariff',
+                              'tariffUnit',
                               'quantity',
                               'available',
                               'comment')
@@ -37,7 +38,8 @@ class Tool(CustomBaseModel):
     type = ndb.StringProperty()
     brand = ndb.StringProperty()
     model = ndb.StringProperty()
-    pricePerDay = ndb.FloatProperty()
+    tariff = ndb.FloatProperty()
+    tariffUnit = ndb.StringProperty()
     quantity = ndb.IntegerProperty()
     available = ndb.IntegerProperty()
     comment = ndb.StringProperty()

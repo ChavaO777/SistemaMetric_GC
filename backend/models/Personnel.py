@@ -21,18 +21,18 @@ class CustomBaseModel(EndpointsModel):
 #### Personnel ####
 class Personnel(CustomBaseModel):
     _message_fields_schema = ('companyKey', 
-                              'iD',
                               'stage',
                               'specialty',
                               'comment',
-                              'pricePerDay')
+                              'tariff', 
+                              'tariffUnit')
 
     companyKey = ndb.KeyProperty(kind = Company)
-    iD = ndb.StringProperty()
     stage = ndb.StringProperty()
     specialty = ndb.StringProperty()
     comment = ndb.StringProperty()
-    pricePerDay = ndb.FloatProperty()
+    tariff = ndb.FloatProperty()
+    tariffUnit = ndb.StringProperty()
 
     def personnel_m(self, data, companyKey):
         personnel = Personnel() #Crea una variable de tipo Personnel
