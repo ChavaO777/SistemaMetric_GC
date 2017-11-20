@@ -12,7 +12,7 @@ function login()
     $("#password").val());
 	
     alert(myData.toJsonString());
-
+    
     try{
 
         jQuery.ajax({
