@@ -25,14 +25,22 @@ function login()
                 $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {
-                sessionStorage.token = response.token;
-                $(".msg").html("<p>"+sessionStorage.token+"</p>");
-                window.location = "/";
+                sessionStorage.clear();
+                
+                if(response.token == undefined){
+
+                    $(".msg").html("<p>Datos incorrectos</p>");
+                }
+                else{
+                    
+                    sessionStorage.token = response.token;
+                    $(".msg").html("<p>" + sessionStorage.token + "</p>");
+                    window.location = "/";
+                }
             },
             error: function (error) {
                 alert(error);
             }
-
         });
     }
     catch(error){
