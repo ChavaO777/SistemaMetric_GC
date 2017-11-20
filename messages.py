@@ -3,18 +3,16 @@ from protorpc import message_types
 
 class MessageNone(messages.Message):
     inti = messages.StringField(1)
+
 # Input messages
 #Recibe el token para validar
 class Token(messages.Message):
     tokenint = messages.StringField(1, required=True)
-    #entityKey = messages.StringField(2, required=False)
-    #fromurl = messages.StringField(3)
 
 #Recibe el token y un entityKey de cualquier base de datos para validar
 class TokenKey(messages.Message):
     tokenint = messages.StringField(1, required=True)
     entityKey = messages.StringField(2, required=True)
-    #fromurl = messages.StringField(3)
 
 #Recibe el email y contrasena para la creacion de token
 class EmailPasswordMessage(messages.Message):
@@ -50,78 +48,49 @@ class UserList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(UserUpdate, 2, repeated=True)
 
-
-######Empresa########
-
-#Mensaje de Entrada y Salida para la base de datos Empresa
-class EmpresaInput(messages.Message):
+##### Company #####
+class CompanyInput(messages.Message):
     token = messages.StringField(1, required=True) 
     codigo_empresa = messages.StringField(2)
     nombre_empresa = messages.StringField(3)
 
-
-class EmpresaUpdate(messages.Message):
-    token = messages.StringField(1, required=True)
-    entityKey = messages.StringField(2, required=True)
-    codigo_empresa = messages.StringField(3)
+class CompanyUpdate(messages.Message):
+    token = messages.StringField(1, required = True)
+    entityKey = messages.StringField(2, required = True)
+    code = messages.StringField(3)
     nombre_empresa = messages.StringField(4)
 
-#regresa una lista para la base de datos Empresa
-class EmpresaList(messages.Message):
+class CompanyList(messages.Message):
     code = messages.IntegerField(1)
-#regresa mensaje de lo ocurrido
-#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo EmpresaUpdate
-#es necesario el repeated para que sea lista
+    data = messages.MessageField(CompanyUpdate, 2, repeated = True)
+
+##### Quotation #####
+class QuotationInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    companyKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    date = messages.StringField(4) #DateOrTimeField is not working
+    isFinal = messages.BooleanField(5)
+    subtotal = messages.FloatField(6)
+    revenueFactor = messages.FloatField(7)
+    iva = messages.FloatField(8)
+    discount = messages.FloatField(9)
+    total = messages.FloatField(10)
+    metricPlus = messages.StringField(11)
+
+class QuotationUpdate(messages.Message):
+    token = messages.StringField(1, required = True)
+    companyKey = messages.StringField(2)
+    iD = messages.StringField(3)
+    date = messages.StringField(4) #DateOrTimeField is not working
+    isFinal = messages.BooleanField(5)
+    subtotal = messages.FloatField(6)
+    revenueFactor = messages.FloatField(7)
+    iva = messages.FloatField(8)
+    discount = messages.FloatField(9)
+    total = messages.FloatField(10)
+    metricPlus = messages.StringField(11)
+
+class QuotationList(messages.Message):
+    code = messages.IntegerField(1)
     data = messages.MessageField(EmpresaUpdate, 2, repeated=True)
-
-######Tweet########
-
-#Mensaje de Entrada y Salida para Tweets
-class TweetInput(messages.Message):
-    token = messages.StringField(1, required=True) 
-    title = messages.StringField(2)
-    description = messages.StringField(3)
-    urlImage = messages.StringField(5)
-
-    
-class TweetUpdate(messages.Message):
-    token = messages.StringField(1, required=True)
-    #empresa_key = messages.StringField(2, required=True)
-    entityKey = messages.StringField(2, required=True)
-    title = messages.StringField(3)
-    description = messages.StringField(4)
-    urlImage = messages.StringField(5)
-
-#regresa una lista para la base de datos Empresa
-class TweetList(messages.Message):
-    code = messages.IntegerField(1)
-#regresa mensaje de lo ocurrido
-#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo TeamUpdate
-#es necesario el repeated para que sea lista
-    data = messages.MessageField(TweetUpdate, 2, repeated=True)
-
-########Product########
-
-#Mensaje de Entrada y Salida para Tweets
-class ProductInput(messages.Message):
-
-    token = messages.StringField(1, required=True) 
-    code = messages.StringField(2)
-    description = messages.StringField(3)
-    urlImage = messages.StringField(5)
-
-class ProductUpdate(messages.Message):
-    token = messages.StringField(1, required=True)
-    #empresa_key = messages.StringField(2, required=True)
-    entityKey = messages.StringField(2, required=True)
-    code = messages.StringField(3)
-    description = messages.StringField(4)
-    urlImage = messages.StringField(5)
-
-#regresa una lista para la base de datos Empresa
-class ProductList(messages.Message):
-    code = messages.IntegerField(1)
-#regresa mensaje de lo ocurrido
-#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo TeamUpdate
-#es necesario el repeated para que sea lista
-    data = messages.MessageField(ProductUpdate, 2, repeated=True)

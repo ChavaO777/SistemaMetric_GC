@@ -18,9 +18,9 @@ class CustomBaseModel(EndpointsModel):
 
 #### Company ####
 class Company(CustomBaseModel):
-    _message_fields_schema = ('entityKey', 'codigo_empresa', 'nombre_empresa')
-    codigo_empresa = ndb.StringProperty()
-    nombre_empresa = ndb.StringProperty()
+    _message_fields_schema = ('entityKey', 'code', 'name')
+    code = ndb.StringProperty()
+    name = ndb.StringProperty()
     
     def company_m(self, data):
         
@@ -43,7 +43,7 @@ class User(CustomBaseModel):
         """ Create a cryptographyc random secure salt and hash the password
             using the salt created and store both in the database, the password
             and the salt """
-        # Note: It is needed to encode in base64 the salt, otherwise it will
+        # Note: The salt must be encoded in base64, otherwise it will
         # cause an exception trying to store non utf-8 characteres
         self.salt = base64.urlsafe_b64encode(
             Crypto.Random.get_random_bytes(16))
