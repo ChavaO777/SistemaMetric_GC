@@ -18,6 +18,7 @@ from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
 from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
 from messages import CustomerInput, CustomerUpdate, CustomerList
 from messages import ToolInput, ToolUpdate, ToolList
+from messages import PersonnelInput, PersonnelUpdate, PersonnelList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -157,7 +158,8 @@ class QuotationAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			quotationEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationEntity.delete() #Delete the quotation
 			message = CodeMessage(code = 1, message = 'The quotation was succesfully deleted')
 			
@@ -292,7 +294,8 @@ class QuotationRowAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			quotationRowEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationRowEntity.delete() #Delete the quotation row
 			message = CodeMessage(code = 1, message = 'The quotation row was succesfully deleted')
 		
@@ -423,7 +426,8 @@ class AdditionalExpenseAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			additionalExpenseEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			additionalExpenseEntity.delete() #Delete the additional expense e
 			message = CodeMessage(code = 1, message = 'The additional expense was succesfully deleted')
 		
@@ -470,7 +474,8 @@ class CustomerAPI(remote.Service):
 		try:                 
       
 			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			customerEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
 			customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
@@ -562,7 +567,8 @@ class CustomerAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			customerEntity.delete() #Delete the customer
 			message = CodeMessage(code = 1, message = 'The customer was succesfully deleted')
 		
@@ -680,7 +686,7 @@ class ToolAPI(remote.Service):
 			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginningo of the string
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #get the tool
 			toolEntity.delete() #Delete the tool
@@ -708,9 +714,147 @@ class ToolAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			toolEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			toolEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			toolEntity.delete() #Delete the tool
 			message = CodeMessage(code = 1, message = 'The tool was succesfully deleted')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+###############
+# PersonnelAPI
+###############
+@endpoints.api(name='personnel_api', version='v1', description='personnel endpoints')
+class PersonnelAPI(remote.Service):
+
+	######## Add personnel ##########
+	@endpoints.method(PersonnelInput, CodeMessage, path = 'personnel/insert', http_method = 'POST', name = 'personnel.insert')
+	def personnel_add(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])
+			companyKey = user.companyKey
+
+			myPersonnel = Personnel()
+
+			if myPersonnel.personnel_m(request, companyKey) == 0:
+				codigo = 1
+			else:
+				codigo = -3
+
+			message = CodeMessage(code = codigo, message = 'The personnel was added')
+	
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, PersonnelList, path = 'personnel/get', http_method = 'POST', name = 'personnel.get')
+	def personnel_get(cls, request):
+		try:                 
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
+			personnel = Personnel.get_by_id(personnelEntity.id()) #obtiene usuario
+			
+			list = []  #crea lista
+			listMessage = PersonnelList(code = 1) # crea objeto mensaje
+			list.append(PersonnelUpdate(token = '', 
+										companyKey = personnel.companyKey.urlsafe(),
+										iD = personnel.iD,
+										stage = personnel.stage,
+										specialty = personnel.specialty,
+										comment = personnel.comment,
+										pricePerDay = personnel.pricePerDay,
+										entityKey = personnel.entityKey))
+
+			listMessage.data = list #ASIGNA a la salida la lista
+			message = listMessage
+    
+		except jwt.DecodeError:
+			message = PersonnelList(code = -1, data = []) #token invalido
+		
+		except jwt.ExpiredSignatureError:
+			message = PersonnelList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(Token, PersonnelList, path = 'personnel/list', http_method = 'POST', name = 'personnel.list')
+	def personnel_list(cls, request):
+		try:
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+			list = []  #create list
+			listMessage = PersonnelList(code = 1) # crea objeto mensaje
+			listBd = Personnel.query().fetch() # recupera de base de datos
+			
+			for i in listBd: # iterate
+				list.append(PersonnelUpdate(token = '', 
+											companyKey = i.companyKey.urlsafe(),
+											iD = i.iD,
+											stage = i.stage,
+											specialty = i.specialty,
+											comment = i.comment,
+											pricePerDay = i.pricePerDay,
+											entityKey = i.entityKey))
+			
+			listMessage.data = list 
+			message = listMessage
+      
+		except jwt.DecodeError:
+			message = PersonnelList(code = -1, data = []) #token invalido
+		except jwt.ExpiredSignatureError:
+			message = PersonnelList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(PersonnelUpdate, CodeMessage, path='personnel/update', http_method='POST', name='personnel.update')
+	def personnel_update(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+			companyKey = user.companyKey
+
+			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			personnel = Personnel.get_by_id(personnelEntity.id()) #get the personnel
+			personnelEntity.delete() #Delete the tool
+
+			personnel = Personnel()
+
+			if personnel.personnel_m(request, companyKey) == 0: #llama a la funcion declarada en models.py 
+				codigo = 1
+			else:
+				codigo = -3
+			
+			message = CodeMessage(code = 1, message = 'The personnel has been successfully updated')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, CodeMessage, path = 'personnel/delete', http_method = 'POST', name = 'personnel.delete')
+	def personnel_remove(cls, request):
+		
+		try:
+
+			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			personnelEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			personnelEntity.delete() #Delete the tool
+			message = CodeMessage(code = 1, message = 'The personnel was succesfully deleted')
 		
 		except jwt.DecodeError:
 			message = CodeMessage(code = -2, message = 'Invalid token')
