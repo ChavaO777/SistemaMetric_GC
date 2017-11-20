@@ -1,17 +1,15 @@
-// contact
-function LoginObject(myEmail, myPasswd) {
+function User(myEmail, myPasswd) {
     this.email = myEmail;
     this.password = myPasswd;
     this.toJsonString = function () { return JSON.stringify(this); };
 
 };
 
-function loginDemo()
+function login()
 {
-	//alert("testing...")
-	var myData = new LoginObject(
+	var myData = new User(
     $("#email").val(), 
-    $("#passwd").val());
+    $("#password").val());
 	
   alert(myData.toJsonString());
 
@@ -21,17 +19,15 @@ function loginDemo()
          data: myData.toJsonString(),
          contentType: "application/json; charset=utf-8",
          dataType: "json",
-         success: function (response) {
-              // do something
-              sessionStorage.token = response.token;
-              alert ("token generado: " + sessionStorage.token);
-              window.location = "/tweets";
-
+         before: function(){
+              $(".msg").html("<p>Esperando respuesta...</p>");
          },
-     
-         error: function (error) {            
-              // error handler
-              alert(error)
+         success: function (response) {
+              sessionStorage.token = response.token;
+              $(".msg").html("<p>"+sessionStorage.token+"</p>");
+         },
+         error: function (error) {
+              alert(error);
          }
 
      });
