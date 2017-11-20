@@ -1,6 +1,6 @@
 function Tool() {
   this.id = null;
-  this.category; = null;
+  this.category = null;
   this.type = null;
   this.brand = null;
   this.model = null;
