@@ -19,6 +19,7 @@ from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, Additional
 from messages import CustomerInput, CustomerUpdate, CustomerList
 from messages import ToolInput, ToolUpdate, ToolList
 from messages import PersonnelInput, PersonnelUpdate, PersonnelList
+from messages import EventInput, EventUpdate, EventList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -44,7 +45,7 @@ class QuotationAPI(remote.Service):
 
 			myQuotation = Quotation() 
 
-			if myQuotation.quotation_m(request, user.key.urlsafe()) == 0:
+			if myQuotation.quotation_m(request, user.key) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -138,7 +139,7 @@ class QuotationAPI(remote.Service):
 			
 			quotation = Quotation()
 
-			if quotation.quotation_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
+			if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -185,7 +186,7 @@ class QuotationRowAPI(remote.Service):
 
 			myQuotationRow = QuotationRow() 
 
-			if myQuotationRow.quotationRow_m(request, user.key.urlsafe()) == 0:
+			if myQuotationRow.quotationRow_m(request, user.key) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -274,7 +275,7 @@ class QuotationRowAPI(remote.Service):
 			
 			quotationRow = QuotationRow()
 
-			if quotationRow.quotationRow_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
+			if quotationRow.quotationRow_m(request, user) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -322,7 +323,7 @@ class AdditionalExpenseAPI(remote.Service):
 
 			myAdditionalExpense = AdditionalExpense()
 
-			if myAdditionalExpense.additionalExpense_m(request, user.key.urlsafe()) == 0:
+			if myAdditionalExpense.additionalExpense_m(request, user.key) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -348,12 +349,12 @@ class AdditionalExpenseAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = AdditionalExpenseList(code = 1) # crea objeto mensaje
 			list.append(AdditionalExpenseUpdate(token = '', 
-											userKey = additionalExpense.userKey.urlsafe(),
-											quotationKey = additionalExpense.quotationKey.urlsafe(),
-											description = additionalExpense.description,
-											price = additionalExpense.price,
-											comment = additionalExpense.comment,
-											entityKey = additionalExpense.entityKey))
+												userKey = additionalExpense.userKey.urlsafe(),
+												quotationKey = additionalExpense.quotationKey.urlsafe(),
+												description = additionalExpense.description,
+												price = additionalExpense.price,
+												comment = additionalExpense.comment,
+												entityKey = additionalExpense.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
 			message = listMessage
@@ -406,7 +407,7 @@ class AdditionalExpenseAPI(remote.Service):
 			additionalExpenseEntity.delete() #Delete the additional expense
 			additionalExpense = AdditionalExpense()
 
-			if additionalExpense.additionalExpense_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py en 
+			if additionalExpense.additionalExpense_m(request, user.key) == 0: #llama a la funcion declarada en models.py en 
 				codigo = 1
 			
 			else:
@@ -537,6 +538,7 @@ class CustomerAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the customer and then insert a new one. TO DO: fix this!!
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
@@ -546,7 +548,7 @@ class CustomerAPI(remote.Service):
 
 			customer = Customer()
 
-			if customer.customer_m(request, user.key.urlsafe()) == 0: #llama a la funcion declarada en models.py 
+			if customer.customer_m(request, companyKey) == 0: #llama a la funcion declarada en models.py 
 				codigo = 1
 			
 			else:
@@ -852,9 +854,144 @@ class PersonnelAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			personnelEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			personnelEntity.delete() #Delete the tool
 			message = CodeMessage(code = 1, message = 'The personnel was succesfully deleted')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+###############
+# EventAPI
+###############
+@endpoints.api(name='event_api', version='v1', description='events endpoints')
+class EventAPI(remote.Service):
+
+	######## Add event ##########
+	@endpoints.method(EventInput, CodeMessage, path = 'event/insert', http_method = 'POST', name = 'event.insert')
+	def event_add(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])
+
+			myEvent = Event()
+
+			if myEvent.event_m(request, user.key) == 0:
+				codigo = 1
+			else:
+				codigo = -3
+
+			message = CodeMessage(code = codigo, message = 'The event was added')
+	
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, EventList, path = 'event/get', http_method = 'POST', name = 'event.get')
+	def event_get(cls, request):
+		try:                 
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			eventEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
+			event = Event.get_by_id(eventEntity.id()) #obtiene usuario
+			
+			list = []  #crea lista
+			listMessage = EventList(code = 1) # crea objeto mensaje
+			list.append(EventUpdate(token = '', 
+									userKey = event.userKey.urlsafe(),
+									iD = event.iD,
+									date = event.date,
+									days = event.days,
+									place = event.place,
+									hidden = event.hidden,
+									entityKey = event.entityKey))
+
+			listMessage.data = list #ASIGNA a la salida la lista
+			message = listMessage
+    
+		except jwt.DecodeError:
+			message = EventList(code = -1, data = []) #token invalido
+		
+		except jwt.ExpiredSignatureError:
+			message = EventList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(Token, EventList, path = 'event/list', http_method = 'POST', name = 'event.list')
+	def event_list(cls, request):
+		try:
+      
+			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+			list = []  #create list
+			listMessage = EventList(code = 1) # crea objeto mensaje
+			listBd = Event.query().fetch() # recupera de base de datos
+			
+			for i in listBd: # iterate
+				list.append(EventUpdate(token = '', 
+										iD = i.iD,
+										date = i.date,
+										days = i.days,
+										place = i.place,
+										hidden = i.hidden,
+										entityKey = i.entityKey))
+				
+			listMessage.data = list 
+			message = listMessage
+      
+		except jwt.DecodeError:
+			message = EventList(code = -1, data = []) #token invalido
+		except jwt.ExpiredSignatureError:
+			message = EventList(code = -2, data = []) #token expiro
+		
+		return message
+
+	@endpoints.method(EventUpdate, CodeMessage, path='event/update', http_method='POST', name='event.update')
+	def event_update(cls, request):
+		try:
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py 
+
+			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
+			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			eventEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			event = Event.get_by_id(eventEntity.id()) #get the event
+			eventEntity.delete() #Delete the event
+
+			event = Event()
+
+			if event.event_m(request, user.key) == 0: #llama a la funcion declarada en models.py 
+				codigo = 1
+			else:
+				codigo = -3
+			
+			message = CodeMessage(code = 1, message = 'The event was successfully updated')
+		
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+		
+		return message
+
+	@endpoints.method(TokenKey, CodeMessage, path = 'event/delete', http_method = 'POST', name = 'event.delete')
+	def event_remove(cls, request):
+		
+		try:
+
+			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			eventEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
+			eventEntity.delete() #Delete the event
+			message = CodeMessage(code = 1, message = 'The event was succesfully deleted')
 		
 		except jwt.DecodeError:
 			message = CodeMessage(code = -2, message = 'Invalid token')
@@ -1115,5 +1252,7 @@ application = endpoints.api_server([UserAPI,
 									QuotationRowAPI, 
 									AdditionalExpenseAPI, 
 									CustomerAPI,
-									ToolAPI], restricted = False)
+									ToolAPI,
+									PersonnelAPI,
+									EventAPI], restricted = False)
 

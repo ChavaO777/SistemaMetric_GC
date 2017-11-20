@@ -222,3 +222,25 @@ class PersonnelUpdate(messages.Message):
 class PersonnelList(messages.Message):
     code = messages.IntegerField(1)
     data = messages.MessageField(ToolUpdate, 2, repeated = True)
+
+##### Event #####
+class EventInput(messages.Message):
+    token = messages.StringField(1, required = True) 
+    iD = messages.StringField(2)
+    date = messages.StringField(3)
+    days = messages.IntegerField(4)
+    place = messages.StringField(5)
+    hidden = messages.BooleanField(6)
+
+class EventUpdate(messages.Message):
+    token = messages.StringField(1, required = True) 
+    iD = messages.StringField(2)
+    date = messages.StringField(3)
+    days = messages.IntegerField(4)
+    place = messages.StringField(5)
+    hidden = messages.BooleanField(6)
+    entityKey = messages.StringField(7, required = True)
+   
+class EventList(messages.Message):
+    code = messages.IntegerField(1)
+    data = messages.MessageField(EventUpdate, 2, repeated = True)
