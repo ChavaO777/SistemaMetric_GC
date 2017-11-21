@@ -21,9 +21,9 @@ class CustomBaseModel(EndpointsModel):
 #### Tool ####
 class Tool(CustomBaseModel):
     _message_fields_schema = ('companyKey', 
-                              '_id',
+                              'iD',
                               'category',
-                              '_type',
+                              'kind',
                               'brand',
                               'model',
                               'tariff',
@@ -33,9 +33,9 @@ class Tool(CustomBaseModel):
                               'comment')
 
     companyKey = ndb.KeyProperty(kind = Company)
-    _id = ndb.StringProperty()
+    iD = ndb.StringProperty()
     category = ndb.StringProperty()
-    _type = ndb.StringProperty()
+    kind = ndb.StringProperty()
     brand = ndb.StringProperty()
     model = ndb.StringProperty()
     tariff = ndb.FloatProperty()

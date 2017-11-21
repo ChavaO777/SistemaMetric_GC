@@ -7,26 +7,72 @@ import jwt
 import time
 
 import base64 # Padding errors
-
 from CustomExceptions import NotFoundException
 
-from messages import EmailPasswordMessage, TokenMessage, CodeMessage, Token, TokenKey, MessageNone
-from messages import CompanyInput, CompanyUpdate, CompanyList
-from messages import UserInput, UserUpdate, UserList
-from messages import QuotationInput, QuotationUpdate, QuotationList
-from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
-from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
-from messages import CustomerInput, CustomerUpdate, CustomerList
-from messages import ToolInput, ToolUpdate, ToolList
-from messages import PersonnelInput, PersonnelUpdate, PersonnelList
-from messages import EventInput, EventUpdate, EventList
+#Import generic messages
+from backend.messages.Generic.CodeMessage import CodeMessage
+from backend.messages.Generic.EmailPassword import EmailPassword
+from backend.messages.Generic.Token import Token
+from backend.messages.Generic.TokenKey import TokenKey
+from backend.messages.Generic.TokenMessage import TokenMessage
+
+#Import AdditionalExpense messages
+from backend.messages.AdditionalExpense.AdditionalExpenseInput import AdditionalExpenseInput
+from backend.messages.AdditionalExpense.AdditionalExpenseUpdate import AdditionalExpenseUpdate
+from backend.messages.AdditionalExpense.AdditionalExpenseList import AdditionalExpenseList
+
+#Import Company messages
+from backend.messages.Company.CompanyInput import CompanyInput
+from backend.messages.Company.CompanyUpdate import CompanyUpdate
+from backend.messages.Company.CompanyList import CompanyList
+
+#Import Customer messages
+from backend.messages.Customer.CustomerInput import CustomerInput
+from backend.messages.Customer.CustomerUpdate import CustomerUpdate
+from backend.messages.Customer.CustomerList import CustomerList
+
+#Import Event messages
+from backend.messages.Event.EventInput import EventInput
+from backend.messages.Event.EventUpdate import EventUpdate
+from backend.messages.Event.EventList import EventList
+
+#Import Personnel messages
+from backend.messages.Personnel.PersonnelInput import PersonnelInput
+from backend.messages.Personnel.PersonnelUpdate import PersonnelUpdate
+from backend.messages.Personnel.PersonnelList import PersonnelList
+
+#Import Quotation messages
+from backend.messages.Quotation.QuotationInput import QuotationInput
+from backend.messages.Quotation.QuotationUpdate import QuotationUpdate
+from backend.messages.Quotation.QuotationList import QuotationList
+
+#Import QuotationRow messages
+from backend.messages.QuotationRow.QuotationRowInput import QuotationRowInput
+from backend.messages.QuotationRow.QuotationRowUpdate import QuotationRowUpdate
+from backend.messages.QuotationRow.QuotationRowList import QuotationRowList
+
+#Import Tool messages
+from backend.messages.Tool.ToolInput import ToolInput
+from backend.messages.Tool.ToolUpdate import ToolUpdate
+from backend.messages.Tool.ToolList import ToolList
+
+#Import User messages
+from backend.messages.User.UserInput import UserInput
+from backend.messages.User.UserUpdate import UserUpdate
+from backend.messages.User.UserList import UserList
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
-import models
-from models import validarEmail
-from models import Company, User, Quotation, QuotationRow, AdditionalExpense
-from models import Customer, Tool, Personnel, Event
+#Import models
+from backend.models.AdditionalExpense import AdditionalExpense
+from backend.models.Company import Company
+from backend.models.Customer import Customer
+from backend.models.Event import Event
+from backend.models.Personnel import Personnel
+from backend.models.Quotation import Quotation
+from backend.models.QuotationRow import QuotationRow
+from backend.models.Tool import Tool
+from backend.models.User import User
 
 import logging
 
@@ -1093,7 +1139,7 @@ class UserAPI(remote.Service):
 		
 		return message
 
-	@endpoints.method(EmailPasswordMessage, TokenMessage, path='user/login', http_method='POST', name='user.login')
+	@endpoints.method(EmailPassword, TokenMessage, path='user/login', http_method='POST', name='user.login')
 	def users_login(cls, request):
 		try:
 		

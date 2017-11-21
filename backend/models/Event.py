@@ -22,7 +22,7 @@ class CustomBaseModel(EndpointsModel):
 #### Event ####
 class Event(CustomBaseModel):
     _message_fields_schema = ('userKey', 
-                              '_id',
+                              'iD',
                               'date',
                               'days',
                               'place',
@@ -30,7 +30,7 @@ class Event(CustomBaseModel):
 
     userKey = ndb.KeyProperty(kind = User)
     companyKey = ndb.KeyProperty(kind = Company)
-    _id = ndb.StringProperty()
+    iD = ndb.StringProperty()
     date = ndb.DateTimeProperty()
     days = ndb.IntegerProperty()
     place = ndb.StringProperty()

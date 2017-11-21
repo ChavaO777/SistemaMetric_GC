@@ -12,14 +12,19 @@ from CustomExceptions import NotFoundException
 
 from messages import EmailPasswordMessage, TokenMessage, CodeMessage, Token, TokenKey, MessageNone
 from messages import CompanyInput, CompanyUpdate, CompanyList
-from messages import UserInput, UserUpdate, UserList
+# from messages import UserInput, UserUpdate, UserList
 from messages import QuotationInput, QuotationUpdate, QuotationList
 from messages import QuotationRowInput, QuotationRowUpdate, QuotationRowList
-from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
+# from messages import AdditionalExpenseInput, AdditionalExpenseUpdate, AdditionalExpenseList
 from messages import CustomerInput, CustomerUpdate, CustomerList
 from messages import ToolInput, ToolUpdate, ToolList
 from messages import PersonnelInput, PersonnelUpdate, PersonnelList
 from messages import EventInput, EventUpdate, EventList
+
+## Test this! -> https://www.python.org/dev/peps/pep-0328/
+from ..messages.AdditionalExpense.AdditionalExpenseInput import AdditionalExpenseInput
+from ..messages.AdditionalExpense.AdditionalExpenseList import AdditionalExpenseList
+from ..messages.AdditionalExpense.AdditionalExpenseUpdate import AdditionalExpenseUpdate
 
 from endpoints_proto_datastore.ndb import EndpointsModel
 
@@ -624,7 +629,7 @@ class ToolAPI(remote.Service):
 			listMessage = ToolList(code = 1) # crea objeto mensaje
 			list.append(ToolUpdate(token = '', 
 								   companyKey = tool.companyKey.urlsafe(),
-								   iD = tool.iD,
+								   _id = tool._id,
 								   category = tool.category,
 								   type = tool.type,
 								   brand = tool.brand,
@@ -659,7 +664,7 @@ class ToolAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(ToolUpdate(token = '', 
 									   companyKey = i.companyKey.urlsafe(),
-									   iD = i.iD,
+									   _id = i._id,
 									   category = i.category,
 									   type = i.type,
 									   brand = i.brand,

@@ -1,12 +1,12 @@
-   
 from protorpc import messages
 from protorpc import message_types
-
-from PersonnelUpdate import PersonnelUpdate
 
 class MessageNone(messages.Message):
     inti = messages.StringField(1)
 
-class PersonnelList(messages.Message):
+# Output messages
+#regresa un token
+class TokenMessage(messages.Message):
     code = messages.IntegerField(1)
-    data = messages.MessageField(PersonnelUpdate, 2, repeated = True)
+    message = messages.StringField(2)
+    token = messages.StringField(3)
