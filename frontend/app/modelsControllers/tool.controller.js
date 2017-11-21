@@ -1,4 +1,18 @@
 //import {Tool} from '../models/tool.model'
+function Tool() {
+  this.id = null;
+  this.category = null;
+  this.type = null;
+  this.brand = null;
+  this.model = null;
+  this.pricePerDay = null;
+  this.quantity = null;
+  this.available = null;
+  this.comment = null;
+  this.toString() = function() {
+    return JSON.stringify(this);
+  };
+}
 function create() {
   var tool = new Tool();
   tool.id = $('#id').val();
@@ -34,6 +48,7 @@ function create() {
 }
 function list() {
   var tools;
+  var tableString = "";
   try{
     jQuery.ajax({
         type: "POST",
@@ -45,8 +60,23 @@ function list() {
             $(".msg").html("<p>Esperando respuesta...</p>");
         },
         success: function (response) {
-          tools = response;
-          $(".msg").html(response);
+          tools = response.data;
+          tools.foreach(fuction(tool) {
+            tableString += "<div class='box'> \n" +
+            "\t<div class='box-name'>\n" +
+            "\t\t<p>" + tool.id + " " + tool.model +"</p>" +
+            "\t</div>" +
+            "\t<div class='box-content'>\n" +
+            "\t\t<p>Categoria: " + tool.category + "</p>" +
+            "\t\t<p>Tipo: " + tool.type + "</p>" +
+            "\t\t<p>Marca: " + tool.brand + "</p>" +
+            "\t\t<p>Costo por dia: " + tool.costPerDay + "</p>" +
+            "\t\t<p>Existecias: " + tool.quantity + "</p>" +
+            "\t\t<p>Disponibles: " + tool.available + "</p>" +
+            "\t\t<p>Comentarios: " + tool.comment + "</p>" +
+            "\t</div>";
+          });
+          $("#listTools").append(tools);
         },
         error: function (error) {
             alert(error);
@@ -56,6 +86,7 @@ function list() {
   catch(error){
     alert(error);
   }
+
 }
 function get() {
   var tool;
@@ -81,7 +112,20 @@ function get() {
           tool.quantity = $('#quantity').val();
           tool.available = $('#available').val();
           tool.comment = $('#comment').val();
-          $(".msg").html(tool.toJsonString());
+          tableString += "<div class='box'> \n" +
+          "\t<div class='box-name'>\n" +
+          "\t\t<p>" + tool.id + " " + tool.model +"</p>" +
+          "\t</div>" +
+          "\t<div class='box-content'>\n" +
+          "\t\t<p>Categoria: " + tool.category + "</p>" +
+          "\t\t<p>Tipo: " + tool.type + "</p>" +
+          "\t\t<p>Marca: " + tool.brand + "</p>" +
+          "\t\t<p>Costo por dia: " + tool.costPerDay + "</p>" +
+          "\t\t<p>Existecias: " + tool.quantity + "</p>" +
+          "\t\t<p>Disponibles: " + tool.available + "</p>" +
+          "\t\t<p>Comentarios: " + tool.comment + "</p>" +
+          "\t</div>";
+          $("#toolInfo").append(tools);
         },
         error: function (error) {
             alert(error);
