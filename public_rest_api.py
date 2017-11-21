@@ -10,7 +10,16 @@ import json
 import os
 import jinja2
 
-from models import Company, User, Quotation
+#Import models
+from backend.models.AdditionalExpense import AdditionalExpense
+from backend.models.Company import Company
+from backend.models.Customer import Customer
+from backend.models.Event import Event
+from backend.models.Personnel import Personnel
+from backend.models.Quotation import Quotation
+from backend.models.QuotationRow import QuotationRow
+from backend.models.Tool import Tool
+from backend.models.User import User
 
 jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
