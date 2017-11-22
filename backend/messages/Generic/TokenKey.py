@@ -6,5 +6,5 @@ class MessageNone(messages.Message):
 
 #Recibe el token y un entityKey de cualquier base de datos para validar
 class TokenKey(messages.Message):
-    tokenint = messages.StringField(1, required = True)
+    token = messages.StringField(1, required = True)
     entityKey = messages.StringField(2, required = True)

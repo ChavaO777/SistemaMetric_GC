@@ -520,9 +520,9 @@ class CustomerAPI(remote.Service):
 	def customer_get(cls, request):
 		try:                 
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			customerEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			token = jwt.decode(request.token, 'secret')  #checa token
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = request.entityKey) # The problem is (was?) in request.entityKey
 			customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
@@ -585,8 +585,8 @@ class CustomerAPI(remote.Service):
 			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the customer and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			customerEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
 			customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
 			customerEntity.delete() #Delete the customer
 
@@ -613,8 +613,8 @@ class CustomerAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			customerEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			customerEntity.delete() #Delete the customer
 			message = CodeMessage(code = 1, message = 'The customer was succesfully deleted')
 		
