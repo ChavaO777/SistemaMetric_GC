@@ -9,7 +9,7 @@ import endpoints
 from google.appengine.api import mail
 from google.appengine.ext.webapp import blobstore_handlers
 
-from Company import Company
+from ..models.Company import Company
 
 class CustomBaseModel(EndpointsModel):
     def populate(self, data):

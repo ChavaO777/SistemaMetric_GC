@@ -9,7 +9,7 @@ import endpoints
 from google.appengine.api import mail
 from google.appengine.ext.webapp import blobstore_handlers
 
-from Company import Company
+from ..models.Company import Company
 
 class CustomBaseModel(EndpointsModel):
     def populate(self, data):
@@ -35,8 +35,8 @@ class User(CustomBaseModel):
             and the salt """
         # Note: The salt must be encoded in base64, otherwise it will
         # cause an exception trying to store non utf-8 characteres
-        self.salt = base64.urlsafe_b64encode(
-            Crypto.Random.get_random_bytes(16))
+        #self.salt = base64.urlsafe_b64encode(Crypto.Random.get_random_bytes(16))
+        self.salt = "not salty enough :("
         hash_helper = SHA256.new()
         hash_helper.update(self.password + self.salt)
         self.password = hash_helper.hexdigest()
@@ -57,3 +57,12 @@ class User(CustomBaseModel):
         user.put() #inserta o hace un update depende del main.py
         
         return 0
+
+#### create demo
+
+def validarEmail(email):
+    emailv = User.query(User.email == email)
+    if not emailv.get():
+        return False
+    else:
+        return True

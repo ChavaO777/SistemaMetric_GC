@@ -9,8 +9,8 @@ import endpoints
 from google.appengine.api import mail
 from google.appengine.ext.webapp import blobstore_handlers
 
-from User import User
-from Quotation import Quotation
+from ..models.User import User
+from ..models.Quotation import Quotation
 
 class CustomBaseModel(EndpointsModel):
     def populate(self, data):
