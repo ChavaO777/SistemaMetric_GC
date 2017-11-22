@@ -529,10 +529,9 @@ class CustomerAPI(remote.Service):
 			listMessage = CustomerList(code = 1) # crea objeto mensaje
 			list.append(CustomerUpdate(token = '', 
 									   companyKey = customer.companyKey.urlsafe(),
-									   iD = customer.iD,
 									   email = customer.email,
-									   type = customer.type,
 									   name = customer.name,
+									   lastName = customer.lastName,
 									   rfc = customer.rfc,
 									   phone = customer.phone,
 									   entityKey = customer.entityKey))
@@ -552,7 +551,7 @@ class CustomerAPI(remote.Service):
 	def customer_list(cls, request):
 		try:
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = CustomerList(code = 1) # crea objeto mensaje
@@ -561,10 +560,9 @@ class CustomerAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(CustomerUpdate(token = '',
 										   companyKey = i.companyKey.urlsafe(),
-									       iD = i.iD,
 										   email = i.email,
-										   type = i.type,
 										   name = i.name,
+										   lastName = i.lastName,
 										   rfc = i.rfc,
 										   phone = i.phone,
 										   entityKey = i.entityKey))

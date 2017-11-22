@@ -32,6 +32,53 @@ def MyClass(obj):
 
 ###########################################################################     
 
+class MainHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/index.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        return template.render(context)
+
+class LoginHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/login.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        
+        return template.render(context)
+
+class CustomersHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/customers.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        
+        return template.render(context)
+
 class UpHandler(webapp2.RequestHandler):
     
     def _get_urls_for(self, file_name):
@@ -70,40 +117,9 @@ class UpHandler(webapp2.RequestHandler):
         key = self._get_urls_for(file_name)
         self.response.write(key)
 
-class LoginHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/login.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-        
-        return template.render(context)
-
-
-class MainHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/index.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-        return template.render(context)
-
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
+    ('/customers', CustomersHandler),
     ('/up', UpHandler)
 ], debug = True)

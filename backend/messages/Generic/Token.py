@@ -7,4 +7,4 @@ class MessageNone(messages.Message):
 # Input messages
 #Recibe el token para validar
 class Token(messages.Message):
-    tokenint = messages.StringField(1, required = True)
+    token = messages.StringField(1, required = True)
