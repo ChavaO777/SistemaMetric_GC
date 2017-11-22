@@ -63,13 +63,29 @@ class LoginHandler(webapp2.RequestHandler):
         
         return template.render(context)
 
-class CustomersHandler(webapp2.RequestHandler):
+class myCustomersHandler(webapp2.RequestHandler):
 
     def get(self):
 
         template_context = {}
         self.response.out.write(
-            self._render_template('./frontend/public/customers.html', template_context))
+            self._render_template('./frontend/public/myCustomers.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        
+        return template.render(context)
+
+class CustomerHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/customer.html', template_context))
 
     def _render_template(self, template_name, context=None):
         if context is None:
@@ -120,6 +136,7 @@ class UpHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
-    ('/customers', CustomersHandler),
+    ('/myCustomers', myCustomersHandler),
+    ('/customer', CustomerHandler),
     ('/up', UpHandler)
 ], debug = True)

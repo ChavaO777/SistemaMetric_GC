@@ -78,37 +78,54 @@ function getCustomer() {
     
     try{
 
-        var urlVariables = getURLVariables();
-        customerKey = urlVariables.propertyID;
-        var myCustomer = new Customer(entityKey = customerKey);
+        // var urlVariables = getURLVariables();
+        // customerKey = urlVariables.customerID;
+        // var myCustomer = new Customer(entityKey = customerKey);
 
-        jQuery.ajax({
-            type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
-            data: customer.toJsonString(),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            before: function(){
+        // jQuery.ajax({
+        //     type: "POST",
+        //     url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+        //     data: customer.toJsonString(),
+        //     contentType: "application/json; charset=utf-8",
+        //     dataType: "json",
+        //     before: function(){
                 
-                // $(".msg").html("<p>Esperando respuesta...</p>");
-            },
-            success: function (response) {
+        //         // $(".msg").html("<p>Esperando respuesta...</p>");
+        //     },
+        //     success: function (response) {
                 
-                // $(".msg").html("<p>Message</p>");
+        //         // $(".msg").html("<p>Message</p>");
 
-                totalCustomers = response.data;
+        //         $("#singleCustomer").empty();
+        //         totalCustomers = response.data;
 
-                // Do a forEach even if the array only has one customer
-                totalCustomers.forEach(function(customer){
+        //         var myCustomer = "";
 
-                    //Place the content in the HTML
-                });
-            },
-            error: function (error) {
+        //         // Do a forEach even if the array only has one customer
+        //         totalCustomers.forEach(function(customer){
+
+        //             //Place the content in the HTML
+
+        //             myCustomer +=  "<div class='hero-element'>" +
+        //                                     "<div class='hero-content-inner'>" +
+        //                                         "<form action='/customer' method='GET'>" +
+        //                                             "<p>" + customer.email + "</p>" + 
+        //                                             "<p>" + customer.name + " " + customer.lastName + "</p>" + 
+        //                                             "<p>" + customer.phone + "</p>" + 
+        //                                             "<p>" + customer.rfc + "</p>" +
+        //                                         "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
+        //                                         "<input type='submit' value='Ver detalle'/>" + 
+        //                                     "</div>" +
+        //                                 "</div>";
+        //         });
+
+        //         $("#listCustomers").append(myCustomer);
+        //     },
+        //     error: function (error) {
                 
-                alert(error);
-            }
-        });
+        //         alert(error);
+        //     }
+        // });
     }
     catch(error){
       
@@ -139,7 +156,7 @@ function listCustomers() {
 
                 $("#listCustomers").empty();
                 var totalCustomers = response.data;
-                // alert(JSON.stringify(response.data));
+                alert(JSON.stringify(response.data));
 
                 var myListCustomers = "";
 
@@ -152,11 +169,16 @@ function listCustomers() {
 
                     myListCustomers += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
-                                                "<p>" + customer.email + "</p>" + 
-                                                "<p>" + customer.name + " " + customer.lastName + "</p>" + 
-                                                "<p>" + customer.phone + "</p>" + 
-                                                "<p>" + customer.rfc + "</p>" + 
-                                        "</div>";
+                                                "<form action='/customer' method='GET'>" +
+                                                    "<p>" + customer.email + "</p>" + 
+                                                    "<p>" + customer.name + " " + customer.lastName + "</p>" + 
+                                                    "<p>" + customer.phone + "</p>" + 
+                                                    "<p>" + customer.rfc + "</p>" +
+                                                    "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
+                                                    "<input type='submit' value='Ver detalle'/>" + 
+                                                "</form>" +
+                                            "</div>" +
+                                        "</div>"
                 });
 
                 $("#listCustomers").append(myListCustomers);
