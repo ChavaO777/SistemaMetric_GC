@@ -83,6 +83,58 @@ function createCustomer() {
     }
 }
 
+function editCustomer() {
+    
+    var urlVariables = getURLVariables();
+    var customerKey = urlVariables.customerID;
+
+    var myCompanyKey = null;
+    var myEmail = $('#email').val();
+    var myName = $('#name').val();
+    var myLastName = $('#lastName').val();
+    var myRfc = $('#rfc').val();
+    var myPhone = $('#phone').val();
+
+    var customer = new Customer();
+    customer.companyKey = myCompanyKey;
+    customer.entityKey = customerKey;
+    customer.email = myEmail;
+    customer.name = myName;
+    customer.lastName = myLastName;
+    customer.rfc = myRfc;
+    customer.phone = myPhone;
+
+    alert(customer.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/update",
+            data: customer.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The customer was successfully updated.");
+                window.location = "/myCustomers";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
 function deleteCustomer() {
     
     var urlVariables = getURLVariables();
@@ -158,15 +210,78 @@ function getCustomer() {
 
                     myCustomer +=  "<div class='hero-element'>" +
                                         "<div class='hero-content-inner'>" +
-                                            "<p>" + customer.email + "</p>" + 
-                                            "<p>" + customer.name + " " + customer.lastName + "</p>" + 
-                                            "<p>" + customer.phone + "</p>" + 
-                                            "<p>" + customer.rfc + "</p>" +
+                                            "<form action='/editCustomer' method='GET'>" +
+                                                "<p>" + customer.email + "</p>" + 
+                                                "<p>" + customer.name + " " + customer.lastName + "</p>" + 
+                                                "<p>" + customer.phone + "</p>" + 
+                                                "<p>" + customer.rfc + "</p>" +
+                                                "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
+                                                "<input type='submit' value='Editar'/>" + 
+                                            "</form>" +
                                         "</div>" +
                                     "</div>"
                 });
 
+                myCustomer +=   "<div class='fixed-buttons'>" + 
+                                    "<a onclick='deleteCustomer()' class='big-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>" +
+                                "</div>"
+
                 $("#singleCustomer").append(myCustomer);
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
+function getCustomerData() {
+    
+    try{
+
+        var urlVariables = getURLVariables();
+        var customerKey = urlVariables.customerID;
+        alert("customerKey = " + customerKey);
+        var myCustomer = new Customer(token = sessionStorage.token,
+                                      entityKey = customerKey);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            data: myCustomer.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Message</p>");
+                totalCustomers = response.data;
+
+                $("#name").empty();
+                $("#lastName").empty();
+                $("#email").empty();
+                $("#rfc").empty();
+                $("#phone").empty();
+
+                // Do a forEach even if the array only has one customer
+                totalCustomers.forEach(function(customer){
+
+                    alert(customer.toString());
+
+                    $("#name").val(customer.name);
+                    $("#lastName").val(customer.lastName);
+                    $("#email").val(customer.email);
+                    $("#rfc").val(customer.rfc);
+                    $("#phone").val(customer.phone);
+                });
             },
             error: function (error) {
                 
