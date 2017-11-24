@@ -63,7 +63,7 @@ class LoginHandler(webapp2.RequestHandler):
         
         return template.render(context)
 
-class myCustomersHandler(webapp2.RequestHandler):
+class MyCustomersHandler(webapp2.RequestHandler):
 
     def get(self):
 
@@ -127,13 +127,29 @@ class EditCustomerHandler(webapp2.RequestHandler):
         
         return template.render(context)
 
-class myPersonnelHandler(webapp2.RequestHandler):
+class MyPersonnelHandler(webapp2.RequestHandler):
 
     def get(self):
 
         template_context = {}
         self.response.out.write(
             self._render_template('./frontend/public/personnel/myPersonnel.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        
+        return template.render(context)
+
+class PersonnelHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/personnel/personnel.html', template_context))
 
     def _render_template(self, template_name, context=None):
         if context is None:
@@ -185,11 +201,13 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
     ######### CUSTOMER ########
-    ('/myCustomers', myCustomersHandler),
+    ('/myCustomers', MyCustomersHandler),
     ('/customer', CustomerHandler),
     ('/addCustomer', AddCustomerHandler),
     ('/editCustomer', EditCustomerHandler),
     ######### PERSONNEL ########
-    ('/myPersonnel', myPersonnelHandler),
+    ('/myPersonnel', MyPersonnelHandler),
+    ('/personnel', PersonnelHandler),
+    ######## UPLOAD #########
     ('/up', UpHandler)
 ], debug = True)

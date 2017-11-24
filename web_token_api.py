@@ -807,19 +807,21 @@ class PersonnelAPI(remote.Service):
 		try:                 
       
 			token = jwt.decode(request.token, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			personnelEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = request.entityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			personnel = Personnel.get_by_id(personnelEntity.id()) #obtiene usuario
 			
 			list = []  #crea lista
 			listMessage = PersonnelList(code = 1) # crea objeto mensaje
 			list.append(PersonnelUpdate(token = '', 
 										companyKey = personnel.companyKey.urlsafe(),
-										iD = personnel.iD,
+										name = personnel.name,
+										lastName = personnel.lastName,
 										stage = personnel.stage,
 										specialty = personnel.specialty,
 										comment = personnel.comment,
-										pricePerDay = personnel.pricePerDay,
+										tariff = personnel.tariff,
+										tariffUnit = personnel.tariffUnit,
 										entityKey = personnel.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
