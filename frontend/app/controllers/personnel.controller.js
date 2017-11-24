@@ -39,6 +39,56 @@ function TokenObject() {
     };
 };
 
+function createPersonnel() {
+    
+    var myName = $('#name').val();
+    var myLastName = $('#lastName').val();
+    var myStage = $('#stage').val();
+    var mySpecialty = $('#specialty').val();
+    var myComment = $('#comment').val();
+    var myTariff = $('#tariff').val();
+    var myTariffUnit = $('#tariffUnit').val();
+
+    var personnel = new Personnel();
+    personnel.name = myName;
+    personnel.lastName = myLastName;
+    personnel.stage = myStage;
+    personnel.specialty = mySpecialty;
+    personnel.comment = myComment;
+    personnel.tariff = myTariff;
+    personnel.tariffUnit = myTariffUnit;
+
+    alert(personnel.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/insert",
+            data: personnel.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The personnel was successfully created.");
+                window.location = "/myPersonnel";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
 function deletePersonnel() {
     
     var urlVariables = getURLVariables();
