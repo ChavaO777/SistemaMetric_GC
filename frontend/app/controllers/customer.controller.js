@@ -8,7 +8,7 @@ class Customer {
                 rfc, 
                 phone) {
 
-        this.token = token;
+        this.token = sessionStorage.token;
         this.entityKey = entityKey;
         this.companyKey = companyKey;
         this.email = email;
@@ -43,18 +43,21 @@ function createCustomer() {
     var myRfc = $('#rfc').val();
     var myPhone = $('#phone').val();
 
-    var customer = new Customer(companyKey = myCompanyKey,
-                                email = myEmail,
-                                name = myName,
-                                lastName = myLastName,
-                                rfc = myRfc,
-                                phone = myPhone);
+    var customer = new Customer();
+    customer.companyKey = myCompanyKey;
+    customer.email = myEmail;
+    customer.name = myName;
+    customer.lastName = myLastName;
+    customer.rfc = myRfc;
+    customer.phone = myPhone;
+
+    alert(customer.toString());
 
     try{
         jQuery.ajax({
             type: "POST",
             url: "http://localhost:8080/_ah/api/customer_api/v1/customer/insert",
-            data: customer.toJsonString(),
+            data: customer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
@@ -65,6 +68,7 @@ function createCustomer() {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
                 alert("The customer was successfully created.");
+                window.location = "/myCustomers";
             },
             error: function (error) {
                 
