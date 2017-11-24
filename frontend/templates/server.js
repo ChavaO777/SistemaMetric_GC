@@ -15,7 +15,7 @@ var app = express();
 //a href="#" class="active">Inicio</a>
 //			<a href="cotizaciones.html">Cotizaciones</a>
 //			<a href="#">Eventos</a>	
-//			<a href="personal.html">Personal</a>
+//			<a href="/myPersonnel">Personal</a>
 //			<a href="clientes.html">Clientes</a>
 //			<a href="cotizadores.html">Cotizadores</a>
 //			<a href="#">Herramientas</a>
@@ -35,8 +35,8 @@ app.get('/cotizaciones.html', function(req, res) {
 	}
 );
 
-app.get('/personal.html', function(req, res) {
-		res.sendfile('personal.html');
+app.get('//myPersonnel', function(req, res) {
+		res.sendfile('/myPersonnel');
 	}
 );
 

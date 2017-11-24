@@ -37,7 +37,6 @@ function TokenObject() {
 
 function createCustomer() {
     
-    var myCompanyKey = null;
     var myEmail = $('#email').val();
     var myName = $('#name').val();
     var myLastName = $('#lastName').val();
@@ -45,7 +44,6 @@ function createCustomer() {
     var myPhone = $('#phone').val();
 
     var customer = new Customer();
-    customer.companyKey = myCompanyKey;
     customer.email = myEmail;
     customer.name = myName;
     customer.lastName = myLastName;
@@ -88,7 +86,6 @@ function editCustomer() {
     var urlVariables = getURLVariables();
     var customerKey = urlVariables.customerID;
 
-    var myCompanyKey = null;
     var myEmail = $('#email').val();
     var myName = $('#name').val();
     var myLastName = $('#lastName').val();
@@ -96,7 +93,6 @@ function editCustomer() {
     var myPhone = $('#phone').val();
 
     var customer = new Customer();
-    customer.companyKey = myCompanyKey;
     customer.entityKey = customerKey;
     customer.email = myEmail;
     customer.name = myName;

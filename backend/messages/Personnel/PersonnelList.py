@@ -2,7 +2,7 @@
 from protorpc import messages
 from protorpc import message_types
 
-from PersonnelUpdate import PersonnelUpdate
+from ..Personnel.PersonnelUpdate import PersonnelUpdate
 
 class MessageNone(messages.Message):
     inti = messages.StringField(1)

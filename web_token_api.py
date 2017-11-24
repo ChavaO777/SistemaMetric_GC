@@ -806,7 +806,7 @@ class PersonnelAPI(remote.Service):
 	def personnel_get(cls, request):
 		try:                 
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			personnelEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			personnel = Personnel.get_by_id(personnelEntity.id()) #obtiene usuario
@@ -837,20 +837,22 @@ class PersonnelAPI(remote.Service):
 	def personnel_list(cls, request):
 		try:
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = PersonnelList(code = 1) # crea objeto mensaje
 			listBd = Personnel.query().fetch() # recupera de base de datos
-			
+
 			for i in listBd: # iterate
 				list.append(PersonnelUpdate(token = '', 
 											companyKey = i.companyKey.urlsafe(),
-											iD = i.iD,
+											name = i.name,
+											lastName = i.lastName,
 											stage = i.stage,
 											specialty = i.specialty,
 											comment = i.comment,
-											pricePerDay = i.pricePerDay,
+											tariff = i.tariff,
+											tariffUnit = i.tariffUnit,
 											entityKey = i.entityKey))
 			
 			listMessage.data = list 
@@ -871,8 +873,8 @@ class PersonnelAPI(remote.Service):
 			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			personnelEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
 			personnel = Personnel.get_by_id(personnelEntity.id()) #get the personnel
 			personnelEntity.delete() #Delete the tool
 

@@ -127,6 +127,22 @@ class EditCustomerHandler(webapp2.RequestHandler):
         
         return template.render(context)
 
+class myPersonnelHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/personnel/myPersonnel.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+        
+        return template.render(context)
+
 class UpHandler(webapp2.RequestHandler):
     
     def _get_urls_for(self, file_name):
@@ -168,9 +184,12 @@ class UpHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
+    ######### CUSTOMER ########
     ('/myCustomers', myCustomersHandler),
     ('/customer', CustomerHandler),
     ('/addCustomer', AddCustomerHandler),
     ('/editCustomer', EditCustomerHandler),
+    ######### PERSONNEL ########
+    ('/myPersonnel', myPersonnelHandler),
     ('/up', UpHandler)
 ], debug = True)
