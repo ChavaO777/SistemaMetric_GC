@@ -1,5 +1,5 @@
 class Customer {
-    
+
     constructor(token,
                 entityKey,
                 companyKey, 
@@ -69,6 +69,45 @@ function createCustomer() {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
                 alert("The customer was successfully created.");
+                window.location = "/myCustomers";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
+function deleteCustomer() {
+    
+    var urlVariables = getURLVariables();
+    var customerKey = urlVariables.customerID;
+
+    var customer = new Customer();
+    customer.entityKey = customerKey;
+
+    alert(customer.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/delete",
+            data: customer.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The customer was successfully deleted.");
                 window.location = "/myCustomers";
             },
             error: function (error) {

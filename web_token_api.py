@@ -612,7 +612,7 @@ class CustomerAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			customerEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			customerEntity.delete() #Delete the customer
