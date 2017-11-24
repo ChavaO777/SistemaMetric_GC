@@ -39,6 +39,45 @@ function TokenObject() {
     };
 };
 
+function deletePersonnel() {
+    
+    var urlVariables = getURLVariables();
+    var personnelKey = urlVariables.personnelID;
+
+    var personnel = new Personnel();
+    personnel.entityKey = personnelKey;
+
+    alert(personnel.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/delete",
+            data: personnel.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The personnel was successfully deleted.");
+                window.location = "/myPersonnel";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
 function getPersonnel() {
     
     try{

@@ -815,7 +815,7 @@ class PersonnelAPI(remote.Service):
 			listMessage = PersonnelList(code = 1) # crea objeto mensaje
 			list.append(PersonnelUpdate(token = '', 
 										companyKey = personnel.companyKey.urlsafe(),
-										name = personnel.name,
+										name = personnel.name, 
 										lastName = personnel.lastName,
 										stage = personnel.stage,
 										specialty = personnel.specialty,
@@ -901,9 +901,9 @@ class PersonnelAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			personnelEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			personnelEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			personnelEntity.delete() #Delete the tool
 			message = CodeMessage(code = 1, message = 'The personnel was succesfully deleted')
 		
