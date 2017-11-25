@@ -219,32 +219,43 @@ function listPersonnel() {
 
                 $("#listPersonnel").empty();
                 var totalPersonnel = response.data;
-                alert(JSON.stringify(response.data));
-
                 var myListPersonnel = "";
 
-                // Do a forEach even if the array only has one personnel
-                totalPersonnel.forEach(function(personnel){
-
-                    //Place the content in the HTML
-
-                    // alert(personnel);
-
+                if(totalPersonnel == null){
+                    
                     myListPersonnel += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
-                                                "<form action='/personnel' method='GET'>" +
-                                                    "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
-                                                    "<p>" + personnel.stage + "</p>" +
-                                                    "<p>" + personnel.specialty + "</p>" +
-                                                    "<p>" + personnel.comment + "</p>" +
-                                                    "<p>" + personnel.tariff + "</p>" +
-                                                    "<p>" + personnel.tariffUnit + "</p>" +
-                                                    "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
-                                                    "<input type='submit' value='Ver detalle'/>" + 
-                                                "</form>" +
+                                                "<p> No hay personal registrado </p>" + 
                                             "</div>" +
                                         "</div>"
-                });
+                }
+
+                else{
+
+                    alert(JSON.stringify(response.data));
+
+                    // Do a forEach even if the array only has one personnel
+                    totalPersonnel.forEach(function(personnel){
+                    
+                        //Place the content in the HTML
+                        // alert(personnel);
+
+                        myListPersonnel += "<div class='hero-element'>" +
+                                                "<div class='hero-content-inner'>" +
+                                                    "<form action='/personnel' method='GET'>" +
+                                                        "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
+                                                        "<p>" + personnel.stage + "</p>" +
+                                                        "<p>" + personnel.specialty + "</p>" +
+                                                        "<p>" + personnel.comment + "</p>" +
+                                                        "<p>" + personnel.tariff + "</p>" +
+                                                        "<p>" + personnel.tariffUnit + "</p>" +
+                                                        "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
+                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                    "</form>" +
+                                                "</div>" +
+                                            "</div>"
+                    });
+                }
 
                 $("#listPersonnel").append(myListPersonnel);
             },
