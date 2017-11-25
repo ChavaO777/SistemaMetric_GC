@@ -248,13 +248,13 @@ class AddToolHandler(webapp2.RequestHandler):
 
 
 ######### EVENT HANDLERS ########
-class EventHandler(webapp2.RequestHandler):
+class MyEventsHandler(webapp2.RequestHandler):
 
     def get(self):
 
         template_context = {}
         self.response.out.write(
-            self._render_template('./frontend/public/event/event.html', template_context))
+            self._render_template('./frontend/public/event/myEvents.html', template_context))
 
     def _render_template(self, template_name, context=None):
         if context is None:
@@ -282,8 +282,7 @@ app = webapp2.WSGIApplication([
     ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
     ######## EVENT ########
-    # ('/myEvents', MyEventsHandler),
-    ('/event', EventHandler),
+    ('/myEvents', MyEventsHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
 ], debug = True)

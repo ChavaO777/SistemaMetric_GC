@@ -457,7 +457,10 @@ a:active{
 .modal-content .submit{
 	margin: 50px auto;
 	display: block;
-	
+}
+
+.modal-content .submit:hover{
+	cursor: pointer;
 }
 
 .modal-name{
@@ -473,5 +476,9 @@ a:active{
 }
 
 #agregarCliente{
+	display: none;
+}
+
+#AddEventModal{
 	display: none;
 }

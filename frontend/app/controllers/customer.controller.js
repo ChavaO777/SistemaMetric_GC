@@ -334,7 +334,6 @@ function listCustomers() {
                     totalCustomers.forEach(function(customer){
                         
                         //Place the content in the HTML
-    
                         // alert(customer);
     
                         myListCustomers += "<div class='hero-element'>" +
@@ -353,6 +352,64 @@ function listCustomers() {
                 }
 
                 $("#listCustomers").append(myListCustomers);
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
+function getCustomerListForSelection(){
+
+    try{
+        
+        // alert("token : " + sessionStorage.token);
+        var myData = new TokenObject();
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/list",
+            data: myData.toJsonString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Message</p>");
+
+                $("#customerList").empty();
+                var totalCustomers = response.data;
+
+                var myCustomerListForSelection = "";
+
+                if(totalCustomers == null){
+
+                    myCustomerListForSelection = "<p> No hay clientes registrados </p>";
+                }
+
+                else{
+
+                    // alert(JSON.stringify(response.data));
+
+                    // Do a forEach even if the array only has one customer
+                    totalCustomers.forEach(function(customer){
+                        
+                        //Place the content in the HTML
+                        // alert(customer.toString());
+                        myCustomerListForSelection += "<option value='" + customer.entityKey + "'>" + customer.name + " " + customer.lastName + "</option>";
+                    });
+                }
+
+                $("#customerList").append(myCustomerListForSelection);
             },
             error: function (error) {
                 

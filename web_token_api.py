@@ -6,6 +6,8 @@ from protorpc import remote
 import jwt
 import time
 
+from datetime import datetime
+
 import base64 # Padding errors
 from CustomExceptions import NotFoundException
 
@@ -928,10 +930,21 @@ class EventAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
+			companyKey = user.companyKey
+			customerEntity = ndb.Key(urlsafe = request.customerKey)
 
 			myEvent = Event()
+			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
+			dateStr = request.date
+			# Split the date into an array of strings e.g.: '2017-11-23' -> ['2017', '11', '23']
+			dateStrArray = dateStr.split("-")
+			# Create a date object with the values from that array
+			date = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
+			#Set the request's date field to None, but pass the recently created date object 
+			# as a parameter to event_m()
+			request.date = None
 
-			if myEvent.event_m(request, user.key) == 0:
+			if myEvent.event_m(request, user.key, companyKey, customerEntity, date) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -950,8 +963,8 @@ class EventAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.token, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			eventEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			eventEntity = ndb.Key(urlsafe = request.entityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			event = Event.get_by_id(eventEntity.id()) #obtiene usuario
 
 			list = []  #crea lista
@@ -959,10 +972,11 @@ class EventAPI(remote.Service):
 			list.append(EventUpdate(token = '',
 									userKey = event.userKey.urlsafe(),
 									iD = event.iD,
-									date = event.date,
+									date = event.date.strftime("%d/%m/%Y"),
 									days = event.days,
 									place = event.place,
 									hidden = event.hidden,
+									customerKey = event.customerKey.urlsafe(),
 									entityKey = event.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -989,10 +1003,11 @@ class EventAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(EventUpdate(token = '',
 										iD = i.iD,
-										date = i.date,
+										date = i.date.strftime("%d/%m/%Y"),
 										days = i.days,
 										place = i.place,
 										hidden = i.hidden,
+										customerKey = i.customerKey.urlsafe(),
 										entityKey = i.entityKey))
 
 			listMessage.data = list
@@ -1012,8 +1027,8 @@ class EventAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			eventEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			eventEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
 			event = Event.get_by_id(eventEntity.id()) #get the event
 			eventEntity.delete() #Delete the event
 

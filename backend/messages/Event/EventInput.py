@@ -12,3 +12,4 @@ class EventInput(messages.Message):
     days = messages.IntegerField(4)
     place = messages.StringField(5)
     hidden = messages.BooleanField(6)
+    customerKey = messages.StringField(7, required = True) 
