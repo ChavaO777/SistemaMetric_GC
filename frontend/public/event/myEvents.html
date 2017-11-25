@@ -8,7 +8,14 @@
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" href="/css/main.css">
 
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous">
+  	</script>
+
 	<script src="../app/controllers/event.controller.js"></script>
+	<script src="../app/controllers/customer.controller.js"></script>
 
 </head>
 <body onload="listEvents()">
@@ -27,7 +34,7 @@
 			<a href="cotizaciones.html">Cotizaciones</a>
 			<a href="#" class="active">Eventos</a>
 			<a href="/myPersonnel">Personal</a>
-			<a href="#">Clientes</a>
+			<a href="/myCustomers">Clientes</a>
 			<a href="/myTools">Herramientas</a>
 			<a href="cotizadores.html">Cotizadores</a>
 		</div>
@@ -57,6 +64,19 @@
 				<input type="date" class="input-50" id="date" placeholder="Date">
 				<input type="number" class="input-50" id="days" placeholder="Days">
 				<input type="text" class="input-50" id="place" placeholder="Place">
+				<div>
+					<script>
+						$(document).ready(function () {
+							
+							getCustomerListForSelection();
+						});
+					</script>
+					
+					Cliente
+					<!-- Get the list of customers; show their names, but store their entityKeys-->
+					<select id="customerList">
+  					</select>
+  				</div>
 				<span class="submit">
 					<a onclick="createNewCompanyEvent()" class="btn-rectangle btn-green">Guardar</a>
 				</span>
@@ -70,11 +90,6 @@
 	</div>
 
 	<script src="https://use.fontawesome.com/5144437903.js"></script>
-	<script
-	  src="https://code.jquery.com/jquery-3.2.1.min.js"
-	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	  crossorigin="anonymous">
-	</script>
 	<script type="text/javascript">
 		$(function(){
 		    $('.nav a').click(function(){

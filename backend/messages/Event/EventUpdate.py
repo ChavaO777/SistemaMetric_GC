@@ -11,4 +11,5 @@ class EventUpdate(messages.Message):
     days = messages.IntegerField(4)
     place = messages.StringField(5)
     hidden = messages.BooleanField(6)
-    entityKey = messages.StringField(7, required = True)
+    customerKey = messages.StringField(7, required = True)
+    entityKey = messages.StringField(8, required = True)

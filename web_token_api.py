@@ -931,6 +931,7 @@ class EventAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
 			companyKey = user.companyKey
+			customerEntity = ndb.Key(urlsafe = request.customerKey)
 
 			myEvent = Event()
 			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
@@ -943,7 +944,7 @@ class EventAPI(remote.Service):
 			# as a parameter to event_m()
 			request.date = None
 
-			if myEvent.event_m(request, user.key, companyKey, date) == 0:
+			if myEvent.event_m(request, user.key, companyKey, customerEntity, date) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -971,10 +972,11 @@ class EventAPI(remote.Service):
 			list.append(EventUpdate(token = '',
 									userKey = event.userKey.urlsafe(),
 									iD = event.iD,
-									date = event.date,
+									date = event.date.strftime("%d/%m/%Y"),
 									days = event.days,
 									place = event.place,
 									hidden = event.hidden,
+									customerKey = event.customerKey.urlsafe(),
 									entityKey = event.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -1001,10 +1003,11 @@ class EventAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(EventUpdate(token = '',
 										iD = i.iD,
-										date = i.date,
+										date = i.date.strftime("%d/%m/%Y"),
 										days = i.days,
 										place = i.place,
 										hidden = i.hidden,
+										customerKey = i.customerKey.urlsafe(),
 										entityKey = i.entityKey))
 
 			listMessage.data = list
