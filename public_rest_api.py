@@ -213,6 +213,39 @@ class UpHandler(webapp2.RequestHandler):
         key = self._get_urls_for(file_name)
         self.response.write(key)
 
+######### TOOL HANDLERS ########
+class MyToolsHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/myTools.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+class AddToolHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/addTool.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+######### ROUTES ########
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
@@ -226,7 +259,7 @@ app = webapp2.WSGIApplication([
     ('/personnel', PersonnelHandler),
     ('/addPersonnel', AddPersonnelHandler),
     ######## TOOL ########
-    ('/myTools', MyToolslHandler),
+    ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
