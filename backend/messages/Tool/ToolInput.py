@@ -15,5 +15,5 @@ class ToolInput(messages.Message):
     tariff = messages.FloatField(7)
     tariffUnit = messages.FloatField(7)
     quantity = messages.IntegerField(8)
-    availableQuantity = messages.IntegerField(8)
+    availableQuantity = messages.IntegerField(9)
     comment = messages.StringField(10)
