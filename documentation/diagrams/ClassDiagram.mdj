@@ -4124,7 +4124,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+tariffUnit: String",
+											"text": "+tariffTimeUnit: String",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -4822,7 +4822,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+tariffUnit: String",
+											"text": "+tariffTimeUnit: String",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -20998,7 +20998,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFfqGo9uZaOHLA="
 							},
-							"name": "tariffUnit",
+							"name": "tariffTimeUnit",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,
@@ -21263,7 +21263,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFfqGpRApa4cvk="
 							},
-							"name": "tariffUnit",
+							"name": "tariffTimeUnit",
 							"visibility": "public",
 							"isStatic": false,
 							"isLeaf": false,

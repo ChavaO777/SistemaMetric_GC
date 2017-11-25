@@ -9,7 +9,7 @@ class Personnel {
                 specialty,
                 comment,
                 tariff,
-                tariffUnit) {
+                tariffTimeUnit) {
 
         this.token = sessionStorage.token;
         this.entityKey = entityKey;
@@ -20,7 +20,7 @@ class Personnel {
         this.specialty = specialty;
         this.comment = comment;
         this.tariff = tariff;
-        this.tariffUnit = tariffUnit;
+        this.tariffTimeUnit = tariffTimeUnit;
     }
     
     toString(){
@@ -47,7 +47,7 @@ function createPersonnel() {
     var mySpecialty = $('#specialty').val();
     var myComment = $('#comment').val();
     var myTariff = $('#tariff').val();
-    var myTariffUnit = $('#tariffUnit').val();
+    var myTariffUnit = $('#tariffTimeUnit').val();
 
     var personnel = new Personnel();
     personnel.name = myName;
@@ -56,7 +56,7 @@ function createPersonnel() {
     personnel.specialty = mySpecialty;
     personnel.comment = myComment;
     personnel.tariff = myTariff;
-    personnel.tariffUnit = myTariffUnit;
+    personnel.tariffTimeUnit = myTariffUnit;
 
     alert(personnel.toString());
 
@@ -170,7 +170,7 @@ function getPersonnel() {
                                                 "<p>" + personnel.specialty + "</p>" +
                                                 "<p>" + personnel.comment + "</p>" +
                                                 "<p>" + personnel.tariff + "</p>" +
-                                                "<p>" + personnel.tariffUnit + "</p>" +
+                                                "<p>" + personnel.tariffTimeUnit + "</p>" +
                                                 "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
                                                 "<input type='submit' value='Editar'/>" + 
                                             "</form>" +
@@ -247,7 +247,7 @@ function listPersonnel() {
                                                         "<p>" + personnel.stage + "</p>" +
                                                         "<p>" + personnel.specialty + "</p>" +
                                                         "<p>" + personnel.comment + "</p>" +
-                                                        "<p>" + personnel.tariff + " MXN / " + personnel.tariffUnit +"</p>" +
+                                                        "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
                                                         "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
                                                         "<input type='submit' value='Ver detalle'/>" + 
                                                     "</form>" +

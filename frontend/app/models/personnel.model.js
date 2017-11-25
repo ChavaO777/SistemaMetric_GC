@@ -5,7 +5,7 @@ function Personnel(companyKey,
                    specialty,
                    comment,
                    tariff,
-                   tariffUnit) {
+                   tariffTimeUnit) {
 
     this.companyKey = companyKey;
     this.name = name;
@@ -14,7 +14,7 @@ function Personnel(companyKey,
     this.specialty = specialty;
     this.comment = comment;
     this.tariff = tariff;
-    this.tariffUnit = tariffUnit;
+    this.tariffTimeUnit = tariffTimeUnit;
 
     this.toString() = function() {
 
