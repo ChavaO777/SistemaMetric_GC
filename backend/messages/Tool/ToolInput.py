@@ -13,7 +13,7 @@ class ToolInput(messages.Message):
     brand = messages.StringField(5)
     model = messages.StringField(6)
     tariff = messages.FloatField(7)
-    tariffUnit = messages.FloatField(8)
+    tariffUnit = messages.StringField(8)
     quantity = messages.IntegerField(9)
     availableQuantity = messages.IntegerField(10)
     comment = messages.StringField(11)
