@@ -33,7 +33,7 @@ class Event {
         };
     };
 
-    function createEvent() {
+    function createNewMetricEvent() {
         
         var myDate = $('#date').val();
         var myDays = $('#days').val();
@@ -59,15 +59,14 @@ class Event {
                     
                     // $(".msg").html("<p>Esperando respuesta...</p>");
                 },
-                success: function (response) {
-                    
+                success: function (response) {                   
                     // $(".msg").html("<p>Herramienta creado</p>");
                     alert("The event was successfully created.");
-                    window.location = "/myEvents";
+                    //window.location = "/myEvents";
                 },
                 error: function (error) {
                     
-                    alert(error);
+                    alert("Not possible" + error);
                 }
             });
         }
