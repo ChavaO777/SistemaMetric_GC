@@ -19,8 +19,8 @@ class Tool {
     this.type = type;
     this.brand = brand;
     this.model = model;
-    this.pricePerDay = tariff;
-    this.pricePerDay = tariffTimeUnit;
+    this.tariff = tariff;
+    this.tariffTimeUnit = tariffTimeUnit;
     this.quantity = quantity;
     this.available = available;
     this.comment = comment;
@@ -53,12 +53,12 @@ function createTool() {
   tool.brand = $('#brand').val();
   tool.model = $('#model').val();
   tool.tariff = $('#tariff').val();
-  tool.tariff = $('#tariff').val();
   tool.tariffTimeUnit = $('#tariffTimeUnit').val();
   tool.quantity = $('#quantity').val();
   tool.available = $('#available').val();
   tool.comment = $('#comment').val();
-  alert(tool.toString());
+  alert("debe ser tool: " + tool.toString());
+  return;
   try{
     jQuery.ajax({
         type: "POST",
@@ -70,7 +70,7 @@ function createTool() {
             //$(".msg").html("<p>Esperando respuesta...</p>");
         },
         success: function (response) {
-          alert("The tool was successfully created.");
+          alert("The tool was successfully created." + tool.toString());
           window.location = "/myTools";
         },
         error: function (error) {
