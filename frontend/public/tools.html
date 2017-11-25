@@ -7,9 +7,9 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<script type="text/javascript" src="app/controllers/tool.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
 </head>
-<body>
+<body onload="listCustomers()">
 
 	<div class="bg">
 	</div>
@@ -38,25 +38,21 @@
 	</div>
 
 	<div class="content">
-		#listTools
-		<script type="text/javascript">
-			list();
-		</script>
+		<div id="listTools">
+			Herramientas
+		</div>
 	</div>
-
-	<div class="modal">
+	<div class="modal" id='formID'>
 		<div class="modal-content">
-			<span class="modal-close">X</span>
+			<span class="modal-close" onclick="javascript:hideForm();">X</span>
 			<div class="modal-header">
-				Nuevo cotizador
+				Nueva Herramienta
 			</div>
 			<div class="modal-form">
 				<p>Id: 9876</p>
-				<input type="text" class="input-50" placeholder="Nombre">
-				<input type="email" class="input-50" placeholder="Correo">
-				<input type="password" class="input-50" placeholder="Contraseña">
+				<input type="text" class="input-50" placeholder="Categoria" name="category">
 				<span class="submit">
-					<a href="#" class="btn-rectangle btn-green">Aceptar</a>
+					<a href="javascript:create();" class="btn-rectangle btn-green">Aceptar</a>
 				</span>
 				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
 			</div>
@@ -65,7 +61,7 @@
 
 	<div class="fixed-buttons">
 		<a href="#" class="small-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
-		<a href="#" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
+		<a href="javascript:showForm();" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
 	</div>
 
 	<div id="notifications" class="btn-rectangle btn-green">
@@ -90,9 +86,16 @@
 		    	$('.menu .back').css("display", "block");
 		    	$('.menu .nav').css("display", "block");
 		    });
-
-
 		});
+		function hideForm() {
+			var elem = document.getElementById('formID');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('formID');
+			$(elem).show();
+		}
+		hideForm();
 	</script>
 </body>
 </html>
