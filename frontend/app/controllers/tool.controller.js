@@ -7,7 +7,8 @@ class Tool {
               type,
               brand,
               model,
-              pricePerDay,
+              tariff,
+              tariffTimeUnit,
               quantity,
               available,
               comment) {
@@ -18,7 +19,8 @@ class Tool {
     this.type = type;
     this.brand = brand;
     this.model = model;
-    this.pricePerDay = pricePerDay;
+    this.pricePerDay = tariff;
+    this.pricePerDay = tariffTimeUnit;
     this.quantity = quantity;
     this.available = available;
     this.comment = comment;
@@ -50,7 +52,9 @@ function createTool() {
   tool.type = $('#type').val();
   tool.brand = $('#brand').val();
   tool.model = $('#model').val();
-  tool.pricePerDay = $('#pricePerDay').val();
+  tool.tariff = $('#tariff').val();
+  tool.tariff = $('#tariff').val();
+  tool.tariffTimeUnit = $('#tariffTimeUnit').val();
   tool.quantity = $('#quantity').val();
   tool.available = $('#available').val();
   tool.comment = $('#comment').val();

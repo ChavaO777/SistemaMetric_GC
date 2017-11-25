@@ -20,14 +20,14 @@ class CustomBaseModel(EndpointsModel):
 
 #### Tool ####
 class Tool(CustomBaseModel):
-    _message_fields_schema = ('companyKey', 
+    _message_fields_schema = ('companyKey',
                               'iD',
                               'category',
                               'kind',
                               'brand',
                               'model',
                               'tariff',
-                              'tariffUnit',
+                              'tariffTimeUnit',
                               'quantity',
                               'availableQuantity',
                               'comment')
@@ -39,7 +39,7 @@ class Tool(CustomBaseModel):
     brand = ndb.StringProperty()
     model = ndb.StringProperty()
     tariff = ndb.FloatProperty()
-    tariffUnit = ndb.StringProperty()
+    tariffTimeUnit = ndb.StringProperty()
     quantity = ndb.IntegerProperty()
     availableQuantity = ndb.IntegerProperty()
     comment = ndb.StringProperty()

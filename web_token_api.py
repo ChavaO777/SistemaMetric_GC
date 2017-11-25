@@ -674,7 +674,7 @@ class ToolAPI(remote.Service):
 								   brand = tool.brand,
 								   model = tool.model,
 								   tariff = tool.tariff,
-								   tariffUnit = tool.tariffUnit,
+								   tariffTimeUnit = tool.tariffTimeUnit,
 								   quantity = tool.quantity,
 								   availableQuantity = tool.availableQuantity,
 								   comment = tool.comment,
@@ -710,7 +710,7 @@ class ToolAPI(remote.Service):
 									   brand = i.brand,
 									   model = i.model,
 									   tariff = i.tariff,
-									   tariffUnit = i.tariffUnit,
+									   tariffTimeUnit = i.tariffTimeUnit,
 									   quantity = i.quantity,
 									   availableQuantity = i.availableQuantity,
 									   comment = i.comment,
@@ -823,7 +823,7 @@ class PersonnelAPI(remote.Service):
 										specialty = personnel.specialty,
 										comment = personnel.comment,
 										tariff = personnel.tariff,
-										tariffUnit = personnel.tariffUnit,
+										tariffTimeUnit = personnel.tariffTimeUnit,
 										entityKey = personnel.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -856,7 +856,7 @@ class PersonnelAPI(remote.Service):
 											specialty = i.specialty,
 											comment = i.comment,
 											tariff = i.tariff,
-											tariffUnit = i.tariffUnit,
+											tariffTimeUnit = i.tariffTimeUnit,
 											entityKey = i.entityKey))
 
 			listMessage.data = list
