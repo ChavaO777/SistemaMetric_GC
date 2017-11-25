@@ -314,30 +314,43 @@ function listCustomers() {
 
                 $("#listCustomers").empty();
                 var totalCustomers = response.data;
-                alert(JSON.stringify(response.data));
 
                 var myListCustomers = "";
 
-                // Do a forEach even if the array only has one customer
-                totalCustomers.forEach(function(customer){
-
-                    //Place the content in the HTML
-
-                    // alert(customer);
+                if(totalCustomers == null){
 
                     myListCustomers += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
-                                                "<form action='/customer' method='GET'>" +
-                                                    "<p>" + customer.email + "</p>" + 
-                                                    "<p>" + customer.name + " " + customer.lastName + "</p>" + 
-                                                    "<p>" + customer.phone + "</p>" + 
-                                                    "<p>" + customer.rfc + "</p>" +
-                                                    "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
-                                                    "<input type='submit' value='Ver detalle'/>" + 
-                                                "</form>" +
+                                                "<p> No hay clientes registrados </p>" + 
                                             "</div>" +
                                         "</div>"
-                });
+                }
+
+                else{
+
+                    alert(JSON.stringify(response.data));
+
+                    // Do a forEach even if the array only has one customer
+                    totalCustomers.forEach(function(customer){
+                        
+                        //Place the content in the HTML
+    
+                        // alert(customer);
+    
+                        myListCustomers += "<div class='hero-element'>" +
+                                                "<div class='hero-content-inner'>" +
+                                                    "<form action='/customer' method='GET'>" +
+                                                        "<p>" + customer.email + "</p>" + 
+                                                        "<p>" + customer.name + " " + customer.lastName + "</p>" + 
+                                                        "<p>" + customer.phone + "</p>" + 
+                                                        "<p>" + customer.rfc + "</p>" +
+                                                        "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
+                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                    "</form>" +
+                                                "</div>" +
+                                            "</div>"
+                    });
+                }
 
                 $("#listCustomers").append(myListCustomers);
             },
