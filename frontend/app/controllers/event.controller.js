@@ -101,7 +101,7 @@ function listEvents() {
                 if(totalEvents == null){
                     myListEvents +=  "<div class='hero-element'>" +
                                         "<div class='hero-content-inner'>" +
-                                            "<p> No hay herramientas registradas </p>" + 
+                                            "<p> No hay eventos registrados </p>" + 
                                         "</div>" +
                                     "</div>"
                 }
