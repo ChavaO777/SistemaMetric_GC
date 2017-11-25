@@ -282,7 +282,7 @@ app = webapp2.WSGIApplication([
     ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
     ######## EVENT ########
-    #('/myEvent', MyEventHandler),
+    # ('/myEvents', MyEventsHandler),
     ('/event', EventHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
