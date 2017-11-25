@@ -175,44 +175,6 @@ class AddPersonnelHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-class UpHandler(webapp2.RequestHandler):
-
-    def _get_urls_for(self, file_name):
-
-        bucket_name = app_identity.get_default_gcs_bucket_name()
-        path = os.path.join('/', bucket_name, file_name)
-        real_path = '/gs' + path
-        key = blobstore.create_gs_key(real_path)
-
-        try:
-            url = images.get_serving_url(key, size=0)
-        except images.TransformationError, images.NotImageError:
-            url = "http://storage.googleapis.com{}".format(path)
-
-        return url
-
-
-    def post(self):
-        self.response.headers.add_header('Access-Control-Allow-Origin', '*')
-        self.response.headers['Content-Type'] = 'application/json'
-
-        bucket_name = app_identity.get_default_gcs_bucket_name()
-        uploaded_file = self.request.POST.get('uploaded_file')
-        file_name = getattr(uploaded_file, 'filename', None)
-        file_content = getattr(uploaded_file, 'file', None)
-        real_path = ''
-
-        if file_name and file_content:
-            content_t = mimetypes.guess_type(file_name)[0]
-            real_path = os.path.join('/', bucket_name, file_name)
-
-        with cloudstorage.open(real_path, 'w', content_type=content_t,
-        options={'x-goog-acl': 'public-read'}) as f:
-            f.write(file_content.read())
-
-        key = self._get_urls_for(file_name)
-        self.response.write(key)
-
 ######### TOOL HANDLERS ########
 class MyToolsHandler(webapp2.RequestHandler):
 
@@ -264,6 +226,60 @@ class MyEventsHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+class EventHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/event/event.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+class UpHandler(webapp2.RequestHandler):
+
+    def _get_urls_for(self, file_name):
+
+        bucket_name = app_identity.get_default_gcs_bucket_name()
+        path = os.path.join('/', bucket_name, file_name)
+        real_path = '/gs' + path
+        key = blobstore.create_gs_key(real_path)
+
+        try:
+            url = images.get_serving_url(key, size=0)
+        except images.TransformationError, images.NotImageError:
+            url = "http://storage.googleapis.com{}".format(path)
+
+        return url
+
+
+    def post(self):
+        self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+        self.response.headers['Content-Type'] = 'application/json'
+
+        bucket_name = app_identity.get_default_gcs_bucket_name()
+        uploaded_file = self.request.POST.get('uploaded_file')
+        file_name = getattr(uploaded_file, 'filename', None)
+        file_content = getattr(uploaded_file, 'file', None)
+        real_path = ''
+
+        if file_name and file_content:
+            content_t = mimetypes.guess_type(file_name)[0]
+            real_path = os.path.join('/', bucket_name, file_name)
+
+        with cloudstorage.open(real_path, 'w', content_type=content_t,
+        options={'x-goog-acl': 'public-read'}) as f:
+            f.write(file_content.read())
+
+        key = self._get_urls_for(file_name)
+        self.response.write(key)
+
     
 ######### ROUTES ########
 app = webapp2.WSGIApplication([
@@ -283,6 +299,7 @@ app = webapp2.WSGIApplication([
     ('/addTool', AddToolHandler),
     ######## EVENT ########
     ('/myEvents', MyEventsHandler),
+    ('/event', EventHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
 ], debug = True)
