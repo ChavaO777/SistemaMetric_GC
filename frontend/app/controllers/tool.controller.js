@@ -79,11 +79,11 @@ function createTool() {
   }
 }
 function listTools() {
-    
+
     try {
-        
+
         var myData = new TokenObject();
-        
+
         jQuery.ajax( {
             type: "POST",
             url: "http://localhost:8080/_ah/api/tool_api/v1/tool/list",
@@ -94,17 +94,17 @@ function listTools() {
                 // $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {
-                
+
                 // $(".msg").html("<p>Message</p>");
                 $("#listTools").empty();
                 var totalTools = response.data;
                 var myListTools = "";
 
                 if(totalTools == null){
-                
+
                     myListTools +=  "<div class='hero-element'>" +
                                         "<div class='hero-content-inner'>" +
-                                            "<p> No hay herramientas registradas </p>" + 
+                                            "<p> No hay herramientas registradas </p>" +
                                         "</div>" +
                                     "</div>"
                 }
@@ -114,10 +114,10 @@ function listTools() {
                     alert(JSON.stringify(response.data));
                     // Do a forEach even if the array only has one tool
                     totalTools.forEach(function(tool){
-                        
+
                         //Place the content in the HTML
                         // alert(tool);
-                        tableString += "<div class='box'> \n" +
+                        myListTools += "<div class='box'> \n" +
                                         "\t<div class='box-name'>\n" +
                                         "\t\t<p>" + tool.id + " " + tool.model +"</p>" +
                                         "\t</div>" +
@@ -133,7 +133,7 @@ function listTools() {
                                         "</div>";
                     });
                 }
-            
+
                 $("#listTools").append(myListTools);
             },
             error: function (error) {
