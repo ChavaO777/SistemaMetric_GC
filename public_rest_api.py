@@ -192,6 +192,22 @@ class MyToolsHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+class ToolHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/tool.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
 class AddToolHandler(webapp2.RequestHandler):
 
     def get(self):
@@ -280,7 +296,7 @@ class UpHandler(webapp2.RequestHandler):
         key = self._get_urls_for(file_name)
         self.response.write(key)
 
-    
+
 ######### ROUTES ########
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -297,6 +313,7 @@ app = webapp2.WSGIApplication([
     ######## TOOL ########
     ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
+    ('/tool', ToolHandler),
     ######## EVENT ########
     ('/myEvents', MyEventsHandler),
     ('/event', EventHandler),

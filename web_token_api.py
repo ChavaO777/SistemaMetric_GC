@@ -940,7 +940,7 @@ class EventAPI(remote.Service):
 			dateStrArray = dateStr.split("-")
 			# Create a date object with the values from that array
 			date = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
-			#Set the request's date field to None, but pass the recently created date object 
+			#Set the request's date field to None, but pass the recently created date object
 			# as a parameter to event_m()
 			request.date = None
 
