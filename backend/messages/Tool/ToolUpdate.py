@@ -13,7 +13,7 @@ class ToolUpdate(messages.Message):
     brand = messages.StringField(6)
     model = messages.StringField(7)
     tariff = messages.FloatField(8)
-    tariffTimeUnit = messages.FloatField(9)
+    tariffTimeUnit = messages.StringField(9)
     quantity = messages.IntegerField(10)
     availableQuantity = messages.IntegerField(11)
     comment = messages.StringField(12)
