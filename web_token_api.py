@@ -662,8 +662,8 @@ class ToolAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.token, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			toolEntity = ndb.Key(urlsafe = request.entityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
 
 			list = []  #crea lista
@@ -736,8 +736,8 @@ class ToolAPI(remote.Service):
 			companyKey = user.companyKey
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # The problem is in request.entityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #get the tool
 			toolEntity.delete() #Delete the tool
 
@@ -764,8 +764,8 @@ class ToolAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			toolEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
+			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
+			toolEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			toolEntity.delete() #Delete the tool
 			message = CodeMessage(code = 1, message = 'The tool was succesfully deleted')
 
