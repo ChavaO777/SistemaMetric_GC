@@ -8,10 +8,10 @@ Para probar en localhost:
 Para montar en Google Cloud
 
 0.- Ir desde la terminal a la carpeta del proyecto
-2.- gcloud projects create PROJECT_NAME
-3.- gcloud config set project PROJECT_NAME
-4.- gcloud app create
-5.- gcloud app deploy
+1.- gcloud projects create PROJECT_NAME
+2.- gcloud config set project PROJECT_NAME
+3.- gcloud app create
+4.- gcloud app deploy
 
 #
 # To switch to Python2 
