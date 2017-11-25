@@ -30,7 +30,7 @@ class DemoClass(object):
 def MyClass(obj):
     return obj.__dict__
 
-###########################################################################     
+###########################################################################
 
 class MainHandler(webapp2.RequestHandler):
 
@@ -60,7 +60,7 @@ class LoginHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class MyCustomersHandler(webapp2.RequestHandler):
@@ -76,7 +76,7 @@ class MyCustomersHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class CustomerHandler(webapp2.RequestHandler):
@@ -92,7 +92,7 @@ class CustomerHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class AddCustomerHandler(webapp2.RequestHandler):
@@ -108,7 +108,7 @@ class AddCustomerHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class EditCustomerHandler(webapp2.RequestHandler):
@@ -124,7 +124,7 @@ class EditCustomerHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class MyPersonnelHandler(webapp2.RequestHandler):
@@ -140,7 +140,7 @@ class MyPersonnelHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class PersonnelHandler(webapp2.RequestHandler):
@@ -156,7 +156,7 @@ class PersonnelHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class AddPersonnelHandler(webapp2.RequestHandler):
@@ -172,18 +172,18 @@ class AddPersonnelHandler(webapp2.RequestHandler):
             context = {}
 
         template = jinja_env.get_template(template_name)
-        
+
         return template.render(context)
 
 class UpHandler(webapp2.RequestHandler):
-    
+
     def _get_urls_for(self, file_name):
-        
+
         bucket_name = app_identity.get_default_gcs_bucket_name()
         path = os.path.join('/', bucket_name, file_name)
         real_path = '/gs' + path
         key = blobstore.create_gs_key(real_path)
-        
+
         try:
             url = images.get_serving_url(key, size=0)
         except images.TransformationError, images.NotImageError:
@@ -225,6 +225,9 @@ app = webapp2.WSGIApplication([
     ('/myPersonnel', MyPersonnelHandler),
     ('/personnel', PersonnelHandler),
     ('/addPersonnel', AddPersonnelHandler),
+    ######## TOOL ########
+    ('/myTools', MyToolslHandler),
+    ('/addTool', AddToolHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
 ], debug = True)
