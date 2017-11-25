@@ -130,7 +130,7 @@ class QuotationAPI(remote.Service):
 										entityKey = quotation.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
-			message = listMessage
+			message = listMessage<
 			
 		except jwt.DecodeError:
 			message = QuotationList(code = -1, data = []) #token invalido
