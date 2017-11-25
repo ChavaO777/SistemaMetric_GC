@@ -109,7 +109,7 @@ class QuotationAPI(remote.Service):
 	def quotation_get(cls, request):
 		try:                 
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)
 			quotation = Quotation.get_by_id(quotationEntity.id()) #obtiene usuario
@@ -143,7 +143,7 @@ class QuotationAPI(remote.Service):
 	def quotation_list(cls, request):
 		try:
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = QuotationList(code = 1) # crea objeto mensaje
@@ -204,7 +204,7 @@ class QuotationAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationEntity.delete() #Delete the quotation
@@ -250,7 +250,7 @@ class QuotationRowAPI(remote.Service):
 	def quotationRow_get(cls, request):
 		try:                 
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)
 			quotationRow = QuotationRow.get_by_id(quotationRowEntity.id()) #obtiene usuario
@@ -282,7 +282,7 @@ class QuotationRowAPI(remote.Service):
 	def quotationRow_list(cls, request):
 		try:
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = QuotationRowList(code = 1) # crea objeto mensaje
@@ -340,7 +340,7 @@ class QuotationRowAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			quotationRowEntity.delete() #Delete the quotation row
@@ -387,7 +387,7 @@ class AdditionalExpenseAPI(remote.Service):
 	def additionalExpense_get(cls, request):
 		try:                 
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)
 			additionalExpense = AdditionalExpense.get_by_id(additionalExpenseEntity.id()) #obtiene usuario
@@ -417,7 +417,7 @@ class AdditionalExpenseAPI(remote.Service):
 	def additionalExpense_list(cls, request):
 		try:
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = AdditionalExpenseList(code = 1) # crea objeto mensaje
@@ -472,7 +472,7 @@ class AdditionalExpenseAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			additionalExpenseEntity.delete() #Delete the additional expense e
@@ -659,7 +659,7 @@ class ToolAPI(remote.Service):
 	def tool_get(cls, request):
 		try:                 
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			toolEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
@@ -760,7 +760,7 @@ class ToolAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			toolEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
 			toolEntity.delete() #Delete the tool
@@ -948,7 +948,7 @@ class EventAPI(remote.Service):
 	def event_get(cls, request):
 		try:                 
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			eventEntity = ndb.Key(urlsafe = fixedEntityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			event = Event.get_by_id(eventEntity.id()) #obtiene usuario
@@ -979,7 +979,7 @@ class EventAPI(remote.Service):
 	def event_list(cls, request):
 		try:
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = EventList(code = 1) # crea objeto mensaje
@@ -1037,7 +1037,7 @@ class EventAPI(remote.Service):
 		
 		try:
 
-			token = jwt.decode(request.tokenint, 'secret') #CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			eventEntity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntityKey
 			eventEntity.delete() #Delete the event
 			message = CodeMessage(code = 1, message = 'The event was succesfully deleted')
@@ -1058,7 +1058,7 @@ class UserAPI(remote.Service):
 	def user_get(cls, request):
 		try:                 
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			userEntity = ndb.Key(urlsafe = request.entityKey)
 			user = User.get_by_id(userEntity.id()) #obtiene usuario
 			lista = []  #crea lista
@@ -1080,7 +1080,7 @@ class UserAPI(remote.Service):
 	def user_list(cls, request):
 		try:
 		
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			lista = []  #crea lista
 			lstMessage = UserList(code=1) # crea objeto mensaje
@@ -1105,7 +1105,7 @@ class UserAPI(remote.Service):
 	def user_remove(cls, request):
 		try:
 		
-			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			usersentity = ndb.Key(urlsafe = request.entityKey)#Obtiene el elemento dado el EntitKey
 			usersentity.delete()#BORRA
 			message = CodeMessage(code = 1, message = 'Succesfully deleted')
@@ -1199,7 +1199,7 @@ class CompanyAPI(remote.Service):
 	@endpoints.method(TokenKey, CompanyList, path='empresa/get', http_method='POST', name='empresa.get')
 	def company_get(cls, request):
 		try:
-			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			companyEntity = ndb.Key(urlsafe = request.entityKey)
 			message = CompanyList(code = 1, 
 								  data = [CompanyUpdate(token='Successful get',
@@ -1218,7 +1218,7 @@ class CompanyAPI(remote.Service):
 	def company_remove(cls, request):
 		
 		try:
-			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			empresaentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
 			empresaentity.delete()#BORRA
 			message = CodeMessage(code=1, message='Succesfully deleted')
@@ -1275,7 +1275,7 @@ class CompanyAPI(remote.Service):
 	@endpoints.method(Token, CompanyList, path='empresa/list', http_method='POST', name='empresa.list')
 	def company_list(cls, request):
 		try:
-			token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			lista = [] #crea lista para guardar contenido de la BD
 			lstMessage = CompanyList(code = 1) #CREA el mensaje de salida

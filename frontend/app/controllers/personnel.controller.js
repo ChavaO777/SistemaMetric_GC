@@ -247,7 +247,7 @@ function listPersonnel() {
                                                         "<p>" + personnel.stage + "</p>" +
                                                         "<p>" + personnel.specialty + "</p>" +
                                                         "<p>" + personnel.comment + "</p>" +
-                                                        "<p>" + personnel.tariff + " / " + personnel.tariffUnit +"</p>" +
+                                                        "<p>" + personnel.tariff + " MXN / " + personnel.tariffUnit +"</p>" +
                                                         "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
                                                         "<input type='submit' value='Ver detalle'/>" + 
                                                     "</form>" +
