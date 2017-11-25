@@ -33,7 +33,7 @@ function TokenObject() {
     };
 };
 
-function createNewMetricEvent() {
+function createEvent() {
     
     var myDate = $('#date').val();
     var myDays = $('#days').val();
