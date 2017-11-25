@@ -33,8 +33,8 @@ function TokenObject() {
     };
 };
 
-function createEvent() {
-    
+function createNewCompanyEvent() {
+
     var myDate = $('#date').val();
     var myDays = $('#days').val();
     var myPlace = $('#place').val();

@@ -39,7 +39,7 @@ class Event(CustomBaseModel):
     userKey = ndb.KeyProperty(kind = User)
     companyKey = ndb.KeyProperty(kind = Company)
     iD = ndb.StringProperty()
-    date = ndb.DateTimeProperty()
+    date = ndb.DateProperty()
     days = ndb.IntegerProperty()
     place = ndb.StringProperty()
     hidden = ndb.BooleanProperty()
