@@ -694,7 +694,7 @@ class ToolAPI(remote.Service):
 	def tool_list(cls, request):
 		try:
       
-			token = jwt.decode(request.tokenint, 'secret')  #checa token
+			token = jwt.decode(request.token, 'secret')  #checa token
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = ToolList(code = 1) # crea objeto mensaje
@@ -705,12 +705,13 @@ class ToolAPI(remote.Service):
 									   companyKey = i.companyKey.urlsafe(),
 									   iD = i.iD,
 									   category = i.category,
-									   type = i.type,
+									   kind = i.kind,
 									   brand = i.brand,
 									   model = i.model,
-									   pricePerDay = i.pricePerDay,
+									   tariff = i.tariff,
+									   tariffUnit = i.tariffUnit,
 									   quantity = i.quantity,
-									   available = i.available,
+									   availableQuantity = i.availableQuantity,
 									   comment = i.comment,
 									   entityKey = i.entityKey))
 			
