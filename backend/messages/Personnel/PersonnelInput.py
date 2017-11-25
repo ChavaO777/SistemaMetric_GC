@@ -14,4 +14,4 @@ class PersonnelInput(messages.Message):
     specialty = messages.StringField(6)
     comment = messages.StringField(7)
     tariff = messages.FloatField(8)
-    tariffUnit = messages.StringField(9)
+    tariffTimeUnit = messages.StringField(9)

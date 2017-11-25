@@ -27,7 +27,7 @@ class Personnel(CustomBaseModel):
                               'specialty',
                               'comment',
                               'tariff', 
-                              'tariffUnit')
+                              'tariffTimeUnit')
 
     companyKey = ndb.KeyProperty(kind = Company)
     name = ndb.StringProperty()
@@ -36,7 +36,7 @@ class Personnel(CustomBaseModel):
     specialty = ndb.StringProperty()
     comment = ndb.StringProperty()
     tariff = ndb.FloatProperty()
-    tariffUnit = ndb.StringProperty()
+    tariffTimeUnit = ndb.StringProperty()
 
     def personnel_m(self, data, companyKey):
         personnel = Personnel() #Crea una variable de tipo Personnel
