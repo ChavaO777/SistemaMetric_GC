@@ -210,3 +210,34 @@ function getTool() {
         alert(error);
     }
 }
+function deleteTool() {
+    var urlVariables = getURLVariables();
+    var toolKey = urlVariables.toolID;
+    var tool = new Tool();
+    tool.entityKey = toolKey;
+    alert(tool.toString());
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/delete",
+            data: tool.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The tool was successfully deleted.");
+                window.location = "/myTools";
+            },
+            error: function (error) {
+
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+        alert(error);
+    }
+}
