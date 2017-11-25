@@ -36,6 +36,7 @@ function TokenObject() {
 function createNewCompanyEvent() {
 
     var myDate = $('#date').val();
+    alert("myDate = " + myDate);
     var myDays = $('#days').val();
     var myPlace = $('#place').val();
     var myHidden = true;
