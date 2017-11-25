@@ -66,7 +66,7 @@ class Event {
                 },
                 error: function (error) {
                     
-                    alert("Not possible" + error);
+                    console.log("Not possible" + error);
                 }
             });
         }
