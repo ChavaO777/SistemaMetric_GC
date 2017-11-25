@@ -4,7 +4,7 @@ class Tool {
               entityKey,
               companyKey,
               category,
-              type,
+              kind,
               brand,
               model,
               tariff,
@@ -16,18 +16,18 @@ class Tool {
     this.entityKey = entityKey;
     this.companyKey = companyKey;
     this.category = category;
-    this.type = type;
+    this.kind = type;
     this.brand = brand;
     this.model = model;
     this.tariff = tariff;
     this.tariffTimeUnit = tariffTimeUnit;
     this.quantity = quantity;
-    this.available = available;
+    this.availableQuantity = availableQuantity;
     this.comment = comment;
   }
   toString() {
     return JSON.stringify(this);
-  };
+  }
 }
 function TokenObject() {
 
@@ -37,7 +37,7 @@ function TokenObject() {
 
         return JSON.stringify(this);
     };
-};
+}
 function getURLVariables() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
@@ -49,16 +49,14 @@ function createTool() {
   var tool = new Tool();
   tool.id = $('#id').val();
   tool.category = $('#category').val();
-  tool.type = $('#type').val();
+  tool.kind = $('#kind').val();
   tool.brand = $('#brand').val();
   tool.model = $('#model').val();
   tool.tariff = $('#tariff').val();
   tool.tariffTimeUnit = $('#tariffTimeUnit').val();
   tool.quantity = $('#quantity').val();
-  tool.available = $('#available').val();
+  tool.availableQuantity = $('#availableQuantity').val();
   tool.comment = $('#comment').val();
-  alert("debe ser tool: " + tool.toString());
-  return;
   try{
     jQuery.ajax({
         type: "POST",
@@ -123,15 +121,16 @@ function listTools() {
                         // alert(tool);
                         myListTools += "<div class='box'> \n" +
                                         "\t<div class='box-name'>\n" +
-                                        "\t\t<p>" + tool.id + " " + tool.model +"</p>" +
+                                        "\t\t<p>" + tool.model +"</p>" +
                                         "\t</div>" +
                                         "\t<div class='box-content'>\n" +
                                         "\t\t<p>Categoria: " + tool.category + "</p>" +
-                                        "\t\t<p>Tipo: " + tool.type + "</p>" +
+                                        "\t\t<p>Tipo: " + tool.kind + "</p>" +
                                         "\t\t<p>Marca: " + tool.brand + "</p>" +
-                                        "\t\t<p>Costo por dia: " + tool.costPerDay + "</p>" +
+                                        "\t\t<p>Costo por dia: " + tool.tariff + "</p>" +
+                                        "\t\t<p>Costo por dia: " + tool.tariffTimeUnit + "</p>" +
                                         "\t\t<p>Existencias: " + tool.quantity + "</p>" +
-                                        "\t\t<p>Disponibles: " + tool.available + "</p>" +
+                                        "\t\t<p>Disponibles: " + tool.availableQuantity + "</p>" +
                                         "\t\t<p>Comentarios: " + tool.comment + "</p>" +
                                         "\t</div>" +
                                         "</div>";
