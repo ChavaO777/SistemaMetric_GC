@@ -6,7 +6,7 @@ class MessageNone(messages.Message):
 
 class ToolUpdate(messages.Message):
     token = messages.StringField(1, required = True)
-    companyKey = messages.StringField(2, required = True)
+    companyKey = messages.StringField(2, required = False)
     iD = messages.StringField(3)
     category = messages.StringField(4)
     kind = messages.StringField(5)

@@ -267,7 +267,6 @@ function editTool() {
     var urlVariables = getURLVariables();
     var tool = new Tool();
     tool.entityKey = urlVariables.toolID;
-    tool.id = $('#id').val();
     tool.category = $('#category').val();
     tool.kind = $('#kind').val();
     tool.brand = $('#brand').val();
