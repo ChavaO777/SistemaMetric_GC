@@ -970,7 +970,6 @@ class EventAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = EventList(code = 1) # crea objeto mensaje
 			list.append(EventUpdate(token = '',
-									userKey = event.userKey.urlsafe(),
 									iD = event.iD,
 									date = event.date.strftime("%d/%m/%Y"),
 									days = event.days,
@@ -1025,6 +1024,8 @@ class EventAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
+			companyKey = user.companyKey
+			customerEntity = ndb.Key(urlsafe = request.customerKey)
 
 			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
 			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
@@ -1033,8 +1034,17 @@ class EventAPI(remote.Service):
 			eventEntity.delete() #Delete the event
 
 			event = Event()
+			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
+			dateStr = request.date
+			# Split the date into an array of strings e.g.: '2017-11-23' -> ['2017', '11', '23']
+			dateStrArray = dateStr.split("-")
+			# Create a date object with the values from that array
+			date = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
+			#Set the request's date field to None, but pass the recently created date object
+			# as a parameter to event_m()
+			request.date = None
 
-			if event.event_m(request, user.key) == 0: #llama a la funcion declarada en models.py
+			if event.event_m(request, user.key, companyKey, customerEntity, date) == 0: #llama a la funcion declarada en models.py
 				codigo = 1
 			else:
 				codigo = -3
