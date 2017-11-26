@@ -35,6 +35,14 @@ function TokenObject() {
     };
 };
 
+function getURLVariables() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 function createNewCompanyEvent() {
 
     var myDate = $('#date').val();
@@ -145,6 +153,65 @@ function listEvents() {
     }
     catch(error){
 
+        alert(error);
+    }
+}
+
+function getEvent() {
+    try{
+        var urlVariables = getURLVariables();
+        var eventKey = urlVariables.eventID;
+        alert("eventKey = " + eventKey);
+        var myEvent = new Event(token = sessionStorage.event,
+                                      entityKey = eventKey);
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
+            data: myEvent.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Message</p>");
+                $("#singleEvent").empty();
+                totalEvents = response.data;
+                var myEvent = "";
+                var eventCounter = 0;
+                    // console.log(totalEvents);
+                    // Do a forEach even if the array only has one tool
+
+                    totalEvents.forEach(function(event){
+
+                        myEvent += "<div class='hero-element'>" +
+                                            "<div class='hero-content-inner'>" +
+                                                "<form action='/editEvent' method='GET'>" +
+                                                    "<script>getCustomerName('" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                    "<p id=event" + eventCounter + ">Cliente: </p>" + 
+                                                    "<p>Fecha de inicio: " + event.date + "</p>" + 
+                                                    "<p>Duración: " + event.days + " días</p>" + 
+                                                    "<p>Lugar: " + event.place + "</p>" + 
+                                                    "<p>" + event.hidden + "</p>" + 
+                                                    "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
+                                                    "<input type='submit' value='Editar'/>" + 
+                                                "</form>" +
+                                            "</div>" +
+                                        "</div>";
+
+                        eventCounter += 1;
+                    });
+                myEvent +=   "<div class='fixed-buttons'>" +
+                                    "<a onclick='deleteEvent()' class='big-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>" +
+                                "</div>"
+                $("#singleEvent").append(myEvent);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    catch(error){
         alert(error);
     }
 }
