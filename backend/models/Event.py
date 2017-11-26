@@ -33,6 +33,8 @@ class Event(CustomBaseModel):
     _message_fields_schema = ('companyKey',
                               'customerKey',
                               'iD',
+                              'name',
+                              'description',
                               'date',
                               'days',
                               'place',
@@ -41,6 +43,8 @@ class Event(CustomBaseModel):
     companyKey = ndb.KeyProperty(kind = Company)
     customerKey = ndb.KeyProperty(kind = Customer)
     iD = ndb.StringProperty()
+    name = ndb.StringProperty()
+    description = ndb.StringProperty()
     date = ndb.DateProperty()
     days = ndb.IntegerProperty()
     place = ndb.StringProperty()

@@ -974,6 +974,8 @@ class EventAPI(remote.Service):
 			listMessage = EventList(code = 1) # crea objeto mensaje
 			list.append(EventUpdate(token = '',
 									iD = event.iD,
+									name = event.name,
+									description = event.description,
 									date = event.date.strftime("%d/%m/%Y"), #Change date object to string
 									days = event.days,
 									place = event.place,
@@ -1005,6 +1007,8 @@ class EventAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(EventUpdate(token = '',
 										iD = i.iD,
+										name = event.name,
+										description = event.description,
 										date = i.date.strftime("%d/%m/%Y"), #Change date object to string
 										days = i.days,
 										place = i.place,
