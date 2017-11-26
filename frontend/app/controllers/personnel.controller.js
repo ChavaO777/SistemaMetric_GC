@@ -196,6 +196,65 @@ function getPersonnel() {
     }
 }
 
+function getPersonnelData() {
+    
+    try{
+
+        var urlVariables = getURLVariables();
+        var personnelKey = urlVariables.personnelID;
+        alert("personnelKey = " + personnelKey);
+        var myPersonnel = new Personnel(token = sessionStorage.token,
+                                      entityKey = personnelKey);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/get",
+            data: myPersonnel.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Message</p>");
+                totalPersonnel = response.data;
+
+                $("#name").empty();
+                $("#lastName").empty();
+                $("#stage").empty();
+                $("#specialty").empty();
+                $("#tariff").empty();
+                $("#tariffTimeUnit").empty();
+                $("#comment").empty();
+
+                // Do a forEach even if the array only has one customer
+                totalPersonnel.forEach(function(personnel){
+
+                    alert(personnel.toString());
+
+                    $("#name").val(personnel.name);
+                    $("#lastName").val(personnel.lastName);
+                    $("#stage option[value=" + personnel.stage + "]").attr('selected', 'selected');
+                    $("#specialty").val(personnel.specialty);
+                    $("#tariff").val(personnel.tariff);
+                    $("#tariffTimeUnit").val(personnel.tariffTimeUnit);
+                    $("#comment").val(personnel.comment);
+                });
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
 function listPersonnel() {
     
     try{
