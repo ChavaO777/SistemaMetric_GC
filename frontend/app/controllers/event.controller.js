@@ -216,6 +216,45 @@ function getEvent() {
     }
 }
 
+function deleteEvent() {
+    
+    var urlVariables = getURLVariables();
+    var eventKey = urlVariables.eventID;
+
+    var event = new Event();
+    event.entityKey = eventKey;
+
+    alert(event.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/event_api/v1/event/delete",
+            data: event.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The event was successfully deleted.");
+                window.location = "/myEvents";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
+        alert(error);
+    }
+}
+
 function getCustomerName(customerKey, eventCounter){
 
     try{
