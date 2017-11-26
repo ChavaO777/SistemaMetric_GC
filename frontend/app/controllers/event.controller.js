@@ -248,7 +248,6 @@ function deleteEvent() {
             },
             success: function (response) {
                 
-                // $(".msg").html("<p>Herramienta creado</p>");
                 alert("The event was successfully deleted.");
                 window.location = "/myEvents";
             },
@@ -267,7 +266,6 @@ function deleteEvent() {
 function getCustomerName(customerKey, eventCounter){
 
     try{
-        
         // alert("customerKey = " + customerKey);
         var myCustomer = new Customer(token = sessionStorage.token, entityKey = customerKey);
 
