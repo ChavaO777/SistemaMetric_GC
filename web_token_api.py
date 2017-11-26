@@ -931,7 +931,10 @@ class EventAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
 			companyKey = user.companyKey
+			#Get the customer given its entityKey
 			customerEntity = ndb.Key(urlsafe = request.customerKey)
+			#Set to None to avoid problems during the call to event_m (request.customerKey is not a Key; it's a string)
+			request.customerKey = None
 
 			myEvent = Event()
 			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
@@ -944,7 +947,7 @@ class EventAPI(remote.Service):
 			# as a parameter to event_m()
 			request.date = None
 
-			if myEvent.event_m(request, user.key, companyKey, customerEntity, date) == 0:
+			if myEvent.event_m(request, companyKey, customerEntity, date) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -971,7 +974,7 @@ class EventAPI(remote.Service):
 			listMessage = EventList(code = 1) # crea objeto mensaje
 			list.append(EventUpdate(token = '',
 									iD = event.iD,
-									date = event.date.strftime("%d/%m/%Y"),
+									date = event.date.strftime("%d/%m/%Y"), #Change date object to string
 									days = event.days,
 									place = event.place,
 									hidden = event.hidden,
@@ -1002,7 +1005,7 @@ class EventAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(EventUpdate(token = '',
 										iD = i.iD,
-										date = i.date.strftime("%d/%m/%Y"),
+										date = i.date.strftime("%d/%m/%Y"), #Change date object to string
 										days = i.days,
 										place = i.place,
 										hidden = i.hidden,
@@ -1023,7 +1026,6 @@ class EventAPI(remote.Service):
 	def event_update(cls, request):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
-			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 			companyKey = user.companyKey
 			customerEntity = ndb.Key(urlsafe = request.customerKey)
 
@@ -1044,7 +1046,7 @@ class EventAPI(remote.Service):
 			# as a parameter to event_m()
 			request.date = None
 
-			if event.event_m(request, user.key, companyKey, customerEntity, date) == 0: #llama a la funcion declarada en models.py
+			if event.event_m(request, companyKey, customerEntity, date) == 0: #llama a la funcion declarada en models.py
 				codigo = 1
 			else:
 				codigo = -3

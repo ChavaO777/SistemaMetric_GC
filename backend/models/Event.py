@@ -46,7 +46,7 @@ class Event(CustomBaseModel):
     place = ndb.StringProperty()
     hidden = ndb.BooleanProperty()
 
-    def event_m(self, data, userKey, companyKey, customerKey, eventDate):
+    def event_m(self, data, companyKey, customerKey, eventDate):
         event = Event() #Crea una variable de tipo Event
         event.populate(data) #Llena la variables con los datos dados por el request en main.py
         event.companyKey = companyKey #Set the company key
