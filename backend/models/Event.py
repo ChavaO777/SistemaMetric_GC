@@ -30,14 +30,14 @@ class CustomBaseModel(EndpointsModel):
 
 #### Event ####
 class Event(CustomBaseModel):
-    _message_fields_schema = ('userKey', 
+    _message_fields_schema = ('companyKey',
+                              'customerKey',
                               'iD',
                               'date',
                               'days',
                               'place',
                               'hidden')
 
-    userKey = ndb.KeyProperty(kind = User)
     companyKey = ndb.KeyProperty(kind = Company)
     customerKey = ndb.KeyProperty(kind = Customer)
     iD = ndb.StringProperty()
@@ -49,7 +49,6 @@ class Event(CustomBaseModel):
     def event_m(self, data, userKey, companyKey, customerKey, eventDate):
         event = Event() #Crea una variable de tipo Event
         event.populate(data) #Llena la variables con los datos dados por el request en main.py
-        event.userKey = userKey #Set the user key
         event.companyKey = companyKey #Set the company key
         event.customerKey = customerKey #Set the customer key
         event.date = eventDate #Insert the date
