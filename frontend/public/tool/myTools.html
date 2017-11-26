@@ -22,8 +22,8 @@
 		</div>
 		<div class="nav">
 			<a href="/">Inicio</a>
-			<a href="cotizaciones.html">Cotizaciones</a>
-			<a href="#">Eventos</a>
+			<a href="#">Cotizaciones</a>
+			<a href="/myEvents">Eventos</a>
 			<a href="/myPersonnel" >Personal</a>
 			<a href="/myCustomers">Clientes</a>
 			<a href="#" class="active">Herramientas</a>
@@ -41,7 +41,7 @@
 		<div class="hero-title">
 			Herramientas
 		</div>
-		<div id="listTools">
+		<div class="hero-content" id="listTools">
 		</div>
 	</div>
 	<div class="modal" id='formID'>
@@ -52,15 +52,15 @@
 			</div>
 			<div class="modal-form">
 				<p>Id: 9876</p>
-				<input type="text" class="input-50" placeholder="Categoria" name="category">
-				<input type="text" class="input-50" placeholder="Tipo" name="type">
-				<input type="text" class="input-50" placeholder="Marca" name="brand">
-				<input type="text" class="input-50" placeholder="Modelo" name="model">
-				<input type="number" class="input-50" placeholder="Precio" name="tariff">
-				<input type="text" class="input-50" placeholder="Unidad de tiempo" name="tariffTimeUnit">
-				<input type="number" class="input-50" placeholder="Existencias" name="quantity">
-				<input type="number" class="input-50" placeholder="Disponibles" name="available">
-				<input type="text" class="input-50" placeholder="Comentarios" name="comment">
+				<input type="text" class="input-50" placeholder="Categoria" id="category">
+				<input type="text" class="input-50" placeholder="Tipo" id="kind">
+				<input type="text" class="input-50" placeholder="Marca" id="brand">
+				<input type="text" class="input-50" placeholder="Modelo" id="model">
+				<input type="number" class="input-50" placeholder="Precio" id="tariff">
+				<input type="text" class="input-50" placeholder="Unidad de tiempo" id="tariffTimeUnit">
+				<input type="number" class="input-50" placeholder="Existencias" id="quantity">
+				<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
+				<input type="text" class="input-50" placeholder="Comentarios" id="comment">
 				<span class="submit">
 					<a href="javascript:createTool();" class="btn-rectangle btn-green">Aceptar</a>
 				</span>

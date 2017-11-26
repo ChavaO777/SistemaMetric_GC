@@ -6,9 +6,12 @@
 	<title>Metric Producciones</title>
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" href="/css/main.css">
+
+	<script src="../app/controllers/event.controller.js"></script>
+
 </head>
-<body>
+<body onload="getEvent()">
 
 	<div class="bg">
 	</div>
@@ -21,46 +24,26 @@
 		</div>
 		<div class="nav">
 			<a href="/">Inicio</a>
-			<a href="cotizaciones.html">Cotizaciones</a>
-			<a href="/myEvents">Eventos</a>	
-			<a href="/myPersonnel" >Personal</a>
-			<a href="#">Clientes</a>
-			<a href="#">Herramientas</a>
-			<a href="#" class="active">Cotizadores</a>
+			<a href="#">Cotizaciones</a>
+			<a href="/myEvents">Eventos</a>
+			<a href="/myPersonnel">Personal</a>
+			<a href="/myCustomers" class="active">Clientes</a>
+			<a href="/myTools">Herramientas</a>
+			<a href="#">Cotizadores</a>
 		</div>
 		<a href="#" class="back btn btn-red">Cerrar sesión</a>
 	</div>
 
-	<div class="search">
-		<i class="fa fa-search" aria-hidden="true"></i>
-		<input type="text" placeholder="buscar...">
-	</div>
-
 	<div class="content">
-		<div class="box">
-			<div class="box-name">
-				<p>Miguel Allende</p>
+		<div class="hero">
+			<div class="hero-title">
+				Evento
 			</div>
-			<div class="box-content">
-				<p>Puebla</p>
-			</div>
-		</div>
-		<div class="box">
-			<div class="box-name">
-				<p>John Doe</p>
-			</div>
-			<div class="box-content">
-				<p>CDMX</p>
+			<div class="hero-content" id="singleEvent">
 			</div>
 		</div>
-	</div>
 
-	<div class="fixed-buttons">
-		<a href="#" class="small-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
-		<a href="agregarCotizador.html" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
-	</div>
-	
-	<div id="notifications" class="btn-rectangle btn-green">
+	<div id="notifications" class="btn btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
 	</div>
 
@@ -82,6 +65,14 @@
 		    	$('.menu .back').css("display", "block");
 		    	$('.menu .nav').css("display", "block");
 		    });
+
+		    /*
+		    $('.menu .nav a').click(function(){
+		    	$('.nav').css("opacity", "0");
+		    	$('.back').css("opacity", "0");
+		    	$('.menu').css("background", "transparent");
+		    });
+		    */
 		});
 	</script>
 </body>

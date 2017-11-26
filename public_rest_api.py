@@ -191,6 +191,89 @@ class EditPersonnelHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+######### TOOL HANDLERS ########
+class MyToolsHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/myTools.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+class ToolHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/tool.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+class AddToolHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/tool/addTool.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+
+######### EVENT HANDLERS ########
+class MyEventsHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/event/myEvents.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
+class EventHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/event/event.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
 class UpHandler(webapp2.RequestHandler):
 
     def _get_urls_for(self, file_name):
@@ -229,58 +312,7 @@ class UpHandler(webapp2.RequestHandler):
         key = self._get_urls_for(file_name)
         self.response.write(key)
 
-######### TOOL HANDLERS ########
-class MyToolsHandler(webapp2.RequestHandler):
 
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/tool/myTools.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
-class AddToolHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/tool/addTool.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
-
-######### EVENT HANDLERS ########
-class EventHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/event/event.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
-    
 ######### ROUTES ########
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -298,8 +330,9 @@ app = webapp2.WSGIApplication([
     ######## TOOL ########
     ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
+    ('/tool', ToolHandler),
     ######## EVENT ########
-    # ('/myEvents', MyEventsHandler),
+    ('/myEvents', MyEventsHandler),
     ('/event', EventHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
