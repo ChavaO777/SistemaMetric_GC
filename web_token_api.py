@@ -931,8 +931,8 @@ class EventAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
 			companyKey = user.companyKey
-			#Get the customer given its entityKey
-			customerEntity = ndb.Key(urlsafe = request.customerKey)
+			#Get the key object given its the customer key
+			customerKeyObj = ndb.Key(urlsafe = request.customerKey)
 			#Set to None to avoid problems during the call to event_m (request.customerKey is not a Key; it's a string)
 			request.customerKey = None
 
@@ -947,7 +947,7 @@ class EventAPI(remote.Service):
 			# as a parameter to event_m()
 			request.date = None
 
-			if myEvent.event_m(request, companyKey, customerEntity, date) == 0:
+			if myEvent.event_m(request, companyKey, customerKeyObj, date) == 0:
 				codigo = 1
 			else:
 				codigo = -3
