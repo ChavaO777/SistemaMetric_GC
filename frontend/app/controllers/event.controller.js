@@ -4,6 +4,8 @@ class Event {
                 entityKey,
                 companyKey, 
                 customerKey,
+                name,
+                description,
                 date, 
                 days, 
                 place, 
@@ -13,6 +15,8 @@ class Event {
         this.entityKey = entityKey;
         this.companyKey = companyKey;
         this.customerKey = customerKey;
+        this.name = name;
+        this.description = description;
         this.date = date;
         this.days = days;
         this.place = place;
@@ -45,6 +49,8 @@ function getURLVariables() {
 
 function createNewCompanyEvent() {
 
+    var myName = $('#name').val();
+    var myDescription = $('#description').val();
     var myDate = $('#date').val();
     var myDays = $('#days').val();
     var myPlace = $('#place').val();
@@ -52,6 +58,8 @@ function createNewCompanyEvent() {
     var myHidden = true;
 
     var event = new Event();
+    event.name = myName;
+    event.description = myDescription;
     event.date = myDate;
     event.days = myDays;
     event.place = myPlace;
@@ -129,6 +137,7 @@ function listEvents() {
                                             "<div class='hero-content-inner'>" +
                                                 "<form action='/event' method='GET'>" +
                                                     "<script>getCustomerName('" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                    "<p><bold>"+event.name+"</bold></p>" + 
                                                     "<p id=event" + eventCounter + ">Cliente: </p>" + 
                                                     "<p>Fecha de inicio: " + event.date + "</p>" + 
                                                     "<p>Duración: " + event.days + " días</p>" + 
