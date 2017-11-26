@@ -1007,8 +1007,8 @@ class EventAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(EventUpdate(token = '',
 										iD = i.iD,
-										name = event.name,
-										description = event.description,
+										name = i.name,
+										description = i.description,
 										date = i.date.strftime("%d/%m/%Y"), #Change date object to string
 										days = i.days,
 										place = i.place,
