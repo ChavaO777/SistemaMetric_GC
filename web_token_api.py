@@ -931,7 +931,7 @@ class EventAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
 			companyKey = user.companyKey
-			#Get the key object given its the customer key
+			#Get the key object given the customer key
 			customerKeyObj = ndb.Key(urlsafe = request.customerKey)
 			#Set to None to avoid problems during the call to event_m (request.customerKey is not a Key; it's a string)
 			request.customerKey = None
