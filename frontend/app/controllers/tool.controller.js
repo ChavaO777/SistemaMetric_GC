@@ -127,8 +127,8 @@ function listTools() {
                                         "\t\t<p>Tipo: " + tool.kind + "</p>" +
                                         "\t\t<p>Marca: " + tool.brand + "</p>" +
                                         "\t\t<p>Modelo: " + tool.model + "</p>" +
-                                        "\t\t<p>Costo por dia: " + tool.tariff + "</p>" +
-                                        "\t\t<p>Costo por dia: " + tool.tariffTimeUnit + "</p>" +
+                                        "\t\t<p>Costo: " + tool.tariff + "</p>" +
+                                        "\t\t<p>Por: " + (tool.tariffTimeUnit == 'day' ? 'Dia' : 'Hora') + "</p>" +
                                         "\t\t<p>Existencias: " + tool.quantity + "</p>" +
                                         "\t\t<p>Disponibles: " + tool.availableQuantity + "</p>" +
                                         "\t\t<p>Comentarios: " + tool.comment + "</p>" +
@@ -208,8 +208,8 @@ function getTool() {
                                     "\t\t<p>Tipo: " + tool.kind + "</p>" +
                                     "\t\t<p>Marca: " + tool.brand + "</p>" +
                                     "\t\t<p>Modelo: " + tool.model + "</p>" +
-                                    "\t\t<p>Costo por dia: " + tool.tariff + "</p>" +
-                                    "\t\t<p>Costo por dia: " + tool.tariffTimeUnit + "</p>" +
+                                    "\t\t<p>Costo: " + tool.tariff + "</p>" +
+                                    "\t\t<p>Por: " + (tool.tariffTimeUnit == 'day' ? 'Dia' : 'Hora') + "</p>" +
                                     "\t\t<p>Existencias: " + tool.quantity + "</p>" +
                                     "\t\t<p>Disponibles: " + tool.availableQuantity + "</p>" +
                                     "\t\t<p>Comentarios: " + tool.comment + "</p>" +
