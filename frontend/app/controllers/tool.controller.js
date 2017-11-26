@@ -178,7 +178,7 @@ function getTool() {
                 $("#brand").empty();
                 $("#model").empty();
                 $("#tariff").empty();
-                $("#tariffTimeUnit").empty();
+                //$("#tariffTimeUnit").empty();
                 $("#quantity").empty();
                 $("#availableQuantity").empty();
                 $("#comment").empty();
@@ -193,7 +193,7 @@ function getTool() {
                   $("#brand").val(tool.brand);
                   $("#model").val(tool.model);
                   $("#tariff").val(tool.tariff);
-                  $("#tariffTimeUnit").val(tool.tariffTimeUnit);
+                  $("#tariffTimeUnit option[value=" + tool.tariffTimeUnit + "]").attr('selected', 'selected');
                   $("#quantity").val(tool.quantity);
                   $("#availableQuantity").val(tool.availableQuantity);
                   $("#comment").val(tool.comment);
@@ -233,15 +233,15 @@ function getTool() {
 }
 function deleteTool() {
     var urlVariables = getURLVariables();
-    var personnelKey = urlVariables.personnelID;
-    var personnel = new Tool();
-    personnel.entityKey = personnelKey;
-    alert(personnel.toString());
+    var toolKey = urlVariables.toolID;
+    var tool = new Tool();
+    tool.entityKey = toolKey;
+    alert(tool.toString());
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/delete",
-            data: personnel.toString(),
+            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/delete",
+            data: tool.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
@@ -249,8 +249,8 @@ function deleteTool() {
             },
             success: function (response) {
                 // $(".msg").html("<p>Herramienta creado</p>");
-                alert("The personnel was successfully deleted.");
-                window.location = "/myTool";
+                alert("The tool was successfully deleted.");
+                window.location = "/myTools";
             },
             error: function (error) {
 
