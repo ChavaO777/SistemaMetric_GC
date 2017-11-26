@@ -7,8 +7,8 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" href="/css/main.css">
+	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
 
-	<script src="../app/controllers/tool.controller.js"></script>
 
 </head>
 <body onload="getTool()">
@@ -42,7 +42,34 @@
 			<div class="hero-content" id="singleTool">
 			</div>
 		</div>
-
+		<div class="modal" id='formID'>
+			<div class="modal-content">
+				<span class="modal-close" onclick="javascript:hideForm();">X</span>
+				<div class="modal-header">
+					Nueva Herramienta
+				</div>
+				<div class="modal-form">
+					<input type='hidden' id="id">
+					<input type="text" class="input-50" placeholder="Categoria" id="category">
+					<input type="text" class="input-50" placeholder="Tipo" id="kind">
+					<input type="text" class="input-50" placeholder="Marca" id="brand">
+					<input type="text" class="input-50" placeholder="Modelo" id="model">
+					<input type="number" class="input-50" placeholder="Precio" id="tariff">
+					<input type="text" class="input-50" placeholder="Unidad de tiempo" id="tariffTimeUnit">
+					<input type="number" class="input-50" placeholder="Existencias" id="quantity">
+					<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
+					<input type="text" class="input-50" placeholder="Comentarios" id="comment">
+					<span class="submit">
+						<a href="javascript:editTool();" class="btn-rectangle btn-green">Aceptar</a>
+					</span>
+					<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+				</div>
+			</div>
+		</div>
+		<div class="fixed-buttons">
+			<a href="javascript:showForm();" class="big-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
+			<a href="javascript:deleteTool();" class='small-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>
+		</div>
 	<div id="notifications" class="btn btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
 	</div>
@@ -74,6 +101,15 @@
 		    });
 		    */
 		});
+		function hideForm() {
+			var elem = document.getElementById('formID');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('formID');
+			$(elem).show();
+		}
+		hideForm();
 	</script>
 </body>
 </html>
