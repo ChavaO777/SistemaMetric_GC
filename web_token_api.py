@@ -199,18 +199,37 @@ class QuotationAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 
-			# Hacky fix to avoid duplicates -> Delete the quotation and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
-			quotationEntity.delete() #Delete the quotation
+			quotationKeyObj = ndb.Key(urlsafe = request.entityKey)
+			quotationEntity = quotationKeyObj.get()
+			
+			#replace attributes with those of the request
+			quotationEntity.userKey = user.key
 
-			quotation = Quotation()
+			eventKeyObj = ndb.Key(urlsafe = request.eventKey)
+			quotationEntity.eventKey = eventKeyObj
 
-			if quotation.quotation_m(request, user.key) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
+			quotationEntity.iD = request.iD
 
-			else:
-				codigo = -3
+			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
+			dateStr = request.date
+			# Split the date into an array of strings e.g.: '2017-11-23' -> ['2017', '11', '23']
+			dateStrArray = dateStr.split("-")
+			# Create a date object with the values from that array -> datetime(year, month, day)
+			date = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
+			# Finally, place the new date in the entity
+			quotationEntity.date = date
+
+			quotationEntity.isFinal = request.isFinal
+			quotationEntity.subtotal = request.subtotal
+			quotationEntity.revenueFactor = request.revenueFactor
+			quotationEntity.iva = request.iva
+			quotationEntity.discount = request.discount
+			quotationEntity.total = request.total
+			quotationEntity.metricPlus = request.metricPlus
+			quotationEntity.version = request.version
+
+			#Save the changes in the Event entity in the DB
+			quotationEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The quotation has been updated')
 		except jwt.DecodeError:
