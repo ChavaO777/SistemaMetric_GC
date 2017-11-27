@@ -487,17 +487,20 @@ class AdditionalExpenseAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			# Hacky fix to avoid duplicates -> Delete the additional expense and then insert a new one. TO DO: fix this!!
-			additionalExpenseEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
-			additionalExpenseEntity.delete() #Delete the additional expense
-			additionalExpense = AdditionalExpense()
+			
+			additionalExpenseKeyObj = ndb.Key(urlsafe = request.entityKey)
+			additionalExpenseEntity = additionalExpenseKeyObj.get()
+			
+			#replace attributes with those of the request
+			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
+			additionalExpenseEntity.quotationKey = quotationKeyObj
 
-			if additionalExpense.additionalExpense_m(request, user.key) == 0: #llama a la funcion declarada en models.py en
-				codigo = 1
+			additionalExpenseEntity.description = description
+			additionalExpenseEntity.price = price
+			additionalExpenseEntity.comment = comment
 
-			else:
-				codigo = -3
+			#Save the changes in the AdditionalExpense entity in the DB
+			additionalExpenseEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The additional expense has been updated')
 		except jwt.DecodeError:
