@@ -900,18 +900,21 @@ class PersonnelAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 			companyKey = user.companyKey
 
-			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			personnelEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
-			personnel = Personnel.get_by_id(personnelEntity.id()) #get the personnel
-			personnelEntity.delete() #Delete the tool
+			personnelKeyObj = ndb.Key(urlsafe = request.entityKey)
+			personnelEntity = personnelKeyObj.get()
+			
+			#replace attributes with those of the request
+			personnelEntity.companyKey = companyKey
+			personnelEntity.name = request.name
+			personnelEntity.lastName = request.lastName
+			personnelEntity.stage = request.stage
+			personnelEntity.specialty = request.specialty
+			personnelEntity.comment = request.comment
+			personnelEntity.tariff = request.tariff
+			personnelEntity.tariffTimeUnit = request.tariffTimeUnit
 
-			personnel = Personnel()
-
-			if personnel.personnel_m(request, companyKey) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
-			else:
-				codigo = -3
+			#Save the changes in the Personnel entity in the DB
+			personnelEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The personnel has been successfully updated')
 
