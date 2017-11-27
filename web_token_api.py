@@ -228,7 +228,7 @@ class QuotationAPI(remote.Service):
 			quotationEntity.metricPlus = request.metricPlus
 			quotationEntity.version = request.version
 
-			#Save the changes in the Event entity in the DB
+			#Save the changes in the Quotation entity in the DB
 			quotationEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The quotation has been updated')
