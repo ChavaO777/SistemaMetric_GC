@@ -605,19 +605,19 @@ class CustomerAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 			companyKey = user.companyKey
 
-			# Hacky fix to avoid duplicates -> Delete the customer and then insert a new one. TO DO: fix this!!
-			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			customerEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
-			customer = Customer.get_by_id(customerEntity.id()) #obtiene usuario
-			customerEntity.delete() #Delete the customer
+			customerKeyObj = ndb.Key(urlsafe = request.entityKey)
+			customerEntity = customerKeyObj.get()
+			
+			#replace attributes with those of the request
+			customerEntity.companyKey = companyKey
+			customerEntity.email = request.email
+			customerEntity.name = request.name
+			customerEntity.lastName = request.lastName
+			customerEntity.rfc = request.rfc
+			customerEntity.phone = request.phone
 
-			customer = Customer()
-
-			if customer.customer_m(request, companyKey) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
-
-			else:
-				codigo = -3
+			#Save the changes in the Customer entity in the DB
+			customerEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The customer has been updated')
 
@@ -756,17 +756,17 @@ class ToolAPI(remote.Service):
 			toolEntity = toolKeyObj.get()
 			
 			#replace attributes with those of the request
-			toolEntity.companyKey = companyKey;
-			toolEntity.iD = request.iD;
-			toolEntity.category = request.category;
-			toolEntity.kind = request.kind;
-			toolEntity.brand = request.brand;
-			toolEntity.model = request.model;
-			toolEntity.tariff = request.tariff;
-			toolEntity.tariffTimeUnit = request.tariffTimeUnit;
-			toolEntity.quantity = request.quantity;
-			toolEntity.availableQuantity = request.availableQuantity;
-			toolEntity.comment = request.comment;
+			toolEntity.companyKey = companyKey
+			toolEntity.iD = request.iD
+			toolEntity.category = request.category
+			toolEntity.kind = request.kind
+			toolEntity.brand = request.brand
+			toolEntity.model = request.model
+			toolEntity.tariff = request.tariff
+			toolEntity.tariffTimeUnit = request.tariffTimeUnit
+			toolEntity.quantity = request.quantity
+			toolEntity.availableQuantity = request.availableQuantity
+			toolEntity.comment = request.comment
 
 			#Save the changes in the Tool entity in the DB
 			toolEntity.put()
