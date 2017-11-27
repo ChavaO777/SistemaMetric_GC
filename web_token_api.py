@@ -1339,12 +1339,16 @@ class CompanyAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py
-			myCompany = Company()
 
-			if myCompany.company_m(request) == 0:#llama a la funcion declarada en models.py
-				codigo = 1
-			else:
-				codigo = -3
+			companyKeyObj = ndb.Key(urlsafe = request.entityKey)
+			companyEntity = companyKeyObj.get()
+			
+			#replace attributes with those of the request
+			companyEntity.code = request.code
+			companyEntity.name = request.name
+
+			#Save the changes in the Company entity in the DB
+			companyEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The company was successfully updated')
 		except jwt.DecodeError:
