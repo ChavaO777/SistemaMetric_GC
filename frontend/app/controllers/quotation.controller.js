@@ -1,34 +1,37 @@
-function Personnel(userKey, 
-                   eventKey,
-                   iD,
-                   date,
-                   isFinal,
-                   subtotal,
-                   revenueFactor,
-                   iva,
-                   discount,
-                   total,
-                   metricPlus,
-                   version){
+class Quotation {
+    
+    constructor(userKey, 
+                eventKey,
+                iD,
+                date,
+                isFinal,
+                subtotal,
+                revenueFactor,
+                iva,
+                discount,
+                total,
+                metricPlus,
+                version) {
 
-    this.userKey = userKey;
-    this.eventKey = eventKey;
-    this.iD = iD;
-    this.date = date;
-    this.isFinal = isFinal;
-    this.subtotal = subtotal;
-    this.revenueFactor = revenueFactor;
-    this.iva = iva;
-    this.discount = discount;
-    this.total = total;
-    this.metricPlus = metricPlus;
-    this.version = version;
+        this.userKey = userKey;
+        this.eventKey = eventKey;
+        this.iD = iD;
+        this.date = date;
+        this.isFinal = isFinal;
+        this.subtotal = subtotal;
+        this.revenueFactor = revenueFactor;
+        this.iva = iva;
+        this.discount = discount;
+        this.total = total;
+        this.metricPlus = metricPlus;
+        this.version = version;
+    }
 
-    this.toString() = function() {
-
+    toString(){
+        
         return JSON.stringify(this);
     };
-};
+}
 
 function TokenObject() {
     
@@ -115,8 +118,9 @@ function listQuotations() {
                         myQuotationsList += "<div class='hero-element'>" +
                                                 "<div class='hero-content-inner'>" +
                                                     "<form action='/quotation' method='GET'>" +
-                                                        "<script>getEventName('" + quotation.eventKey + "'," + quotationCounter + ")</script>" +
-                                                        "<p id=quotation" + quotationCounter + "></p>" + 
+                                                        "<script>getCompanyEventName('" + quotation.eventKey + "'," + quotationCounter + ")</script>" +
+                                                        "<p id=companyEvent" + quotationCounter + "></p>" + 
+                                                        "<p id=customer" + quotationCounter + "></p>" + 
                                                         "<p>ID: " + quotation.iD + "</p>" +
                                                         "<p>Fecha: " + quotation.date + "</p>" + 
                                                         "<p>Versión final: " + quotation.isFinal + "</p>" + 
@@ -158,43 +162,87 @@ function getURLVariables() {
     return vars;
 }
 
-function getEventName(companyEventKey, counter){
+function getCompanyEventName(companyEventKey, counter){
     
-        try{
-            // alert("companyEventKey = " + companyEventKey);
-            var myCompanyEvent = new CompanyEvent(token = sessionStorage.token, entityKey = companyEventKey);
-    
-            jQuery.ajax({
-                type: "POST",
-                url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
-                data: myCompanyEvent.toString(),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                before: function(){
-                    
-                    // $(".msg").html("<p>Esperando respuesta...</p>");
-                },
-                success: function (response) {
-                    
-                    // $(".msg").html("<p>Message</p>");
-    
-                    totalEvents = response.data;
-                    $("#quotation" + counter).empty();
-    
-                    // Do a forEach even if the array only has one event
-                    totalEvents.forEach(function(event){
-    
-                        $("#quotation" + counter).append("Evento: " + event.name);
-                    });
-                },
-                error: function (error) {
-                    
-                    alert(error);
-                }
-            });
-        }
-        catch(error){
-            
-            alert(error);
-        }
+    try{
+        // alert("companyEventKey = " + companyEventKey);
+        var myCompanyEvent = new CompanyEvent(token = sessionStorage.token, entityKey = companyEventKey);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
+            data: myCompanyEvent.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Message</p>");
+
+                totalEvents = response.data;
+                $("#companyEvent" + counter).empty();
+
+                // Do a forEach even if the array only has one event
+                totalEvents.forEach(function(event){
+
+                    $("#companyEvent" + counter).append("Evento: " + event.name);
+                    getCustomerName(event.customerKey, counter);
+                });
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
     }
+    catch(error){
+        
+        alert(error);
+    }
+}
+
+function getCustomerName(customerKey, counter){
+    
+    try{
+        // alert("customerKey = " + customerKey);
+        var myCustomer = new Customer();
+        myCustomer.token = sessionStorage.token;
+        myCustomer.entityKey = customerKey;
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            data: myCustomer.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Message</p>");
+
+                totalCustomers = response.data;
+                $("#customer" + counter).empty();
+
+                // Do a forEach even if the array only has one customer
+                totalCustomers.forEach(function(customer){
+
+                    $("#customer" + counter).append("Cliente: " + customer.name + " " + customer.lastName);
+                });
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+        
+        alert(error);
+    }
+}

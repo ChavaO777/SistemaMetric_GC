@@ -136,7 +136,7 @@ function listEvents() {
                         myListEvents += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
                                                 "<form action='/event' method='GET'>" +
-                                                    "<script>getCustomerName('" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                    "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
                                                     "<p><bold>"+event.name+"</bold></p>" + 
                                                     "<p id=event" + eventCounter + ">Cliente: </p>" + 
                                                     "<p>Fecha de inicio: " + event.date + "</p>" + 
@@ -196,7 +196,7 @@ function getEvent() {
                         myEvent += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
                                                 "<form action='/editEvent' method='GET'>" +
-                                                    "<script>getCustomerName('" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                    "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
                                                     "<p id=event" + eventCounter + ">Cliente: </p>" + 
                                                     "<p>Fecha de inicio: " + event.date + "</p>" + 
                                                     "<p>Duración: " + event.days + " días</p>" + 
@@ -263,7 +263,7 @@ function deleteEvent() {
     }
 }
 
-function getCustomerName(customerKey, eventCounter){
+function getCustomerName(idPrefix, customerKey, eventCounter){
 
     try{
         // alert("customerKey = " + customerKey);
@@ -284,12 +284,12 @@ function getCustomerName(customerKey, eventCounter){
                 // $(".msg").html("<p>Message</p>");
 
                 totalCustomers = response.data;
-                $("#event" + eventCounter).empty();
+                $("#" + idPrefix + eventCounter).empty();
 
                 // Do a forEach even if the array only has one customer
                 totalCustomers.forEach(function(customer){
 
-                    $("#event" + eventCounter).append("Cliente: " + customer.name + " " + customer.lastName);
+                    $("#" + idPrefix + eventCounter).append("Cliente: " + customer.name + " " + customer.lastName);
                 });
             },
             error: function (error) {
