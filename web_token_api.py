@@ -688,7 +688,6 @@ class ToolAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = ToolList(code = 1) # crea objeto mensaje
 			list.append(ToolUpdate(token = '',
-								   companyKey = tool.companyKey.urlsafe(),
 								   iD = tool.iD,
 								   category = tool.category,
 								   kind = tool.kind,
@@ -724,7 +723,6 @@ class ToolAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(ToolUpdate(token = '',
-									   companyKey = i.companyKey.urlsafe(),
 									   iD = i.iD,
 									   category = i.category,
 									   kind = i.kind,
@@ -754,19 +752,24 @@ class ToolAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 			companyKey = user.companyKey
 
-			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			toolEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
-			tool = Tool.get_by_id(toolEntity.id()) #get the tool
-			toolEntity.delete() #Delete the tool
+			toolKeyObj = ndb.Key(urlsafe = request.entityKey)
+			toolEntity = toolKeyObj.get()
+			
+			#replace attributes with those of the request
+			toolEntity.companyKey = companyKey;
+			toolEntity.iD = request.iD;
+			toolEntity.category = request.category;
+			toolEntity.kind = request.kind;
+			toolEntity.brand = request.brand;
+			toolEntity.model = request.model;
+			toolEntity.tariff = request.tariff;
+			toolEntity.tariffTimeUnit = request.tariffTimeUnit;
+			toolEntity.quantity = request.quantity;
+			toolEntity.availableQuantity = request.availableQuantity;
+			toolEntity.comment = request.comment;
 
-			tool = Tool()
-
-			if tool.tool_m(request, companyKey) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
-
-			else:
-				codigo = -3
+			#Save the changes in the Tool entity in the DB
+			toolEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The tool has been successfully updated')
 
