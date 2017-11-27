@@ -274,6 +274,22 @@ class EventHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+class MyQuotationsHandler(webapp2.RequestHandler):
+
+    def get(self):
+
+        template_context = {}
+        self.response.out.write(
+            self._render_template('./frontend/public/quotation/myQuotations.html', template_context))
+
+    def _render_template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        template = jinja_env.get_template(template_name)
+
+        return template.render(context)
+
 class UpHandler(webapp2.RequestHandler):
 
     def _get_urls_for(self, file_name):
@@ -334,6 +350,8 @@ app = webapp2.WSGIApplication([
     ######## EVENT ########
     ('/myEvents', MyEventsHandler),
     ('/event', EventHandler),
+    ######## QUOTATION ########
+    ('/myQuotations', MyQuotationsHandler),
     ######## UPLOAD #########
     ('/up', UpHandler)
 ], debug = True)

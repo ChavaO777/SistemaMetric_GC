@@ -7,11 +7,11 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-
-	<script src="../app/controllers/customer.controller.js"></script>
-
+	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
+	<script type="text/javascript" src="../app/models/customer.model.js"></script>
+	<script type="text/javascript" src="../app/models/companyEvent.model.js"></script>
 </head>
-<body onload="getCustomerData()">
+<body onload="listQuotations()">
 
 	<div class="bg">
 	</div>
@@ -25,10 +25,10 @@
 		<div class="nav">
 			<a href="/">Inicio</a>
 			<a href="/myQuotations">Cotizaciones</a>
-			<a href="/myEvents">Eventos</a>	
-			<a href="/myPersonnel">Personal</a>
-			<a href="/myCustomers" class="active">Clientes</a>
-			<a href="#">Herramientas</a>
+			<a href="/myEvents">Eventos</a>
+			<a href="/myPersonnel" >Personal</a>
+			<a href="/myCustomers">Clientes</a>
+			<a href="#" class="active">Herramientas</a>
 			<a href="#">Cotizadores</a>
 		</div>
 		<a href="#" class="back btn btn-red">Cerrar sesión</a>
@@ -40,39 +40,34 @@
 	</div>
 
 	<div class="content">
-		<div class="box">
-			<div class="box-name">
-				<p>Miguel Allende</p>
-			</div>
-			<div class="box-content">
-				<p>Puebla</p>
-			</div>
+		<div class="hero-title">
+			Cotizaciones
 		</div>
-		<div class="box">
-			<div class="box-name">
-				<p>John Doe</p>
-			</div>
-			<div class="box-content">
-				<p>CDMX</p>
-			</div>
+		<div class="hero-content" id="quotationsList"> 
 		</div>
 	</div>
-
-	<div class="modal">
+	<div class="modal" id='formID'>
 		<div class="modal-content">
-			<span class="modal-close">X</span>
+			<span class="modal-close" onclick="javascript:hideForm();">X</span>
 			<div class="modal-header">
-				Editar cliente
+				Nueva Cotización
 			</div>
 			<div class="modal-form">
-				<!-- <p>Id: 9876</p> -->
-				<input type="text" class="input-50" id="name" placeholder="Nombre">
-				<input type="text" class="input-50" id="lastName" placeholder="Apellidos">
-				<input type="email" class="input-50" id="email" placeholder="Correo electrónico">
-				<input type="text" class="input-50" id="rfc" placeholder="RFC">
-				<input type="text" class="input-50" id="phone" placeholder="Teléfono">
+				<p>Id: 9876</p>
+				<input type="text" class="input-50" placeholder="Categoria" id="category">
+				<input type="text" class="input-50" placeholder="Tipo" id="kind">
+				<input type="text" class="input-50" placeholder="Marca" id="brand">
+				<input type="text" class="input-50" placeholder="Modelo" id="model">
+				<input type="number" class="input-50" placeholder="Precio" id="tariff">
+				<select id="tariffTimeUnit">
+					<option value="hour">Por hora</option>
+					<option value="day">Por día</option>
+				</select>
+				<input type="number" class="input-50" placeholder="Existencias" id="quantity">
+				<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
+				<input type="text" class="input-50" placeholder="Comentarios" id="comment">
 				<span class="submit">
-					<a onclick="editCustomer()" class="btn-rectangle btn-green">Guardar cambios</a>
+					<a href="javascript:createQuotation();" class="btn-rectangle btn-green">Aceptar</a>
 				</span>
 				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
 			</div>
@@ -81,9 +76,9 @@
 
 	<div class="fixed-buttons">
 		<a href="#" class="small-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
-		<a href="#" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
+		<a href="javascript:showForm();" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
 	</div>
-	
+
 	<div id="notifications" class="btn-rectangle btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
 	</div>
@@ -106,9 +101,16 @@
 		    	$('.menu .back').css("display", "block");
 		    	$('.menu .nav').css("display", "block");
 		    });
-
-
 		});
+		function hideForm() {
+			var elem = document.getElementById('formID');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('formID');
+			$(elem).show();
+		}
+		hideForm();
 	</script>
 </body>
 </html>

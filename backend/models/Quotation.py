@@ -47,9 +47,11 @@ class Quotation(CustomBaseModel):
     metricPlus = ndb.StringProperty()
     version = ndb.IntegerProperty()
  
-    def quotation_m(self, data, userKey):
+    def quotation_m(self, data, userKey, eventKey, dateObj):
         quotation = Quotation() #Crea una variable de tipo Quotation
         quotation.populate(data) #Llena la variables con los datos dados por el request en main.py
         quotation.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        quotation.eventKey = eventKey
+        quotation.date = dateObj
         quotation.put() #inserta o hace un update depende del main.py
         return 0

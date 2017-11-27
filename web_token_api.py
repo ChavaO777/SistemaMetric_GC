@@ -91,9 +91,24 @@ class QuotationAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
 
-			myQuotation = Quotation()
+			#Get the key object given the event key
+			eventKeyObj = ndb.Key(urlsafe = request.eventKey)
+			#Set the request's eventKey field to None, but pass the recently created Key object
+			# as a parameter to event_m()
+			request.eventKey = None
 
-			if myQuotation.quotation_m(request, user.key) == 0:
+			myQuotation = Quotation()
+			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
+			dateStr = request.date
+			# Split the date into an array of strings e.g.: '2017-11-23' -> ['2017', '11', '23']
+			dateStrArray = dateStr.split("-")
+			# Create a date object with the values from that array
+			dateObj = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
+			#Set the request's date field to None, but pass the recently created date object
+			# as a parameter to event_m()
+			request.date = None
+
+			if myQuotation.quotation_m(request, user.key, eventKeyObj, dateObj) == 0:
 				codigo = 1
 			else:
 				codigo = -3
@@ -120,8 +135,9 @@ class QuotationAPI(remote.Service):
 			listMessage = QuotationList(code = 1) # crea objeto mensaje
 			list.append(QuotationUpdate(token = '',
 										userKey = quotation.userKey.urlsafe(),
+										eventKey = i.eventKey.urlsafe(),
 										iD = quotation.iD,
-										date = quotation.date,
+										date = quotation.date.strftime("%d/%m/%Y"),
 										isFinal = quotation.isFinal,
 										subtotal = quotation.subtotal,
 										revenueFactor = quotation.revenueFactor,
@@ -129,6 +145,7 @@ class QuotationAPI(remote.Service):
 										discount = quotation.discount,
 										total = quotation.total,
 										metricPlus = quotation.metricPlus,
+										version = quotation.version,
 										entityKey = quotation.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -154,8 +171,9 @@ class QuotationAPI(remote.Service):
 			for i in listBd: # iterate
 				list.append(QuotationUpdate(token='',
 											userKey = i.userKey.urlsafe(),
+											eventKey = i.eventKey.urlsafe(),
 											iD = i.iD,
-											date = i.date,
+											date = i.date.strftime("%d/%m/%Y"),
 											isFinal = i.isFinal,
 											subtotal = i.subtotal,
 											revenueFactor = i.revenueFactor,
@@ -163,6 +181,7 @@ class QuotationAPI(remote.Service):
 											discount = i.discount,
 											total = i.total,
 											metricPlus = i.metricPlus,
+											version = i.version,
 											entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
