@@ -35,9 +35,10 @@ class QuotationRow(CustomBaseModel):
     timeUnits = ndb.IntegerProperty();
     amount = ndb.FloatProperty();
 
-    def quotationRow_m(self, data, userKey):
+    def quotationRow_m(self, data, userKey, quotationKey):
         quotationRow = QuotationRow() #Crea una variable de tipo Quotation Row
         quotationRow.populate(data) #Llena la variables con los datos dados por el request en main.py
         quotationRow.userKey = userKey #inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        quotationRow.quotationKey = quotationKey
         quotationRow.put() #inserta o hace un update depende del main.py
         return 0
