@@ -1257,13 +1257,20 @@ class UserAPI(remote.Service):
 			user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py
 			companyKey = ndb.Key(urlsafe = user.companyKey.urlsafe())#convierte el string dado a entityKey
 
-			if user.usuario_m(request, empresakey) == 0:#llama a la funcion declarada en models.py
-				codigo = 1
+			userKeyObj = ndb.Key(urlsafe = request.entityKey)
+			userEntity = userKeyObj.get()
+			
+			#replace attributes with those of the request
+			userEntity.companyKey = companyKey
+			userEntity.email = request.email
+			userEntity.password = request.password
+			userEntity.name = request.name
+			userEntity.lastName = request.lastName
 
-			else:
-				codigo = -3
+			#Save the changes in the User entity in the DB
+			userEntity.put()
 
-			message = CodeMessage(code = 1, message = 'Sus cambios han sido guardados exitosamente')
+			message = CodeMessage(code = 1, message = 'The user was successfully updated')
 
 		except jwt.DecodeError:
 			message = CodeMessage(code = -2, message = 'Invalid token')

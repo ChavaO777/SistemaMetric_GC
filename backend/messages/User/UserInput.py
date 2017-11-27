@@ -10,3 +10,5 @@ class UserInput(messages.Message):
     companyKey = messages.StringField(2)
     email = messages.StringField(3)
     password = messages.StringField(4)
+    name = messages.StringField(5)
+    lastName = messages.StringField(6)
