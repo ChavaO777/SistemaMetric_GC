@@ -354,18 +354,21 @@ class QuotationRowAPI(remote.Service):
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
 
-			# Hacky fix to avoid duplicates -> Delete the quotation row and then insert a new one. TO DO: fix this!!
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			quotationRowEntity = ndb.Key(urlsafe = fixedEntityKey)#Obtiene el elemento dado el EntityKey
-			quotationRowEntity.delete() #Delete the quotation
+			quotationRowKeyObj = ndb.Key(urlsafe = request.entityKey)
+			quotationRowEntity = quotationRowKeyObj.get()
+			
+			#replace attributes with those of the request
+			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
+			quotationRowEntity.quotationKey = quotationKeyObj
 
-			quotationRow = QuotationRow()
+			quotationRowEntity.resourceKey = request.resourceKey
+			quotationRowEntity.iD = request.iD
+			quotationRowEntity.quantity = request.quantity
+			quotationRowEntity.days = request.days
+			quotationRowEntity.amount = request.amount
 
-			if quotationRow.quotationRow_m(request, user) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
-
-			else:
-				codigo = -3
+			#Save the changes in the QuotationRow entity in the DB
+			quotationRowEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The quotation row has been updated')
 		except jwt.DecodeError:
