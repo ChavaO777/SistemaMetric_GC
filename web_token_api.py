@@ -1058,27 +1058,30 @@ class EventAPI(remote.Service):
 			companyKey = user.companyKey
 			customerEntity = ndb.Key(urlsafe = request.customerKey)
 
-			# Hacky fix to avoid duplicates -> Delete the tool and then insert a new one. TO DO: fix this!!
-			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			eventEntity = ndb.Key(urlsafe = request.entityKey) # The problem is in request.entityKey
-			event = Event.get_by_id(eventEntity.id()) #get the event
-			eventEntity.delete() #Delete the event
+			eventKeyObj = ndb.Key(urlsafe = request.entityKey)
+			eventEntity = eventKeyObj.get()
+			
+			#replace attributes with those of the request
+			eventEntity.iD = request.iD
+			eventEntity.name = request.name
+			eventEntity.description = request.description
 
-			event = Event()
 			# The request's date comes in as 'YYYY-MM-DD', e.g.: '2017-11-23'
 			dateStr = request.date
 			# Split the date into an array of strings e.g.: '2017-11-23' -> ['2017', '11', '23']
 			dateStrArray = dateStr.split("-")
-			# Create a date object with the values from that array
+			# Create a date object with the values from that array -> datetime(year, month, day)
 			date = datetime(int(dateStrArray[0]), int(dateStrArray[1]), int(dateStrArray[2]))
-			#Set the request's date field to None, but pass the recently created date object
-			# as a parameter to event_m()
-			request.date = None
+			# Finally, place the new date in the entity
+			eventEntity.date = date
 
-			if event.event_m(request, companyKey, customerEntity, date) == 0: #llama a la funcion declarada en models.py
-				codigo = 1
-			else:
-				codigo = -3
+			eventEntity.days = request.days
+			eventEntity.place = request.place
+			eventEntity.hidden = request.hidden
+			eventEntity.customerKey = request.customerKey
+			
+			#Save the changes in the Event entity in the DB
+			eventEntity.put()
 
 			message = CodeMessage(code = 1, message = 'The event was successfully updated')
 
