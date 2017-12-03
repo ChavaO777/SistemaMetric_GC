@@ -4,4 +4,4 @@
 1. [Console] Go to ./frontend-react
 2. $ npm start
 
-**Note:** **npm** should be installed locally
+**_Note:_** _npm_ should be installed locally
