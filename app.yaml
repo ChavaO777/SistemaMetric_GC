@@ -22,6 +22,9 @@ handlers:
 - url: /css
   static_dir: frontend/public/css
 
+- url: /img
+  static_dir: frontend/img
+
 - url: /fonts
   static_dir: fonts
 
