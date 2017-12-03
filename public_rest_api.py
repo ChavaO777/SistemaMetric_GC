@@ -160,23 +160,6 @@ class ToolHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-class AddToolHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/tool/addTool.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
-
 ######### EVENT HANDLERS ########
 class MyEventsHandler(webapp2.RequestHandler):
 
@@ -277,7 +260,6 @@ app = webapp2.WSGIApplication([
     ('/personnel', PersonnelHandler),
     ######## TOOL ########
     ('/myTools', MyToolsHandler),
-    ('/addTool', AddToolHandler),
     ('/tool', ToolHandler),
     ######## EVENT ########
     ('/myEvents', MyEventsHandler),
