@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router';
 import './css/login.css';
+import {BrowserRouter, Link, } from 'react-router-dom';
 import User from './models/User.model';
+import {validate} from './controllers/user.controller';
 
 class Login extends Component {
   constructor(props){
@@ -26,19 +27,9 @@ class Login extends Component {
     var user = new User();
     user.email = this.state.email;
     user.password = this.state.password;
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:8080/_ah/api/user_api/v1/user/login', true);
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    xhr.responseType = 'json';
-    xhr.onloadend = ()=>{
-        if(xhr.status === 200 && xhr.status.token){
-            sessionStorage.setItem('token', xhr.response.token);
-            this.setState({error: sessionStorage.getItem('token')});
-        }else{
-            this.setState({error: "Datos invalidos"});
-        }
-    }
-    xhr.send(user.toJsonString());
+    validate(user.toJsonString(), (response)=>{
+        this.setState({error: response});
+    });
   }
 
   render() {

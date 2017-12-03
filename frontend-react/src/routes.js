@@ -1,9 +1,8 @@
 import App from './App';
-import Login from '/Login';
+import Login from './Login';
 
 const routes = {
   childRoutes: [
-
     {
       path: '/',
       component: App

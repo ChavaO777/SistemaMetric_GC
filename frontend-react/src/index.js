@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {browserHistory, Router} from 'react-router';
-import routes from './routes';
+import Login from './Login';
+//import { BrowserRouter as Router, Link, } from 'react-router-dom';
 
-ReactDOM.render(<Router history={browserHistory} routes={routes} />, document.getElementById('root'));
+ReactDOM.render(<Login /> , document.getElementById('root'));
