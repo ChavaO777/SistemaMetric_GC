@@ -44,14 +44,13 @@
 		<div class="hero-content" id="listTools">
 		</div>
 	</div>
-	<div class="modal" id='formID'>
+	<div class="modal" id='agregarHerramienta'>
 		<div class="modal-content">
 			<span class="modal-close" onclick="javascript:hideForm();">X</span>
 			<div class="modal-header">
 				Nueva Herramienta
 			</div>
 			<div class="modal-form">
-				<p>Id: 9876</p>
 				<input type="text" class="input-50" placeholder="Categoria" id="category">
 				<input type="text" class="input-50" placeholder="Tipo" id="kind">
 				<input type="text" class="input-50" placeholder="Marca" id="brand">
@@ -101,11 +100,11 @@
 		    });
 		});
 		function hideForm() {
-			var elem = document.getElementById('formID');
+			var elem = document.getElementById('agregarHerramienta');
 			$(elem).hide();
 		}
 		function showForm() {
-			var elem = document.getElementById('formID');
+			var elem = document.getElementById('agregarHerramienta');
 			$(elem).show();
 		}
 		hideForm();

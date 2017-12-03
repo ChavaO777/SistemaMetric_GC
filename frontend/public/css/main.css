@@ -479,6 +479,10 @@ a:active{
 	display: none;
 }
 
-#AddEventModal{
+#agregarEvento{
+	display: none;
+}
+
+#agregarHerramienta{
 	display: none;
 }

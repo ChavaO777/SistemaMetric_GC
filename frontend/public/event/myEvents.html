@@ -54,9 +54,9 @@
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
 	</div>
 
-	<div class="modal" id="AddEventModal">
+	<div class="modal" id="agregarEvento">
 		<div class="modal-content">
-			<span class="modal-close">X</span>
+			<span class="modal-close" onclick="javascript:hideForm();">X</span>
 			<div class="modal-header">
 				Agregar nuevo evento
 			</div>
@@ -88,35 +88,32 @@
 
 	<div class="fixed-buttons">
 		<a href="#" class="small-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
-		<a href="#" id="btnAdd" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
+		<a href="javascript:showForm();" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
 	</div>
 
 	<script src="https://use.fontawesome.com/5144437903.js"></script>
 	<script type="text/javascript">
 		$(function(){
 		    $('.nav a').click(function(){
-		        $('.nav .active').removeClass('active');
-		        $(this).addClass('active');
+		        $('.nav .active').removeClass('active'); // remove the class from the currently selected
+		        $(this).addClass('active'); // add the class to the newly clicked link
 		    });
 
 		    $('.logo a').click(function(){
 		    	$('.menu').css("height", "100%");
 		    	$('.menu .back').css("display", "block");
 		    	$('.menu .nav').css("display", "block");
-			});
-			
-			var AddEventModal = $("#AddEventModal");
-			var btnAdd = $("#btnAdd");
-			var closeModal = $(".modal-close");
-
-			btnAdd.click(function(){
-				AddEventModal.fadeIn(1000);
-			});
-
-			closeModal.click(function(){
-				AddEventModal.fadeOut(1000);
-			});
+		    });
 		});
+
+		function hideForm() {
+			var elem = document.getElementById('agregarEvento');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('agregarEvento');
+			$(elem).show();
+		}
 	</script>
 </body>
 </html>
