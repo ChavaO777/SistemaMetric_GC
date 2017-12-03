@@ -9,7 +9,10 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
 	<script type="text/javascript" src="../app/models/customer.model.js"></script>
-	<script type="text/javascript" src="../app/models/companyEvent.model.js"></script>
+	<script type="text/javascript" src="../app/controllers/event.controller.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	 crossorigin="anonymous">
+	</script>
 </head>
 <body onload="listQuotations()">
 
@@ -53,10 +56,15 @@
 				Nueva Cotización
 			</div>
 			<div class="modal-form">
-				<input type="text" class="input-50" placeholder="Categoria" id="category">
-				<input type="text" class="input-50" placeholder="Tipo" id="kind">
-				<input type="text" class="input-50" placeholder="Marca" id="brand">
-				<input type="text" class="input-50" placeholder="Modelo" id="model">
+				<div>
+					<script>
+						$(document).ready(function () {
+							getEventListForSelection();
+						});
+					</script> Event
+					<select id="eventList">
+					</select>
+				</div>
 				<input type="number" class="input-50" placeholder="Precio" id="tariff">
 				<select id="tariffTimeUnit">
 					<option value="hour">Por hora</option>
@@ -68,7 +76,6 @@
 				<span class="submit">
 					<a href="javascript:createQuotation();" class="btn-rectangle btn-green">Aceptar</a>
 				</span>
-				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
 			</div>
 		</div>
 	</div>
@@ -83,11 +90,6 @@
 	</div>
 
 	<script src="https://use.fontawesome.com/5144437903.js"></script>
-	<script
-	  src="https://code.jquery.com/jquery-3.2.1.min.js"
-	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	  crossorigin="anonymous">
-	</script>
 	<script type="text/javascript">
 		$(function(){
 		    $('.nav a').click(function(){

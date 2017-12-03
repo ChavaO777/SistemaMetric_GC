@@ -9,7 +9,7 @@ export default class Event{
                 days,
                 place,
                 hidden){
-        this.token = sessionStorage.token;
+        this.token = sessionStorage.getItem('token');
         this.entityKey = entityKey;
         this.companyKey = companyKey;
         this.customerKey = customerKey;

@@ -77,7 +77,6 @@ function createNewCompanyEvent() {
             dataType: "json",
             before: function(){
                 
-                // $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {                   
                 // $(".msg").html("<p>Herramienta creado</p>");
@@ -140,7 +139,23 @@ function listEvents() {
                                                     "<p><bold>"+event.name+"</bold></p>" + 
                                                     "<p id=event" + eventCounter + ">Cliente: </p>" + 
                                                     "<p>Fecha de inicio: " + event.date + "</p>" + 
-                                                    "<p>Duración: " + event.days + " días</p>" + 
+                            "<p>Duración: " + event.dayfunction getEvent() {
+                            try {
+                                var urlVariables = getURLVariables();
+                                var eventKey = urlVariables.eventID;
+                                alert("eventKey = " + eventKey);
+                                var myEvent = new Event(token = sessionStorage.event,
+                                    entityKey = eventKey);
+                                jQuery.ajax({
+                                    type: "POST",
+                                    url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
+                                    data: myEvent.toString(),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    before: function () {
+                                        // $(".msg").html("<p>Esperando respuesta...</p>");
+                                    },
+                                    success: function (response) {s + " días</p>" + 
                                                     "<p>Lugar: " + event.place + "</p>" + 
                                                     "<p>" + event.hidden + "</p>" + 
                                                     "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
@@ -300,6 +315,63 @@ function getCustomerName(idPrefix, customerKey, eventCounter){
     }
     catch(error){
         
+        alert(error);
+    }
+}
+
+function getEventListForSelection() {
+
+    try {
+
+        // alert("token : " + sessionStorage.token);
+        var myData = new TokenObject();
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/event_api/v1/event/list",
+            data: myData.toJsonString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function () {
+
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+
+                // $(".msg").html("<p>Message</p>");
+
+                $("#eventList").empty();
+                var totalEvents = response.data;
+
+                var myEventListForSelection = "";
+
+                if (totalEvents == null) {
+
+                    myEventListForSelection = "<p> No hay clientes registrados </p>";
+                }
+
+                else {
+
+                    // alert(JSON.stringify(response.data));
+
+                    // Do a forEach even if the array only has one customer
+                    totalEvents.forEach(function (event) {
+
+                        //Place the content in the HTML
+                        // alert(event.toString());
+                        myEventListForSelection += "<option value='" + event.entityKey + "'>" + event.name + "</option>";
+                    });
+                }
+
+                $("#eventList").append(myEventListForSelection);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    catch (error) {
+
         alert(error);
     }
 }
