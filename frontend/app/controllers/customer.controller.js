@@ -197,30 +197,44 @@ function getCustomer() {
                 $("#singleCustomer").empty();
                 totalCustomers = response.data;
 
+                $("#name").empty();
+                $("#lastName").empty();
+                $("#email").empty();
+                $("#rfc").empty();
+                $("#phone").empty();
+
                 var myCustomer = "";
 
                 // Do a forEach even if the array only has one customer
                 totalCustomers.forEach(function(customer){
 
+                    //add data to the form
+                    $("#name").val(customer.name);
+                    $("#lastName").val(customer.lastName);
+                    $("#email").val(customer.email);
+                    $("#rfc").val(customer.rfc);
+                    $("#phone").val(customer.phone);
+
                     //Place the content in the HTML
 
                     myCustomer +=  "<div class='hero-element'>" +
                                         "<div class='hero-content-inner'>" +
-                                            "<form action='/editCustomer' method='GET'>" +
-                                                "<p>" + customer.email + "</p>" + 
-                                                "<p>" + customer.name + " " + customer.lastName + "</p>" + 
-                                                "<p>" + customer.phone + "</p>" + 
-                                                "<p>" + customer.rfc + "</p>" +
+                                            "<p>" + customer.email + "</p>" + 
+                                            "<p>" + customer.name + " " + customer.lastName + "</p>" + 
+                                            "<p>" + customer.phone + "</p>" + 
+                                            "<p>" + customer.rfc + "</p>" +
+                                            "<p> <br></p>" +
+                                            "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                            "<form action='/customer' method='GET'>" +
                                                 "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
-                                                "<input type='submit' value='Editar'/>" + 
                                             "</form>" +
                                         "</div>" +
-                                    "</div>"
+                                    "</div>";
                 });
 
                 myCustomer +=   "<div class='fixed-buttons'>" + 
                                     "<a onclick='deleteCustomer()' class='big-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>" +
-                                "</div>"
+                                "</div>";
 
                 $("#singleCustomer").append(myCustomer);
             },

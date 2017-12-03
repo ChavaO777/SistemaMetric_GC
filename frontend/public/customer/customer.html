@@ -42,6 +42,28 @@
 			<div class="hero-content" id="singleCustomer">
 			</div>
 		</div>
+	</div>
+
+	<div class="modal" id='formID'>
+		<div class="modal-content">
+			<span class="modal-close">X</span>
+			<div class="modal-header">
+				Editar cliente
+			</div>
+			<div class="modal-form">
+				<!-- <p>Id: 9876</p> -->
+				<input type="text" class="input-50" id="name" placeholder="Nombre">
+				<input type="text" class="input-50" id="lastName" placeholder="Apellidos">
+				<input type="email" class="input-50" id="email" placeholder="Correo electrónico">
+				<input type="text" class="input-50" id="rfc" placeholder="RFC">
+				<input type="text" class="input-50" id="phone" placeholder="Teléfono">
+				<span class="submit">
+					<a onclick="editCustomer()" class="btn-rectangle btn-green">Guardar</a>
+				</span>
+				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+			</div>
+		</div>
+	</div>
 
 	<div id="notifications" class="btn btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
@@ -74,6 +96,17 @@
 		    });
 		    */
 		});
+
+		function hideForm() {
+			var elem = document.getElementById('formID');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('formID');
+			$(elem).show();
+		}
+		hideForm();
+		
 	</script>
 </body>
 </html>
