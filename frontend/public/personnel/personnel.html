@@ -42,6 +42,43 @@
 			<div class="hero-content" id="singlePersonnel">
 			</div>
 		</div>
+	</div>
+
+	<div class="modal" id='formID'>
+		<div class="modal-content">
+			<span class="modal-close">X</span>
+			<div class="modal-header">
+				Editar personal
+			</div>
+			<div class="modal-form">
+				<!-- <p>Id: 9876</p> -->
+				<input type="text" class="input-50" id="name" placeholder="Nombre">
+				<input type="text" class="input-50" id="lastName" placeholder="Apellidos">
+				<div>
+					Etapa
+					<select id="stage">
+    					<option value="preProduction">Pre-producción</option>
+    					<option value="production">Producción</option>
+    					<option value="postProduction">Post-producción</option>
+  					</select>
+  				</div>
+  				<input type="text" class="input-50" id="specialty" placeholder="Especialidad">
+  				<div>
+					Tarifa
+					$<input type="number" class="input-50" id="tariff" placeholder="0.00">
+					<select id="tariffTimeUnit">
+    					<option value="hour">Por hora</option>
+    					<option value="day">Por día</option>
+  					</select>
+  				</div>
+  				<textArea id="comment" placeholder="Comentario"></textArea>
+				<span class="submit">
+					<a onclick="editPersonnel()" class="btn-rectangle btn-green">Guardar</a>
+				</span>
+				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+			</div>
+		</div>
+	</div>
 
 	<div id="notifications" class="btn btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
@@ -72,8 +109,19 @@
 		    	$('.back').css("opacity", "0");
 		    	$('.menu').css("background", "transparent");
 		    });
-		    */
+			*/
 		});
+
+		function hideForm() {
+			var elem = document.getElementById('formID');
+			$(elem).hide();
+		}
+		function showForm() {
+			var elem = document.getElementById('formID');
+			$(elem).show();
+		}
+		
+		hideForm();
 	</script>
 </body>
 </html>

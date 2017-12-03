@@ -178,7 +178,6 @@ function getTool() {
                 $("#brand").empty();
                 $("#model").empty();
                 $("#tariff").empty();
-                //$("#tariffTimeUnit").empty();
                 $("#quantity").empty();
                 $("#availableQuantity").empty();
                 $("#comment").empty();
@@ -186,17 +185,17 @@ function getTool() {
                 var myTool = "";
                 // Do a forEach even if the array only has one tool
                 totalTools.forEach(function(tool){
-                  //add data to the form
-                  $("#id").val(tool.id);
-                  $("#category").val(tool.category);
-                  $("#kind").val(tool.kind);
-                  $("#brand").val(tool.brand);
-                  $("#model").val(tool.model);
-                  $("#tariff").val(tool.tariff);
-                  $("#tariffTimeUnit option[value=" + tool.tariffTimeUnit + "]").attr('selected', 'selected');
-                  $("#quantity").val(tool.quantity);
-                  $("#availableQuantity").val(tool.availableQuantity);
-                  $("#comment").val(tool.comment);
+                    //add data to the form
+                    $("#id").val(tool.id);
+                    $("#category").val(tool.category);
+                    $("#kind").val(tool.kind);
+                    $("#brand").val(tool.brand);
+                    $("#model").val(tool.model);
+                    $("#tariff").val(tool.tariff);
+                    $("#tariffTimeUnit option[value=" + tool.tariffTimeUnit + "]").attr('selected', 'selected');
+                    $("#quantity").val(tool.quantity);
+                    $("#availableQuantity").val(tool.availableQuantity);
+                    $("#comment").val(tool.comment);
                     //Place the content in the HTML
                     // alert(tool);
                     myTool += "<div class='box'> \n" +

@@ -128,6 +128,54 @@ function deletePersonnel() {
     }
 }
 
+function editPersonnel() {
+    
+    var urlVariables = getURLVariables();
+
+    var myName = $('#name').val();
+    var myLastName = $('#lastName').val();
+    var myStage = $('#stage').val();
+    var mySpecialty = $('#specialty').val();
+    var myComment = $('#comment').val();
+    var myTariff = $('#tariff').val();
+    var myTariffUnit = $('#tariffTimeUnit').val();
+
+    var personnel = new Personnel();
+    personnel.entityKey = urlVariables.personnelID;
+    personnel.name = myName;
+    personnel.lastName = myLastName;
+    personnel.stage = myStage;
+    personnel.specialty = mySpecialty;
+    personnel.comment = myComment;
+    personnel.tariff = myTariff;
+    personnel.tariffTimeUnit = myTariffUnit;
+
+    alert(personnel.toString());
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/update",
+            data: personnel.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The personnel was successfully updated.");
+                window.location = "/myPersonnel";
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+        alert(error);
+    }
+}
+
 function getPersonnel() {
     
     try{
@@ -155,24 +203,39 @@ function getPersonnel() {
                 $("#singlePersonnel").empty();
                 totalPersonnel = response.data;
 
+                $("#name").empty();
+                $("#lastName").empty();
+                $("#specialty").empty();
+                $("#comment").empty();
+                $("#tariff").empty();
+
                 var myPersonnel = "";
 
                 // Do a forEach even if the array only has one personnel
                 totalPersonnel.forEach(function(personnel){
 
+                    //add data to the form
+                    $("#name").val(personnel.name);
+                    $("#lastName").val(personnel.lastName);
+                    $("#stage option[value=" + personnel.stage + "]").attr('selected', 'selected');
+                    $("#specialty").val(personnel.specialty);
+                    $("#comment").val(personnel.comment);
+                    $("#tariff").val(personnel.tariff);
+                    $("#tariffTimeUnit option[value=" + personnel.tariffTimeUnit + "]").attr('selected', 'selected');
+
                     //Place the content in the HTML
 
                     myPersonnel +=  "<div class='hero-element'>" +
                                         "<div class='hero-content-inner'>" +
-                                            "<form action='/editPersonnel' method='GET'>" +
-                                                "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
-                                                "<p>" + personnel.stage + "</p>" +
-                                                "<p>" + personnel.specialty + "</p>" +
-                                                "<p>" + personnel.comment + "</p>" +
-                                                "<p>" + personnel.tariff + "</p>" +
-                                                "<p>" + personnel.tariffTimeUnit + "</p>" +
+                                            "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
+                                            "<p>" + personnel.stage + "</p>" +
+                                            "<p>" + personnel.specialty + "</p>" +
+                                            "<p>" + personnel.comment + "</p>" +
+                                            "<p>" + personnel.tariff + " / " + personnel.tariffTimeUnit + "</p>" +
+                                            "<p> <br> </p>" +
+                                            "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                            "<form action='/personnel' method='GET'>" +
                                                 "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
-                                                "<input type='submit' value='Editar'/>" + 
                                             "</form>" +
                                         "</div>" +
                                     "</div>"
