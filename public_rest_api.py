@@ -127,38 +127,6 @@ class PersonnelHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-class AddPersonnelHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/personnel/addPersonnel.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
-class EditPersonnelHandler(webapp2.RequestHandler):
-
-    def get(self):
-
-        template_context = {}
-        self.response.out.write(
-            self._render_template('./frontend/public/personnel/editPersonnel.html', template_context))
-
-    def _render_template(self, template_name, context=None):
-        if context is None:
-            context = {}
-
-        template = jinja_env.get_template(template_name)
-
-        return template.render(context)
-
 ######### TOOL HANDLERS ########
 class MyToolsHandler(webapp2.RequestHandler):
 
@@ -307,8 +275,6 @@ app = webapp2.WSGIApplication([
     ######### PERSONNEL ########
     ('/myPersonnel', MyPersonnelHandler),
     ('/personnel', PersonnelHandler),
-    ('/addPersonnel', AddPersonnelHandler),
-    ('/editPersonnel', EditPersonnelHandler),
     ######## TOOL ########
     ('/myTools', MyToolsHandler),
     ('/addTool', AddToolHandler),
