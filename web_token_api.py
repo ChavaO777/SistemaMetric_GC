@@ -269,10 +269,12 @@ class QuotationRowAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
+			quotationEntity = ndb.Key(urlsafe = request.quotationKey)
+			quotation = Quotation.get_by_id(quotationEntity.id()) #gets the quotation
 
 			myQuotationRow = QuotationRow()
 
-			if myQuotationRow.quotationRow_m(request, user.key) == 0:
+			if myQuotationRow.quotationRow_m(request, user.key, quotation) == 0:
 				codigo = 1
 			else:
 				codigo = -3
