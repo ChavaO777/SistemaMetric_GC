@@ -138,32 +138,10 @@ function listEvents() {
                                                     "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
                                                     "<p><bold>"+event.name+"</bold></p>" + 
                                                     "<p id=event" + eventCounter + ">Cliente: </p>" + 
-                                                    "<p>Fecha de inicio: " + event.date + "</p>" + 
-                            "<p>Duración: " + event.dayfunction getEvent() {
-                            try {
-                                var urlVariables = getURLVariables();
-                                var eventKey = urlVariables.eventID;
-                                alert("eventKey = " + eventKey);
-                                var myEvent = new Event(token = sessionStorage.event,
-                                    entityKey = eventKey);
-                                jQuery.ajax({
-                                    type: "POST",
-                                    url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
-                                    data: myEvent.toString(),
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json",
-                                    before: function () {
-                                        // $(".msg").html("<p>Esperando respuesta...</p>");
-                                    },
-                                    success: function (response) {s + " días</p>" + 
-                                                    "<p>Lugar: " + event.place + "</p>" + 
-                                                    "<p>" + event.hidden + "</p>" + 
-                                                    "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
-                                                    "<input type='submit' value='Ver detalle'/>" + 
-                                                "</form>" +
-                                            "</div>" +
-                                        "</div>";
-
+                                                    "<p>Fecha de inicio: " + event.date + "</p>" +
+                                                    "<p>Duración: " + event.days + " días</p>" +
+                            "<p>Duración: " + event.day;
+                            
                         eventCounter += 1;
                     });
                 }

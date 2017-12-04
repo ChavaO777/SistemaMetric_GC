@@ -1,8 +1,45 @@
 import React, { Component } from 'react';
 import './css/login.css';
 import {BrowserRouter, Link, } from 'react-router-dom';
-import User from './models/User.model';
+
+import UserModel from './models/User.model';
 import {validate} from './controllers/user.controller';
+
+import {listEvents} from './controllers/event.controller';
+
+class Event extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            events: [],
+            error: ''
+        }
+
+        this.getEvents = this.getEvents.bind(this);
+    }
+
+    getEvents(){
+        listEvents((response)=>{
+            if(response.code == 1)
+                this.setState({events: response.data});
+            else
+                this.setState({error: response.data});
+        });
+    }
+
+    render(){
+        let arrayOfEvents = this.state.error !== undefined? 
+            this.state.events.map((event) => 
+                <li key={event.entityKey}>{event.name}</li>
+            ) : this.state.error;
+        return(
+            <div>
+                <p onClick={this.getEvents}>Get</p>
+                <div>{arrayOfEvents}</div>
+            </div>
+        )
+    }
+}
 
 class Login extends Component {
   constructor(props){
@@ -24,11 +61,14 @@ class Login extends Component {
   }
 
   login(){
-    var user = new User();
+    var user = new UserModel();
     user.email = this.state.email;
     user.password = this.state.password;
     validate(user.toJsonString(), (response)=>{
-        this.setState({error: response});
+        if(response.code === 1)
+            console.log(response.code);
+        else
+            this.setState({error: response.data});
     });
   }
 
@@ -51,6 +91,8 @@ class Login extends Component {
         />
         <a onClick={this.login}>Autenticar</a>
         <span>{this.state.error}</span>
+
+        <Event />
       </div>
     );
   }
