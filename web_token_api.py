@@ -134,7 +134,7 @@ class QuotationAPI(remote.Service):
 			listMessage = QuotationList(code = 1) # crea objeto mensaje
 			list.append(QuotationUpdate(token = '',
 										userKey = quotation.userKey.urlsafe(),
-										eventKey = i.eventKey.urlsafe(),
+										eventKey = quotation.eventKey.urlsafe(),
 										iD = quotation.iD,
 										date = quotation.date.strftime("%d/%m/%Y"),
 										isFinal = quotation.isFinal,
@@ -200,7 +200,7 @@ class QuotationAPI(remote.Service):
 
 			quotationKeyObj = ndb.Key(urlsafe = request.entityKey)
 			quotationEntity = quotationKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			quotationEntity.userKey = user.key
 
@@ -390,7 +390,7 @@ class QuotationRowAPI(remote.Service):
 
 			quotationRowKeyObj = ndb.Key(urlsafe = request.entityKey)
 			quotationRowEntity = quotationRowKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
 			quotationRowEntity.quotationKey = quotationKeyObj
@@ -524,10 +524,10 @@ class AdditionalExpenseAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
 			user = User.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py
-			
+
 			additionalExpenseKeyObj = ndb.Key(urlsafe = request.entityKey)
 			additionalExpenseEntity = additionalExpenseKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
 			additionalExpenseEntity.quotationKey = quotationKeyObj
@@ -666,7 +666,7 @@ class CustomerAPI(remote.Service):
 
 			customerKeyObj = ndb.Key(urlsafe = request.entityKey)
 			customerEntity = customerKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			customerEntity.companyKey = companyKey
 			customerEntity.email = request.email
@@ -813,7 +813,7 @@ class ToolAPI(remote.Service):
 
 			toolKeyObj = ndb.Key(urlsafe = request.entityKey)
 			toolEntity = toolKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			toolEntity.companyKey = companyKey
 			toolEntity.iD = request.iD
@@ -961,7 +961,7 @@ class PersonnelAPI(remote.Service):
 
 			personnelKeyObj = ndb.Key(urlsafe = request.entityKey)
 			personnelEntity = personnelKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			personnelEntity.companyKey = companyKey
 			personnelEntity.name = request.name
@@ -1119,7 +1119,7 @@ class EventAPI(remote.Service):
 
 			eventKeyObj = ndb.Key(urlsafe = request.entityKey)
 			eventEntity = eventKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			eventEntity.iD = request.iD
 			eventEntity.name = request.name
@@ -1138,7 +1138,7 @@ class EventAPI(remote.Service):
 			eventEntity.place = request.place
 			eventEntity.hidden = request.hidden
 			eventEntity.customerKey = request.customerKey
-			
+
 			#Save the changes in the Event entity in the DB
 			eventEntity.put()
 
@@ -1293,7 +1293,7 @@ class UserAPI(remote.Service):
 
 			userKeyObj = ndb.Key(urlsafe = request.entityKey)
 			userEntity = userKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			userEntity.companyKey = companyKey
 			userEntity.email = request.email
@@ -1386,7 +1386,7 @@ class CompanyAPI(remote.Service):
 
 			companyKeyObj = ndb.Key(urlsafe = request.entityKey)
 			companyEntity = companyKeyObj.get()
-			
+
 			#replace attributes with those of the request
 			companyEntity.code = request.code
 			companyEntity.name = request.name
