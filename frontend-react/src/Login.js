@@ -3,7 +3,7 @@ import './css/login.css';
 import {BrowserRouter, Link, } from 'react-router-dom';
 import UserModel from './models/User.model';
 import {validate} from './controllers/user.controller';
-import Event from './containers/Event';
+import Event from './containers/Event.container';
 
 class Login extends Component {
   constructor(props){

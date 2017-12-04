@@ -10,6 +10,8 @@
 	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
 	<script type="text/javascript" src="../app/models/customer.model.js"></script>
 	<script type="text/javascript" src="../app/controllers/event.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/personnel.controller.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	 crossorigin="anonymous">
 	</script>
@@ -61,10 +63,16 @@
 						$(document).ready(function () {
 							getEventListForSelection();
 						});
-					</script> Event
+					</script>
 					<select id="eventList">
 					</select>
 				</div>
+				<div class="quotationRowContainer">
+					<div class="quotationRow">
+						<select class="quotationRowElement"></select>
+					</div>
+				</div>
+				<p><a href="javascript:addQuotationRow('.quotationRowContainer');">Agregar...</a></p>
 				<input type="number" class="input-50" placeholder="Precio" id="tariff">
 				<select id="tariffTimeUnit">
 					<option value="hour">Por hora</option>
@@ -72,7 +80,7 @@
 				</select>
 				<input type="number" class="input-50" placeholder="Existencias" id="quantity">
 				<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
-				<input type="text" class="input-50" placeholder="Comentarios" id="comment">
+				<input type="text" class="input-100" placeholder="Comentarios" id="comment">
 				<span class="submit">
 					<a href="javascript:createQuotation();" class="btn-rectangle btn-green">Aceptar</a>
 				</span>
@@ -106,10 +114,18 @@
 		function hideForm() {
 			var elem = document.getElementById('agregarCotizacion');
 			$(elem).hide();
+			$('.quotationRowContainer').empty();
 		}
 		function showForm() {
 			var elem = document.getElementById('agregarCotizacion');
 			$(elem).show();
+			getToolListForSelection('.quotationRowElement');
+			getPersonnelListForSelection('.quotationRowElement');
+		}
+		function addQuotationRow(appendTo) {
+			getToolListForSelection('.quotationRowElement');
+			getPersonnelListForSelection('.quotationRowElement');
+			$(appendTo).append("<div class='quotationRow'><select class='quotationRowElement'></select></div>");
 		}
 	</script>
 </body>

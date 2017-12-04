@@ -300,3 +300,47 @@ function editTool() {
         alert(error);
     }
 }
+
+
+function getToolListForSelection(appendTo) {
+    try {
+
+        var myData = new TokenObject();
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/list",
+            data: myData.toJsonString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function () {
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+
+                // $(".msg").html("<p>Message</p>");
+                $(appendTo).empty();
+                var totalTools = response.data;
+                var myListTools = "";
+
+                if (totalTools == null)
+                    myListTools += "<option>No disponible</option>";
+                else {
+                    // Do a forEach even if the array only has one tool
+                    totalTools.forEach(function (tool) {
+                        myListTools += "<option id='"+tool.entityKey+"'>"+tool.model+" ["+tool.brand+"]</option>";
+                    });
+                }
+
+                $(appendTo).append(myListTools);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    catch (error) {
+
+        alert(error);
+    }
+}

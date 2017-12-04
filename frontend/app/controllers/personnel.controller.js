@@ -403,3 +403,47 @@ function getURLVariables() {
     
     return vars;
 }
+
+function getPersonnelListForSelection(appendTo) {
+    try {
+
+        // alert("token : " + sessionStorage.token);
+        var myData = new TokenObject();
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/list",
+            data: myData.toJsonString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function () {
+            },
+            success: function (response) {
+                var totalPersonnel = response.data;
+                var myListPersonnel = "";
+
+                if (totalPersonnel == null)
+                    myListPersonnel += "<option>No hay personal disponible</option>";
+                else {
+                    // Do a forEach even if the array only has one personnel
+                    totalPersonnel.forEach(function (personnel) {
+
+                        //Place the content in the HTML
+
+                        myListPersonnel += "<option id='"+personnel.entityKey+"'>"+personnel.name+" ["+personnel.specialty+"]</option";
+                    });
+                }
+
+                $(appendTo).append(myListPersonnel);
+            },
+            error: function (error) {
+
+                alert(error);
+            }
+        });
+    }
+    catch (error) {
+
+        alert(error);
+    }
+}
