@@ -1,4 +1,4 @@
-function Personnel(userKey, 
+function Quotation(userKey, 
                    eventKey,
                    iD,
                    date,
@@ -10,7 +10,7 @@ function Personnel(userKey,
                    total,
                    metricPlus,
                    version){
-    
+
     this.userKey = userKey;
     this.eventKey = eventKey;
     this.iD = iD;

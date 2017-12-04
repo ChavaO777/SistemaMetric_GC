@@ -111,11 +111,11 @@ function getQuotation() {
                     //Place the content in the HTML
                     // alert(quotation);
                     myQuotation += "<div class='box'> \n" +
+                                    "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
                                     "\t<div class='box-name'>\n" +
-                                    "\t\t<p>" + quotation.brand  + " - " +quotation.model +"</p>" +
+                                    "\t\t<div id=companyEvent0></div> - " + quotation.date +
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
-                                    "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
                                     "<p id=companyEvent0></p>" +
                                     "<p id=customer0></p>" +
                                     "<p>ID: " + quotation.iD + "</p>" +
@@ -129,6 +129,7 @@ function getQuotation() {
                                     "\t</form>" +
                                     "\t</div>" +
                                     "</div>";
+                     getQuotationRows(quotation.entityKey);
                 });
                 $("#singleQuotation").append(myQuotation);
             },
@@ -296,7 +297,7 @@ function getCustomerNameForQuotation(customerKey, counter){
     try{
         // alert("customerKey = " + customerKey);
         var myCustomer = new Customer();
-        myCustomer.token = sessionStorage.token;
+           myCustomer.token = sessionStorage.token;
         myCustomer.entityKey = customerKey;
 
         jQuery.ajax({
@@ -343,8 +344,8 @@ function getQuotationRows(quotationKey){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotationRow_api/v1/quotationRow/listByQuotation",
-            data: myCustomer.toString(),
+            url: "http://localhost:8080/_ah/api/quotation_row_api/v1/quotationRow/listByQuotation",
+            data: myQuotation.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
@@ -355,14 +356,30 @@ function getQuotationRows(quotationKey){
 
                 // $(".msg").html("<p>Message</p>");
 
-                totalCustomers = response.data;
-                $("#customer" + counter).empty();
+                totalQuotationRows = response.data;
+                myListQuotationRows = "";
+                // Do a forEach even if the array only has one row
+                totalQuotationRows.forEach(function(quotationRow){
 
-                // Do a forEach even if the array only has one customer
-                totalCustomers.forEach(function(customer){
-
-                    $("#customer" + counter).append("Cliente: " + customer.name + " " + customer.lastName);
+                    //Place the content in the HTML
+                    // alert(tool);
+                    myListQuotationRows += "<div class='box'> \n" +
+                                    "\t<div class='box-name'>\n" +
+                                    // should show resource data (specific to tool/personnel)
+                                    "\t\t<p>" + quotationRow.resourceKey +"</p>" +
+                                    "\t</div>" +
+                                    "\t<div class='box-content'>\n" +
+                                    "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
+                                    "\t\t<p>Cargo: " + quotationRow.amount + "</p>" +
+                                    "\t\t<p>Por: " + (quotationRow.timeUnits == 'day' ? 'Dia' : 'Hora') + "</p>" +
+                                    "\t<form action='/quotationRow' method='GET'>\n" +
+                                    "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
+                                    "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
+                                    "\t</form>" +
+                                    "\t</div>" +
+                                    "</div>";
                 });
+                $("#quotationRows").append(myListQuotationRows);
             },
             error: function (error) {
 

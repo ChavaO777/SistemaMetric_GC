@@ -359,7 +359,7 @@ class QuotationRowAPI(remote.Service):
 			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
 			list = []  #create list
 			listMessage = QuotationRowList(code = 1) # crea objeto mensaje
-			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
+			quotationKeyObj = ndb.Key(urlsafe = request.entityKey)
 			listBd = QuotationRow.query(QuotationRow.quotationKey == quotationKeyObj).fetch() # get only the quotation rows from that specific quotation
 
 			for i in listBd: # iterate
@@ -367,10 +367,9 @@ class QuotationRowAPI(remote.Service):
 											userKey = i.userKey.urlsafe(),
 											quotationKey = i.quotationKey.urlsafe(),
 											resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
-											iD = i.iD,
 											quantity = i.quantity,
-											days = i.days,
 											amount = i.amount,
+											timeUnits = i.timeUnits,
 											entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage

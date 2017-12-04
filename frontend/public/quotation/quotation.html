@@ -7,8 +7,12 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" href="/css/main.css">
+   <script type="text/javascript" src="../app/models/customer.model.js"></script>
+	<script type="text/javascript" src="../app/models/companyEvent.model.js"></script>
 	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
-
+	<script type="text/javascript" src="../app/controllers/event.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/personnel.controller.js"></script>
 
 </head>
 <body onload="getQuotation()">
@@ -35,13 +39,20 @@
 	</div>
 
 	<div class="content">
-		<div class="hero">
+      <div class="hero">
 			<div class="hero-title">
 				Cotizaciones
 			</div>
 			<div class="hero-content" id="singleQuotation">
 			</div>
 		</div>
+      <div class="hero">
+         <div class="hero-title">
+            Detalle
+         </div>
+         <div class="hero-content" id="quotationRows">
+         </div>
+      </div>
 		<div class="modal" id='formID'>
 			<div class="modal-content">
 				<span class="modal-close" onclick="javascript:hideForm();">X</span>
