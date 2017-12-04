@@ -218,16 +218,18 @@ function getCustomer() {
                     //Place the content in the HTML
 
                     myCustomer +=  "<div class='hero-element'>" +
-                                        "<div class='hero-content-inner'>" +
-                                            "<p>" + customer.email + "</p>" + 
-                                            "<p>" + customer.name + " " + customer.lastName + "</p>" + 
-                                            "<p>" + customer.phone + "</p>" + 
-                                            "<p>" + customer.rfc + "</p>" +
-                                            "<p> <br></p>" +
-                                            "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
-                                            "<form action='/customer' method='GET'>" +
-                                                "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
-                                            "</form>" +
+                                        "<div class='box'>" + 
+                                            "<div class='box-name'><p>" + customer.name + " " + customer.lastName + "</p></div>" +
+                                            "<div class='box-content'>" + 
+                                                "<p>" + customer.email + "</p>" + 
+                                                "<p>" + customer.phone + "</p>" + 
+                                                "<p>" + customer.rfc + "</p>" +
+                                                "<p> <br></p>" +
+                                                "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                                "<form action='/customer' method='GET'>" +
+                                                    "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
+                                                "</form>" +
+                                            "</div>" +
                                         "</div>" +
                                     "</div>";
                 });

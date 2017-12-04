@@ -7,11 +7,11 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" href="/css/main.css">
+	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
 
-	<script src="../app/controllers/personnel.controller.js"></script>
 
 </head>
-<body onload="getPersonnel()">
+<body onload="getQuotation()">
 
 	<div class="bg">
 	</div>
@@ -24,9 +24,9 @@
 		</div>
 		<div class="nav">
 			<a href="/">Inicio</a>
-			<a href="/myQuotations">Cotizaciones</a>
+			<a href="/myQuotations" class="active">Cotizaciones</a>
 			<a href="/myEvents">Eventos</a>
-			<a href="/myPersonnel" class="active">Personal</a>
+			<a href="/myPersonnel">Personal</a>
 			<a href="/myCustomers">Clientes</a>
 			<a href="/myTools">Herramientas</a>
 			<a href="#">Cotizadores</a>
@@ -37,48 +37,43 @@
 	<div class="content">
 		<div class="hero">
 			<div class="hero-title">
-				Personal
+				Cotizaciones
 			</div>
-			<div class="hero-content" id="singlePersonnel">
+			<div class="hero-content" id="singleQuotation">
 			</div>
 		</div>
-	</div>
-
-	<div class="modal" id='modalForm'>
-		<div class="modal-content">
-			<span class="modal-close" onclick="javascript:hideForm();">X</span>
-			<div class="modal-header">
-				Editar personal
-			</div>
-			<div class="modal-form">
-				<input type="text" class="input-50" id="name" placeholder="Nombre">
-				<input type="text" class="input-50" id="lastName" placeholder="Apellidos">
-				<div>
-					Etapa
-					<select id="stage">
-    					<option value="preProduction">Pre-producción</option>
-    					<option value="production">Producción</option>
-    					<option value="postProduction">Post-producción</option>
-  					</select>
-  				</div>
-  				<input type="text" class="input-50" id="specialty" placeholder="Especialidad">
-  				<div>
-					Tarifa
-					$<input type="number" class="input-50" id="tariff" placeholder="0.00">
+		<div class="modal" id='formID'>
+			<div class="modal-content">
+				<span class="modal-close" onclick="javascript:hideForm();">X</span>
+				<div class="modal-header">
+					Editar Cotizacion
+				</div>
+				<div class="modal-form">
+					<input type='hidden' id="id">
+					<input type='hidden' id="companyKey">
+					<input type="text" class="input-50" placeholder="Categoria" id="category">
+					<input type="text" class="input-50" placeholder="Tipo" id="kind">
+					<input type="text" class="input-50" placeholder="Marca" id="brand">
+					<input type="text" class="input-50" placeholder="Modelo" id="model">
+					<input type="number" class="input-50" placeholder="Precio" id="tariff">
 					<select id="tariffTimeUnit">
-    					<option value="hour">Por hora</option>
-    					<option value="day">Por día</option>
-  					</select>
-  				</div>
-  				<textArea id="comment" placeholder="Comentario"></textArea>
-				<span class="submit">
-					<a onclick="editPersonnel()" class="btn-rectangle btn-green">Guardar</a>
-				</span>
-				<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+						<option value="hour">Por hora</option>
+						<option value="day">Por día</option>
+					</select>
+					<input type="number" class="input-50" placeholder="Existencias" id="quantity">
+					<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
+					<input type="text" class="input-50" placeholder="Comentarios" id="comment">
+					<span class="submit">
+						<a href="javascript:editQuotation();" class="btn-rectangle btn-green">Guardar cambios</a>
+					</span>
+					<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+				</div>
 			</div>
 		</div>
-	</div>
-
+		<div class="fixed-buttons">
+			<a href="javascript:showForm();" class="big-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
+			<a href="javascript:deleteQuotation();" class='small-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>
+		</div>
 	<div id="notifications" class="btn btn-green">
 		<p>Éxito! <i class="fa fa-check" aria-hidden="true"></i></p>
 	</div>
@@ -108,18 +103,16 @@
 		    	$('.back').css("opacity", "0");
 		    	$('.menu').css("background", "transparent");
 		    });
-			*/
+		    */
 		});
-
 		function hideForm() {
-			var elem = document.getElementById('modalForm');
+			var elem = document.getElementById('formID');
 			$(elem).hide();
 		}
 		function showForm() {
-			var elem = document.getElementById('modalForm');
+			var elem = document.getElementById('formID');
 			$(elem).show();
 		}
-		
 		hideForm();
 	</script>
 </body>

@@ -1,8 +1,8 @@
 class Quotation {
-    
+
     constructor(token,
                 entityKey,
-                userKey, 
+                userKey,
                 eventKey,
                 iD,
                 date,
@@ -14,7 +14,7 @@ class Quotation {
                 total,
                 metricPlus,
                 version) {
-            
+
         this.token = sessionStorage.token;
         this.entityKey = entityKey;
         this.userKey = userKey;
@@ -32,37 +32,120 @@ class Quotation {
     }
 
     toString(){
-        
+
         return JSON.stringify(this);
     };
 }
 
 function TokenObject() {
-    
+
     this.token = sessionStorage.token;
-    
-    this.toJsonString = function () { 
-        
-        return JSON.stringify(this); 
+
+    this.toJsonString = function () {
+
+        return JSON.stringify(this);
     };
 };
 
 function createQuotation() {
-    
+
 }
 
 function deleteQuotation() {
-    
+
 }
 
 function getQuotation() {
-    
+    try{
+        var urlVariables = getURLVariables();
+        var quotationKey = urlVariables.quotationID;
+        alert("quotationKey = " + quotationKey);
+        var myQuotation = new Quotation(token = sessionStorage.token,
+                                      entityKey = quotationKey);
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/get",
+            data: myQuotation.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Message</p>");
+                alert("quotation retrieved " + response);
+                /*
+                $("#singleQuotation").empty();
+                $("$userKey").empty();
+                $("$eventKey").empty();
+                $("$iD").empty();
+                $("$date").empty();
+                $("$isFinal").empty();
+                $("$subtotal").empty();
+                $("$revenueFactor").empty();
+                $("$iva").empty();
+                $("$discount").empty();
+                $("$total").empty();
+                $("$metricPlus").empty();
+                $("$version").empty();
+                */
+                totalQuotations = response.data;
+                var myQuotation = "";
+                // Do a forEach even if the array only has one quotation
+                totalQuotations.forEach(function(quotation){
+                    //add data to the form
+                    /*
+                    $("$userKey").val(quotation.userKey);
+                    $("$eventKey").val(quotation.eventKey);
+                    $("$iD").val(quotation.iD);
+                    $("$date").val(quotation.date);
+                    $("$isFinal").val(quotation.isFinal);
+                    $("$subtotal").val(quotation.subtotal);
+                    $("$revenueFactor").val(quotation.revenueFactor);
+                    $("$iva").val(quotation.iva);
+                    $("$discount").val(quotation.discount);
+                    $("$total").val(quotation.total);
+                    $("$metricPlus").val(quotation.metricPlus);
+                    $("$version").val(quotation.version);
+                    */
+                    //Place the content in the HTML
+                    // alert(quotation);
+                    myQuotation += "<div class='box'> \n" +
+                                    "\t<div class='box-name'>\n" +
+                                    "\t\t<p>" + quotation.brand  + " - " +quotation.model +"</p>" +
+                                    "\t</div>" +
+                                    "\t<div class='box-content'>\n" +
+                                    "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
+                                    "<p id=companyEvent0></p>" +
+                                    "<p id=customer0></p>" +
+                                    "<p>ID: " + quotation.iD + "</p>" +
+                                    "<p>Fecha: " + quotation.date + "</p>" +
+                                    "<p>Versión final: " + (quotation.isFinal ? "Si" : "No") + "</p>" +
+                                    "<p>Total: " + quotation.total + " MXN</p>" +
+                                    "<p>Versión: " + quotation.version + "</p>" +
+                                    "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                    "\t<form action='/quotation' method='GET'>\n" +
+                                    "<input type='hidden' name=quotationID value='"+ quotation.entityKey + "'/>" +
+                                    "\t</form>" +
+                                    "\t</div>" +
+                                    "</div>";
+                });
+                $("#singleQuotation").append(myQuotation);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+        alert(error);
+    }
 }
 
 function listQuotations() {
-    
+
     try{
-        
+
         // alert("token : " + sessionStorage.token);
         var myData = new TokenObject();
 
@@ -73,11 +156,11 @@ function listQuotations() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
-                
+
                 // $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {
-                
+
                 // $(".msg").html("<p>Message</p>");
 
                 $("#quotationsList").empty();
@@ -85,10 +168,10 @@ function listQuotations() {
                 var myQuotationsList = "";
 
                 if(totalQuotations == null){
-                    
+
                     myQuotationsList += "<div class='hero-element'>" +
                                             "<div class='hero-content-inner'>" +
-                                                "<p> No hay cotizaciones registradas </p>" + 
+                                                "<p> No hay cotizaciones registradas </p>" +
                                             "</div>" +
                                         "</div>";
                 }
@@ -102,13 +185,13 @@ function listQuotations() {
 
                     // Do a forEach even if the array only has one quotation
                     totalQuotations.forEach(function(quotation){
-                    
+
                         //Place the content in the HTML
                         // alert(quotation);
 
-                        'userKey', 
+                        'userKey',
                         'eventKey',
-                        'iD', 
+                        'iD',
                         'date',
                         'isFinal',
                         'subtotal',
@@ -123,15 +206,15 @@ function listQuotations() {
                                                 "<div class='hero-content-inner'>" +
                                                     "<form action='/quotation' method='GET'>" +
                                                         "<script>getCompanyEventName('" + quotation.eventKey + "'," + quotationCounter + ")</script>" +
-                                                        "<p id=companyEvent" + quotationCounter + "></p>" + 
-                                                        "<p id=customer" + quotationCounter + "></p>" + 
+                                                        "<p id=companyEvent" + quotationCounter + "></p>" +
+                                                        "<p id=customer" + quotationCounter + "></p>" +
                                                         "<p>ID: " + quotation.iD + "</p>" +
-                                                        "<p>Fecha: " + quotation.date + "</p>" + 
-                                                        "<p>Versión final: " + quotation.isFinal + "</p>" + 
-                                                        "<p>Total: " + quotation.total + " MXN</p>" + 
-                                                        "<p>Versión: " + quotation.version + "</p>" + 
+                                                        "<p>Fecha: " + quotation.date + "</p>" +
+                                                        "<p>Versión final: " + quotation.isFinal + "</p>" +
+                                                        "<p>Total: " + quotation.total + " MXN</p>" +
+                                                        "<p>Versión: " + quotation.version + "</p>" +
                                                         "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<input type='submit' value='Ver detalle'/>" +
                                                     "</form>" +
                                                 "</div>" +
                                             "</div>";
@@ -143,34 +226,34 @@ function listQuotations() {
                 $("#quotationsList").append(myQuotationsList);
             },
             error: function (error) {
-                
+
                 alert(error);
             }
         });
     }
     catch(error){
-        
+
         alert(error);
     }
 }
 
 function getURLVariables() {
-    
+
     var vars = {};
-        
+
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-            
+
         vars[key] = value;
     });
-    
+
     return vars;
 }
 
 function getCompanyEventName(companyEventKey, counter){
-    
+
     try{
         // alert("companyEventKey = " + companyEventKey);
-        var myCompanyEvent = new CompanyEvent(token = sessionStorage.token, entityKey = companyEventKey);
+           var myCompanyEvent = new CompanyEvent(token = sessionStorage.token, entityKey = companyEventKey);
 
         jQuery.ajax({
             type: "POST",
@@ -179,11 +262,11 @@ function getCompanyEventName(companyEventKey, counter){
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
-                
+
                 // $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {
-                
+
                 // $(".msg").html("<p>Message</p>");
 
                 totalEvents = response.data;
@@ -193,23 +276,23 @@ function getCompanyEventName(companyEventKey, counter){
                 totalEvents.forEach(function(event){
 
                     $("#companyEvent" + counter).append("Evento: " + event.name);
-                    getCustomerName(event.customerKey, counter);
+                    getCustomerNameForQuotation(event.customerKey, counter);
                 });
             },
             error: function (error) {
-                
+
                 alert(error);
             }
         });
     }
     catch(error){
-        
+
         alert(error);
     }
 }
 
-function getCustomerName(customerKey, counter){
-    
+function getCustomerNameForQuotation(customerKey, counter){
+
     try{
         // alert("customerKey = " + customerKey);
         var myCustomer = new Customer();
@@ -223,11 +306,11 @@ function getCustomerName(customerKey, counter){
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function(){
-                
+
                 // $(".msg").html("<p>Esperando respuesta...</p>");
             },
             success: function (response) {
-                
+
                 // $(".msg").html("<p>Message</p>");
 
                 totalCustomers = response.data;
@@ -240,13 +323,55 @@ function getCustomerName(customerKey, counter){
                 });
             },
             error: function (error) {
-                
+
                 alert(error);
             }
         });
     }
     catch(error){
-        
+
+        alert(error);
+    }
+}
+function getQuotationRows(quotationKey){
+
+    try{
+        // alert("customerKey = " + customerKey);
+        var myQuotation = new Quotation();
+        myQuotation.token = sessionStorage.token;
+        myQuotation.entityKey = quotationKey;
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/quotationRow_api/v1/quotationRow/listByQuotation",
+            data: myCustomer.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+
+                // $(".msg").html("<p>Message</p>");
+
+                totalCustomers = response.data;
+                $("#customer" + counter).empty();
+
+                // Do a forEach even if the array only has one customer
+                totalCustomers.forEach(function(customer){
+
+                    $("#customer" + counter).append("Cliente: " + customer.name + " " + customer.lastName);
+                });
+            },
+            error: function (error) {
+
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+
         alert(error);
     }
 }
