@@ -368,8 +368,8 @@ class QuotationRowAPI(remote.Service):
 											quotationKey = i.quotationKey.urlsafe(),
 											resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
 											quantity = i.quantity,
+											#days = i.days,
 											amount = i.amount,
-											timeUnits = i.timeUnits,
 											entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
