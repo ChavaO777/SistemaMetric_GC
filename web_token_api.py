@@ -127,8 +127,7 @@ class QuotationAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.token, 'secret')  #checa token
-			fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
-			quotationEntity = ndb.Key(urlsafe = fixedEntityKey)
+			quotationEntity = ndb.Key(urlsafe = request.entityKey)
 			quotation = Quotation.get_by_id(quotationEntity.id()) #obtiene usuario
 
 			list = []  #crea lista
@@ -269,10 +268,14 @@ class QuotationRowAPI(remote.Service):
 		try:
 			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
 			user = User.get_by_id(token['user_id'])
+			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
 
 			myQuotationRow = QuotationRow()
 
-			if myQuotationRow.quotationRow_m(request, user.key) == 0:
+			#Has to be none, otherwise will fail in the call to populate(data)
+			request.quotationKey = None
+
+			if myQuotationRow.quotationRow_m(request, user.key, quotationKeyObj) == 0:
 				codigo = 1
 			else:
 				codigo = -3
