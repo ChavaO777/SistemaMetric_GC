@@ -486,3 +486,27 @@ a:active{
 #agregarHerramienta{
 	display: none;
 }
+
+#editarCotizacion{
+	display: none;
+}
+
+#editarPersonal{
+	display: none;
+}
+
+#editarCliente{
+	display: none;
+}
+
+#editarEvento{
+	display: none;
+}
+
+#editarHerramienta{
+	display: none;
+}
+
+#modalForm {
+	display: none;
+}

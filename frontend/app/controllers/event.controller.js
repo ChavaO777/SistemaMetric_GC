@@ -133,14 +133,21 @@ function listEvents() {
                     totalEvents.forEach(function(event){
 
                         myListEvents += "<div class='hero-element'>" +
-                                            "<div class='hero-content-inner'>" +
+                                            "<div class='box'>" + 
                                                 "<form action='/event' method='GET'>" +
-                                                    "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
-                                                    "<p><bold>"+event.name+"</bold></p>" + 
-                                                    "<p id=event" + eventCounter + ">Cliente: </p>" + 
-                                                    "<p>Fecha de inicio: " + event.date + "</p>" +
-                                                    "<p>Duración: " + event.days + " días</p>" +
-                            "<p>Duración: " + event.day;
+                                                    "<div class='box-name'><p><bold>"+event.name+"</bold></p></div>" + 
+                                                    "<div class='box-content'>" + 
+                                                        "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                        "<p id=event" + eventCounter + ">Cliente: </p>" + 
+                                                        "<p>Fecha de inicio: " + event.date + "</p>" +
+                                                        "<p>Duración: " + event.days + " días</p>" + 
+                                                        "<p>Lugar: " + event.place + "</p>" + 
+                                                        "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" + 
+                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                    "</div>" + 
+                                                "</form>" + 
+                                            "</div>" + 
+                                        "</div>";
                             
                         eventCounter += 1;
                     });
@@ -187,19 +194,21 @@ function getEvent() {
                     totalEvents.forEach(function(event){
 
                         myEvent += "<div class='hero-element'>" +
-                                            "<div class='hero-content-inner'>" +
+                                            "<div class='box'>" +
                                                 "<form action='/editEvent' method='GET'>" +
-                                                    "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
-                                                    "<p id=event" + eventCounter + ">Cliente: </p>" + 
-                                                    "<p>Fecha de inicio: " + event.date + "</p>" + 
-                                                    "<p>Duración: " + event.days + " días</p>" + 
-                                                    "<p>Lugar: " + event.place + "</p>" + 
-                                                    "<p>" + event.hidden + "</p>" + 
-                                                    "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
-                                                    "<input type='submit' value='Editar'/>" + 
+                                                    "<div class='box-name'><p><b>" + event.name + "</b></p></div>" + 
+                                                    "<div class='event-content>" + 
+                                                        "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
+                                                        "<p id=event" + eventCounter + ">Cliente: </p>" + 
+                                                        "<p>Fecha de inicio: " + event.date + "</p>" + 
+                                                        "<p>Duración: " + event.days + " días</p>" + 
+                                                        "<p>Lugar: " + event.place + "</p>" + 
+                                                        "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
+                                                        "<input type='submit' value='Editar'/>" + 
+                                                    "</div>" + 
                                                 "</form>" +
-                                            "</div>" +
-                                        "</div>";
+                                            "</div>" + 
+                                    "</div>";
 
                         eventCounter += 1;
                     });

@@ -351,14 +351,16 @@ function listCustomers() {
                         // alert(customer);
     
                         myListCustomers += "<div class='hero-element'>" +
-                                                "<div class='hero-content-inner'>" +
+                                                "<div class='box'>" +
                                                     "<form action='/customer' method='GET'>" +
+                                                        "<div class='box-name'><p>" + customer.name + " " + customer.lastName + "</p></div>" + 
+                                                        "<div class='box-content'>" + 
                                                         "<p>" + customer.email + "</p>" + 
-                                                        "<p>" + customer.name + " " + customer.lastName + "</p>" + 
                                                         "<p>" + customer.phone + "</p>" + 
                                                         "<p>" + customer.rfc + "</p>" +
                                                         "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
                                                         "<input type='submit' value='Ver detalle'/>" + 
+                                                        "</div>" + 
                                                     "</form>" +
                                                 "</div>" +
                                             "</div>"
