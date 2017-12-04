@@ -1,6 +1,7 @@
 class Quotation {
     
-    constructor(userKey, 
+    constructor(token,
+                userKey, 
                 eventKey,
                 iD,
                 date,
@@ -12,7 +13,8 @@ class Quotation {
                 total,
                 metricPlus,
                 version) {
-
+        
+        this.token = sessionStorage.token;
         this.userKey = userKey;
         this.eventKey = eventKey;
         this.iD = iD;
