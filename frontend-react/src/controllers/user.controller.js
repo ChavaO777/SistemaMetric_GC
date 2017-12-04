@@ -4,7 +4,7 @@ export function validate(User, callback){
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.responseType = 'json';
     xhr.onloadend = () => {
-        if (xhr.status === 200 && xhr.response.token) {
+        if (xhr.status === 200 && xhr.response.code === "1") {
             localStorage.setItem('token', xhr.response.token);
             callback({data: xhr.response.token, code: xhr.response.code});
         } else {

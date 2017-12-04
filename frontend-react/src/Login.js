@@ -1,45 +1,9 @@
 import React, { Component } from 'react';
 import './css/login.css';
 import {BrowserRouter, Link, } from 'react-router-dom';
-
 import UserModel from './models/User.model';
 import {validate} from './controllers/user.controller';
-
-import {listEvents} from './controllers/event.controller';
-
-class Event extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            events: [],
-            error: ''
-        }
-
-        this.getEvents = this.getEvents.bind(this);
-    }
-
-    getEvents(){
-        listEvents((response)=>{
-            if(response.code == 1)
-                this.setState({events: response.data});
-            else
-                this.setState({error: response.data});
-        });
-    }
-
-    render(){
-        let arrayOfEvents = this.state.error !== undefined? 
-            this.state.events.map((event) => 
-                <li key={event.entityKey}>{event.name}</li>
-            ) : this.state.error;
-        return(
-            <div>
-                <p onClick={this.getEvents}>Get</p>
-                <div>{arrayOfEvents}</div>
-            </div>
-        )
-    }
-}
+import Event from './containers/Event';
 
 class Login extends Component {
   constructor(props){
@@ -65,8 +29,8 @@ class Login extends Component {
     user.email = this.state.email;
     user.password = this.state.password;
     validate(user.toJsonString(), (response)=>{
-        if(response.code === 1)
-            console.log(response.code);
+        if(response.code === "1")
+            console.log(response.code); // here should redirect
         else
             this.setState({error: response.data});
     });
