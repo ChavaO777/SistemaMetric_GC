@@ -351,6 +351,37 @@ class QuotationRowAPI(remote.Service):
 
 		return message
 
+	@endpoints.method(TokenKey, QuotationRowList, path = 'quotationRow/listByQuotation', http_method = 'POST', name = 'quotationRow.listByQuotation')
+	def quotationRow_listByQuotation(cls, request):
+		try:
+
+			token = jwt.decode(request.token, 'secret')  #checa token
+			user = User.get_by_id(token['user_id']) #obtiene usuario dado el token
+			list = []  #create list
+			listMessage = QuotationRowList(code = 1) # crea objeto mensaje
+			quotationKeyObj = ndb.Key(urlsafe = request.quotationKey)
+			listBd = QuotationRow.query(QuotationRow.quotationKey == quotationKeyObj).fetch() # get only the quotation rows from that specific quotation
+
+			for i in listBd: # iterate
+				list.append(QuotationRowUpdate(token = '',
+											userKey = i.userKey.urlsafe(),
+											quotationKey = i.quotationKey.urlsafe(),
+											resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
+											iD = i.iD,
+											quantity = i.quantity,
+											days = i.days,
+											amount = i.amount,
+											entityKey = i.entityKey))
+			listMessage.data = list
+			message = listMessage
+
+		except jwt.DecodeError:
+			message = QuotationRowList(code = -1, data = []) #token invalido
+		except jwt.ExpiredSignatureError:
+			message = QuotationRowList(code = -2, data = []) #token expiro
+
+		return message
+
 	@endpoints.method(QuotationRowUpdate, CodeMessage, path='quotationRow/update', http_method='POST', name='quotationRow.update')
 	def quotationRow_update(cls, request):
 		try:
