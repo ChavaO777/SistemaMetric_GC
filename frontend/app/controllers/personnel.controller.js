@@ -226,14 +226,16 @@ function getPersonnel() {
                     //Place the content in the HTML
 
                     myPersonnel +=  "<div class='hero-element'>" +
-                                        "<div class='hero-content-inner'>" +
-                                            "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
-                                            "<p>" + personnel.stage + "</p>" +
-                                            "<p>" + personnel.specialty + "</p>" +
-                                            "<p>" + personnel.comment + "</p>" +
-                                            "<p>" + personnel.tariff + " / " + personnel.tariffTimeUnit + "</p>" +
-                                            "<p> <br> </p>" +
-                                            "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                        "<div class='box'>" +
+                                            "<div class='box-name'><p>" + personnel.name + " " + personnel.lastName + "</p></div>" + 
+                                            "<div class='box-content'>" + 
+                                                "<p>" + personnel.stage + "</p>" +
+                                                "<p>" + personnel.specialty + "</p>" +
+                                                "<p>" + personnel.comment + "</p>" +
+                                                "<p>" + personnel.tariff + " / " + personnel.tariffTimeUnit + "</p>" +
+                                                "<p> <br> </p>" +
+                                                "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>" +
+                                            "</div>" + 
                                             "<form action='/personnel' method='GET'>" +
                                                 "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
                                             "</form>" +
@@ -363,15 +365,17 @@ function listPersonnel() {
                         // alert(personnel);
 
                         myListPersonnel += "<div class='hero-element'>" +
-                                                "<div class='hero-content-inner'>" +
+                                                "<div class='box'>" +
                                                     "<form action='/personnel' method='GET'>" +
-                                                        "<p>" + personnel.name + " " + personnel.lastName + "</p>" + 
-                                                        "<p>" + personnel.stage + "</p>" +
-                                                        "<p>" + personnel.specialty + "</p>" +
-                                                        "<p>" + personnel.comment + "</p>" +
-                                                        "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
-                                                        "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<div class='box-name'><p>" + personnel.name + " " + personnel.lastName + "</p></div>" + 
+                                                        "<div class='box-content'>" + 
+                                                            "<p>" + personnel.stage + "</p>" +
+                                                            "<p>" + personnel.specialty + "</p>" +
+                                                            "<p>" + personnel.comment + "</p>" +
+                                                            "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
+                                                            "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
+                                                            "<input type='submit' value='Ver detalle'/>" + 
+                                                        "</div>"
                                                     "</form>" +
                                                 "</div>" +
                                             "</div>"

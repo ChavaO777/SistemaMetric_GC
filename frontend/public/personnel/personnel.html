@@ -44,14 +44,13 @@
 		</div>
 	</div>
 
-	<div class="modal" id='formID'>
+	<div class="modal" id='modalForm'>
 		<div class="modal-content">
-			<span class="modal-close">X</span>
+			<span class="modal-close" onclick="javascript:hideForm();">X</span>
 			<div class="modal-header">
 				Editar personal
 			</div>
 			<div class="modal-form">
-				<!-- <p>Id: 9876</p> -->
 				<input type="text" class="input-50" id="name" placeholder="Nombre">
 				<input type="text" class="input-50" id="lastName" placeholder="Apellidos">
 				<div>
@@ -113,11 +112,11 @@
 		});
 
 		function hideForm() {
-			var elem = document.getElementById('formID');
+			var elem = document.getElementById('modalForm');
 			$(elem).hide();
 		}
 		function showForm() {
-			var elem = document.getElementById('formID');
+			var elem = document.getElementById('modalForm');
 			$(elem).show();
 		}
 		
