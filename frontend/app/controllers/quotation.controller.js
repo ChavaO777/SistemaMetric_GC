@@ -368,8 +368,8 @@ function getQuotationRows(quotationKey){
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
                                     "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
-                                    "\t\t<p>Cargo: GET ENTITY TARIFF </p>" +
-                                    "\t\t<p>Por: GET ENTITY TARIFF TIME UNIT </p>" +
+                                    "\t\t<p id=entityTariff" + quotationRowCounter + ">Cargo: </p>" +
+                                    "\t\t<p id=entityTariffTimeUnit" + quotationRowCounter + ">Por: </p>" +
                                     "\t<form action='/quotationRow' method='GET'>\n" +
                                     "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
                                     "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
@@ -423,6 +423,8 @@ function getToolData(toolKey, counter){
                     totalTools.forEach(function(tool){
                         
                         $("#toolName" + counter).append(tool.brand + " " + tool.model);
+                        $("#entityTariff" + counter).append(tool.tariff);
+                        $("#entityTariffTimeUnit" + counter).append(tool.tariffTimeUnit);
                     });
                 }
             },
@@ -468,6 +470,8 @@ function getPersonnelData1(personnelKey, counter){
                     totalPersonnel.forEach(function(personnel){
     
                         $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
+                        $("#entityTariff" + counter).append(personnel.tariff);
+                        $("#entityTariffTimeUnit" + counter).append(personnel.tariffTimeUnit);
                     });
                 }
             },
