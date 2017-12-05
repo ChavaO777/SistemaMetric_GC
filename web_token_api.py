@@ -607,7 +607,6 @@ class CustomerAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = CustomerList(code = 1) # crea objeto mensaje
 			list.append(CustomerUpdate(token = '',
-									   companyKey = customer.companyKey.urlsafe(),
 									   email = customer.email,
 									   name = customer.name,
 									   lastName = customer.lastName,
@@ -638,7 +637,6 @@ class CustomerAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(CustomerUpdate(token = '',
-										   companyKey = i.companyKey.urlsafe(),
 										   email = i.email,
 										   name = i.name,
 										   lastName = i.lastName,
@@ -898,7 +896,6 @@ class PersonnelAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = PersonnelList(code = 1) # crea objeto mensaje
 			list.append(PersonnelUpdate(token = '',
-										companyKey = personnel.companyKey.urlsafe(),
 										name = personnel.name,
 										lastName = personnel.lastName,
 										stage = personnel.stage,
@@ -931,7 +928,6 @@ class PersonnelAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(PersonnelUpdate(token = '',
-											companyKey = i.companyKey.urlsafe(),
 											name = i.name,
 											lastName = i.lastName,
 											stage = i.stage,
