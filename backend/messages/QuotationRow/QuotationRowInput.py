@@ -14,3 +14,4 @@ class QuotationRowInput(messages.Message):
     quantity = messages.IntegerField(5)
     days = messages.IntegerField(6)
     amount = messages.IntegerField(7)
+    timeUnits = messages.StringField(8)

@@ -15,3 +15,4 @@ class QuotationRowUpdate(messages.Message):
     amount = messages.FloatField(7)
     entityKey = messages.StringField(8, required = True)
     userKey = messages.StringField(9)
+    timeUnits = messages.StringField(10)
