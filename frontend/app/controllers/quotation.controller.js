@@ -376,6 +376,8 @@ function getQuotationRows(quotationKey){
                                     "\t</form>" +
                                     "\t</div>" +
                                     "</div>";
+
+                    quotationRowCounter += 1;
                 });
                 
                 $("#quotationRows").append(myListQuotationRows);
