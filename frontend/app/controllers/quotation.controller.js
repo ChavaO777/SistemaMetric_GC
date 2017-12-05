@@ -423,7 +423,7 @@ function getToolData(toolKey, counter){
                     totalTools.forEach(function(tool){
                         
                         $("#toolName" + counter).append(tool.brand + " " + tool.model);
-                        $("#entityTariff" + counter).append(tool.tariff);
+                        $("#entityTariff" + counter).append(tool.tariff + " MXN");
                         $("#entityTariffTimeUnit" + counter).append(tool.tariffTimeUnit);
                     });
                 }
@@ -470,7 +470,7 @@ function getPersonnelData1(personnelKey, counter){
                     totalPersonnel.forEach(function(personnel){
     
                         $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
-                        $("#entityTariff" + counter).append(personnel.tariff);
+                        $("#entityTariff" + counter).append(personnel.tariff + " MXN");
                         $("#entityTariffTimeUnit" + counter).append(personnel.tariffTimeUnit);
                     });
                 }
