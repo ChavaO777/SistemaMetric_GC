@@ -133,16 +133,13 @@ class QuotationAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = QuotationList(code = 1) # crea objeto mensaje
 			list.append(QuotationUpdate(token = '',
-										userKey = quotation.userKey.urlsafe(),
 										eventKey = quotation.eventKey.urlsafe(),
 										iD = quotation.iD,
 										date = quotation.date.strftime("%d/%m/%Y"),
 										isFinal = quotation.isFinal,
-										subtotal = quotation.subtotal,
 										revenueFactor = quotation.revenueFactor,
 										iva = quotation.iva,
 										discount = quotation.discount,
-										total = quotation.total,
 										metricPlus = quotation.metricPlus,
 										version = quotation.version,
 										entityKey = quotation.entityKey))
@@ -169,16 +166,13 @@ class QuotationAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(QuotationUpdate(token='',
-											userKey = i.userKey.urlsafe(),
 											eventKey = i.eventKey.urlsafe(),
 											iD = i.iD,
 											date = i.date.strftime("%d/%m/%Y"),
 											isFinal = i.isFinal,
-											subtotal = i.subtotal,
 											revenueFactor = i.revenueFactor,
 											iva = i.iva,
 											discount = i.discount,
-											total = i.total,
 											metricPlus = i.metricPlus,
 											version = i.version,
 											entityKey = i.entityKey))
@@ -219,11 +213,9 @@ class QuotationAPI(remote.Service):
 			quotationEntity.date = date
 
 			quotationEntity.isFinal = request.isFinal
-			quotationEntity.subtotal = request.subtotal
 			quotationEntity.revenueFactor = request.revenueFactor
 			quotationEntity.iva = request.iva
 			quotationEntity.discount = request.discount
-			quotationEntity.total = request.total
 			quotationEntity.metricPlus = request.metricPlus
 			quotationEntity.version = request.version
 
@@ -301,13 +293,11 @@ class QuotationRowAPI(remote.Service):
 			list = []  #crea lista
 			listMessage = QuotationRowList(code = 1) # crea objeto mensaje
 			list.append(QuotationRowUpdate(token = '',
-											userKey = quotationRow.userKey.urlsafe(),
 											quotationKey = quotationRow.quotationKey.urlsafe(),
 											resourceKey = quotationRow.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
-											iD = quotationRow.iD,
 											quantity = quotationRow.quantity,
-											days = quotationRow.days,
-											amount = quotationRow.amount,
+											tariff = quotationRow.tariff,
+											tariffTimeUnit = quotationRow.tariffTimeUnit,
 											entityKey = quotationRow.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -333,14 +323,12 @@ class QuotationRowAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(QuotationRowUpdate(token = '',
-											userKey = i.userKey.urlsafe(),
-											quotationKey = i.quotationKey.urlsafe(),
-											resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
-											iD = i.iD,
-											quantity = i.quantity,
-											days = i.days,
-											amount = i.amount,
-											entityKey = i.entityKey))
+												quotationKey = i.quotationKey.urlsafe(),
+												resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
+												quantity = i.quantity,
+												tariff = i.tariff,
+												tariffTimeUnit = i.tariffTimeUnit,
+												entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
 
@@ -364,13 +352,12 @@ class QuotationRowAPI(remote.Service):
 
 			for i in listBd: # iterate
 				list.append(QuotationRowUpdate(token = '',
-											userKey = i.userKey.urlsafe(),
-											quotationKey = i.quotationKey.urlsafe(),
-											resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
-											quantity = i.quantity,
-											amount = i.amount,
-											timeUnits = i.timeUnits,
-											entityKey = i.entityKey))
+												quotationKey = i.quotationKey.urlsafe(),
+												resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
+												quantity = i.quantity,
+												tariff = i.tariff,
+												tariffTimeUnit = i.tariffTimeUnit,
+												entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
 
@@ -395,11 +382,10 @@ class QuotationRowAPI(remote.Service):
 			quotationRowEntity.quotationKey = quotationKeyObj
 
 			quotationRowEntity.resourceKey = request.resourceKey
-			quotationRowEntity.iD = request.iD
 			quotationRowEntity.quantity = request.quantity
-			quotationRowEntity.days = request.days
-			quotationRowEntity.amount = request.amount
-
+			quotationRowEntity.tariff = request.tariff
+			quotationRowEntity.tariffTimeUnit = request.tariffTimeUnit
+			
 			#Save the changes in the QuotationRow entity in the DB
 			quotationRowEntity.put()
 
