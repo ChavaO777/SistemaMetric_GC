@@ -53,9 +53,11 @@ function getQuotation() {
     try{
         var urlVariables = getURLVariables();
         var quotationKey = urlVariables.quotationID;
-        alert("quotationKey = " + quotationKey);
-        var myQuotation = new Quotation(token = sessionStorage.token,
-                                      entityKey = quotationKey);
+        var myQuotation = new Quotation();
+        myQuotation.entityKey = quotationKey;
+
+        // alert(myQuotation.toString());
+
         jQuery.ajax({
             type: "POST",
             url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/get",
@@ -67,7 +69,9 @@ function getQuotation() {
             },
             success: function (response) {
                 // $(".msg").html("<p>Message</p>");
-                alert("quotation retrieved " + response);
+                totalQuotations = response.data;
+                
+                alert("quotation retrieved " + JSON.stringify(totalQuotations));
                 /*
                 $("#singleQuotation").empty();
                 $("$userKey").empty();
@@ -83,7 +87,6 @@ function getQuotation() {
                 $("$metricPlus").empty();
                 $("$version").empty();
                 */
-                totalQuotations = response.data;
                 var myQuotation = "";
                 // Do a forEach even if the array only has one quotation
                 totalQuotations.forEach(function(quotation){
@@ -114,7 +117,7 @@ function getQuotation() {
                                     "<p id=customer0></p>" +
                                     "<p>ID: " + quotation.iD + "</p>" +
                                     "<p>Fecha: " + quotation.date + "</p>" +
-                                    "<p>Versión final: " + (quotation.isFinal ? "Si" : "No") + "</p>" +
+                                    "<p>Versión final: " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
                                     "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                     "<p>Versión: " + quotation.version + "</p>" +
                                     "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
@@ -330,9 +333,7 @@ function getCustomerNameForQuotation(customerKey, counter){
 function getQuotationRows(quotationKey){
 
     try{
-        // alert("customerKey = " + customerKey);
         var myQuotation = new Quotation();
-        myQuotation.token = sessionStorage.token;
         myQuotation.entityKey = quotationKey;
 
         jQuery.ajax({
@@ -358,8 +359,8 @@ function getQuotationRows(quotationKey){
                     //Place the content in the HTML
                     // alert(tool);
                     myListQuotationRows += "<div class='box'> \n" +
-                                    "<script>getPersonnelData('" + quotationRow.resourceKey + "'," + quotationRowCounter + ")</script>" +
-                                    "<script>getToolData('" + quotationRow.resourceKey + "'," + quotationRowCounter + ")</script>" +
+                                    "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
+                                    "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
                                     "\t<div class='box-name'>\n" +
                                     // should show resource data (specific to tool/personnel)
                                     "\t\t<p id=toolName>" + quotationRowCounter +"></p>" +
@@ -376,6 +377,7 @@ function getQuotationRows(quotationKey){
                                     "\t</div>" +
                                     "</div>";
                 });
+                
                 $("#quotationRows").append(myListQuotationRows);
             },
             error: function (error) {
@@ -413,10 +415,14 @@ function getToolData(toolKey, counter){
                 //$("#companyEvent" + counter).empty();
 
                 // Do a forEach even if the array only has one event
-                totalTools.forEach(function(tool){
 
-                    $("#toolName" + counter).append(tool.brand + " " + tool.model);
-                });
+                if(totalTools != null){
+
+                    totalTools.forEach(function(tool){
+                        
+                        $("#toolName" + counter).append(tool.brand + " " + tool.model);
+                    });
+                }
             },
             error: function (error) {
 
@@ -429,11 +435,11 @@ function getToolData(toolKey, counter){
         alert(error);
     }
 }
-function getPersonnelData(personnelKey, counter){
+function getPersonnelData1(personnelKey, counter){
 
     try{
-        // alert("companyEventKey = " + companyEventKey);
-          var myPersonnel = new Personnel(token = sessionStorage.token, entityKey = personnelKey);
+        var myPersonnel = new Personnel();
+        myPersonnel.entityKey = personnelKey;
 
         jQuery.ajax({
             type: "POST",
@@ -451,6 +457,8 @@ function getPersonnelData(personnelKey, counter){
 
                 totalPersonnel = response.data;
                 //$("#companyEvent" + counter).empty();
+
+                alert(JSON.stringify(totalPersonnel));
 
                 // Do a forEach even if the array only has one event
                 totalTools.forEach(function(personnel){

@@ -721,18 +721,20 @@ class ToolAPI(remote.Service):
 
 			list = []  #crea lista
 			listMessage = ToolList(code = 1) # crea objeto mensaje
-			list.append(ToolUpdate(token = '',
-								   iD = tool.iD,
-								   category = tool.category,
-								   kind = tool.kind,
-								   brand = tool.brand,
-								   model = tool.model,
-								   tariff = tool.tariff,
-								   tariffTimeUnit = tool.tariffTimeUnit,
-								   quantity = tool.quantity,
-								   availableQuantity = tool.availableQuantity,
-								   comment = tool.comment,
-								   entityKey = tool.entityKey))
+
+			if tool is not None:
+				list.append(ToolUpdate(token = '',
+									iD = tool.iD,
+									category = tool.category,
+									kind = tool.kind,
+									brand = tool.brand,
+									model = tool.model,
+									tariff = tool.tariff,
+									tariffTimeUnit = tool.tariffTimeUnit,
+									quantity = tool.quantity,
+									availableQuantity = tool.availableQuantity,
+									comment = tool.comment,
+									entityKey = tool.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
 			message = listMessage
@@ -873,15 +875,17 @@ class PersonnelAPI(remote.Service):
 
 			list = []  #crea lista
 			listMessage = PersonnelList(code = 1) # crea objeto mensaje
-			list.append(PersonnelUpdate(token = '',
-										name = personnel.name,
-										lastName = personnel.lastName,
-										stage = personnel.stage,
-										specialty = personnel.specialty,
-										comment = personnel.comment,
-										tariff = personnel.tariff,
-										tariffTimeUnit = personnel.tariffTimeUnit,
-										entityKey = personnel.entityKey))
+
+			if personnel is not None:
+				list.append(PersonnelUpdate(token = '',
+											name = personnel.name,
+											lastName = personnel.lastName,
+											stage = personnel.stage,
+											specialty = personnel.specialty,
+											comment = personnel.comment,
+											tariff = personnel.tariff,
+											tariffTimeUnit = personnel.tariffTimeUnit,
+											entityKey = personnel.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
 			message = listMessage
