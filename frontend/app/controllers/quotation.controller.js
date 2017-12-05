@@ -460,11 +460,14 @@ function getPersonnelData1(personnelKey, counter){
 
                 alert(JSON.stringify(totalPersonnel));
 
-                // Do a forEach even if the array only has one event
-                totalPersonnel.forEach(function(personnel){
+                if(totalPersonnel != null){
 
-                    $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
-                });
+                    // Do a forEach even if the array only has one event
+                    totalPersonnel.forEach(function(personnel){
+    
+                        $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
+                    });
+                }
             },
             error: function (error) {
 
