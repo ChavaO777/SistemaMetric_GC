@@ -367,8 +367,8 @@ function getQuotationRows(quotationKey){
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
                                     "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
-                                    "\t\t<p>Cargo: " + quotationRow.tariff + "</p>" +
-                                    "\t\t<p>Por: " + (quotationRow.tariffTimeUnit == 'day' ? 'Dia' : 'Hora') + "</p>" +
+                                    "\t\t<p>Cargo: GET ENTITY TARIFF </p>" +
+                                    "\t\t<p>Por: GET ENTITY TARIFF TIME UNIT </p>" +
                                     "\t<form action='/quotationRow' method='GET'>\n" +
                                     "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
                                     "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
