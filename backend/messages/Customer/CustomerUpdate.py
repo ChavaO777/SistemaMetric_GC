@@ -6,10 +6,9 @@ class MessageNone(messages.Message):
 
 class CustomerUpdate(messages.Message):
     token = messages.StringField(1, required = True) 
-    companyKey = messages.StringField(2)
-    email = messages.StringField(3)
-    name = messages.StringField(4)
-    lastName = messages.StringField(5)
-    rfc = messages.StringField(6)
-    phone = messages.StringField(7)
-    entityKey = messages.StringField(8, required = True)
+    email = messages.StringField(2)
+    name = messages.StringField(3)
+    lastName = messages.StringField(4)
+    rfc = messages.StringField(5)
+    phone = messages.StringField(6)
+    entityKey = messages.StringField(7, required = True)

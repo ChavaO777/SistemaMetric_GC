@@ -7,11 +7,10 @@ class MessageNone(messages.Message):
 ##### Personnel #####
 class PersonnelInput(messages.Message):
     token = messages.StringField(1, required = True) 
-    companyKey = messages.StringField(2)
-    name = messages.StringField(3)
-    lastName = messages.StringField(4)
-    stage = messages.StringField(5)
-    specialty = messages.StringField(6)
-    comment = messages.StringField(7)
-    tariff = messages.FloatField(8)
-    tariffTimeUnit = messages.StringField(9)
+    name = messages.StringField(2)
+    lastName = messages.StringField(3)
+    stage = messages.StringField(4)
+    specialty = messages.StringField(5)
+    comment = messages.StringField(6)
+    tariff = messages.FloatField(7)
+    tariffTimeUnit = messages.StringField(8)
