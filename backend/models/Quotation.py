@@ -26,11 +26,9 @@ class Quotation(CustomBaseModel):
                               'iD', 
                               'date',
                               'isFinal',
-                              'subtotal',
                               'revenueFactor',
                               'iva',
                               'discount',
-                              'total',
                               'metricPlus',
                               'version')
 
@@ -39,11 +37,9 @@ class Quotation(CustomBaseModel):
     iD = ndb.StringProperty()
     date = ndb.DateTimeProperty()
     isFinal = ndb.BooleanProperty()
-    subtotal = ndb.FloatProperty()
     revenueFactor = ndb.FloatProperty()
     iva = ndb.FloatProperty()
     discount = ndb.FloatProperty()
-    total = ndb.FloatProperty()
     metricPlus = ndb.StringProperty()
     version = ndb.IntegerProperty()
  
