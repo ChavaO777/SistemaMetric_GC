@@ -332,7 +332,7 @@ function getToolListForSelection(appendTo) {
                     });
                 }
 
-                appendTo.append(myListTools);
+                $(appendTo).append(myListTools);
             },
             error: function (error) {
                 alert(error);

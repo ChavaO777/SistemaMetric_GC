@@ -119,14 +119,14 @@
 			$('.quotationRowElement').empty();
 			var appendRowDiv = `<div class='quotationRow'>
 									<select class='quotationRowElement'>
+										<script>
+											getToolListForSelection($('.quotationRow').children('.quotationRowElement'));
+											getPersonnelListForSelection($('.quotationRow').children('.quotationRowElement'));
+										<\/script>
 									</select>
 									<span class='removeRowElement' onclick='removeQuotationRow(this)'>x</span>
 								</div>`;
 			$(appendTo).append(appendRowDiv);
-			var selectListElement = $(appendTo).find('.quotationRow').find('.quotationRowElement');
-			console.log(selectListElement);
-			getToolListForSelection(selectListElement);
-			getPersonnelListForSelection(selectListElement);
 		}
 
 		function removeQuotationRow(element) {

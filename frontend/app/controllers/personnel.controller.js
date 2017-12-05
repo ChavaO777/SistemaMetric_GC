@@ -439,7 +439,7 @@ function getPersonnelListForSelection(appendTo) {
                     });
                 }
 
-                appendTo.append(myListPersonnel);
+                $(appendTo).append(myListPersonnel);
             },
             error: function (error) {
 

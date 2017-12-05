@@ -116,7 +116,7 @@ function getQuotation() {
                 // $(".msg").html("<p>Message</p>");
                 totalQuotations = response.data;
                 
-                alert("quotation retrieved " + JSON.stringify(totalQuotations));
+                console.log("quotation retrieved " + JSON.stringify(totalQuotations));
                 /*
                 $("#singleQuotation").empty();
                 $("$userKey").empty();
@@ -225,7 +225,7 @@ function listQuotations() {
                     // A counter used to know where (which quotation) to assign the name of the customer given its entityKey
                     var quotationCounter = 0;
 
-                    alert(JSON.stringify(totalQuotations));
+                    console.log(JSON.stringify(totalQuotations));
 
                     // Do a forEach even if the array only has one quotation
                     totalQuotations.forEach(function(quotation){
