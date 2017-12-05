@@ -7,6 +7,14 @@
 	<link rel="shortcut icon" href="./logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" href="css/login.css">
+
+	<script>
+		document.addEventListener("keypress", function(event) {
+    		if (event.keyCode == 13) {
+        		login();
+    		}
+		});
+	</script>
 </head>
 <body>
 	<div class="login">
@@ -18,5 +26,6 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="../app/controllers/user.controller.js"></script>
+
 </body>
 </html>
