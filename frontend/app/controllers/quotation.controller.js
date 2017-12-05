@@ -75,12 +75,12 @@ function createQuotation() {
             },
             success: function (response) {
                 // $(".msg").html("<p>Herramienta creado</p>");
-                alert("The quotation was successfully created.");
+                console.log("The quotation was successfully created.");
                 window.location = "/myQuotations";
             },
             error: function (error) {
 
-                console.log("Not possible" + error.code);
+                console.log("Not possible");
             }
         });
     }
