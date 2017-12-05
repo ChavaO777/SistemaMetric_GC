@@ -187,22 +187,11 @@ function listQuotations() {
 
                         //Place the content in the HTML
                         // alert(quotation);
-
-                        'userKey',
-                        'eventKey',
-                        'iD',
-                        'date',
-                        'isFinal',
-                        'revenueFactor',
-                        'iva',
-                        'discount',
-                        'metricPlus',
-                        'version'
-
+                       
                         myQuotationsList += "<div class='hero-element'>" +
                                                 "<div class='hero-content-inner'>" +
                                                     "<form action='/quotation' method='GET'>" +
-                                                        "<script>getCompanyEventName('" + quotation.eventKey + "'," + quotationCounter + ")</script>" +
+                                                        "<script>getCompanyEventName('" + quotation.eventKey + "','" + quotationCounter + "')</script>" +
                                                         "<p id=companyEvent" + quotationCounter + "></p>" +
                                                         "<p id=customer" + quotationCounter + "></p>" +
                                                         "<p>ID: " + quotation.iD + "</p>" +
