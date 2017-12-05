@@ -2,31 +2,25 @@ class Quotation {
 
     constructor(token,
                 entityKey,
-                userKey,
                 eventKey,
                 iD,
                 date,
                 isFinal,
-                subtotal,
                 revenueFactor,
                 iva,
                 discount,
-                total,
                 metricPlus,
                 version) {
 
         this.token = sessionStorage.token;
         this.entityKey = entityKey;
-        this.userKey = userKey;
         this.eventKey = eventKey;
         this.iD = iD;
         this.date = date;
         this.isFinal = isFinal;
-        this.subtotal = subtotal;
         this.revenueFactor = revenueFactor;
         this.iva = iva;
         this.discount = discount;
-        this.total = total;
         this.metricPlus = metricPlus;
         this.version = version;
     }
@@ -121,7 +115,7 @@ function getQuotation() {
                                     "<p>ID: " + quotation.iD + "</p>" +
                                     "<p>Fecha: " + quotation.date + "</p>" +
                                     "<p>Versión final: " + (quotation.isFinal ? "Si" : "No") + "</p>" +
-                                    "<p>Total: " + quotation.total + " MXN</p>" +
+                                    "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                     "<p>Versión: " + quotation.version + "</p>" +
                                     "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
                                     "\t<form action='/quotation' method='GET'>\n" +
@@ -129,7 +123,8 @@ function getQuotation() {
                                     "\t</form>" +
                                     "\t</div>" +
                                     "</div>";
-                     getQuotationRows(quotation.entityKey);
+
+                    getQuotationRows(quotation.entityKey);
                 });
                 $("#singleQuotation").append(myQuotation);
             },
@@ -195,11 +190,9 @@ function listQuotations() {
                         'iD',
                         'date',
                         'isFinal',
-                        'subtotal',
                         'revenueFactor',
                         'iva',
                         'discount',
-                        'total',
                         'metricPlus',
                         'version'
 
@@ -212,7 +205,7 @@ function listQuotations() {
                                                         "<p>ID: " + quotation.iD + "</p>" +
                                                         "<p>Fecha: " + quotation.date + "</p>" +
                                                         "<p>Versión final: " + quotation.isFinal + "</p>" +
-                                                        "<p>Total: " + quotation.total + " MXN</p>" +
+                                                        "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                                         "<p>Versión: " + quotation.version + "</p>" +
                                                         "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
                                                         "<input type='submit' value='Ver detalle'/>" +
@@ -374,8 +367,8 @@ function getQuotationRows(quotationKey){
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
                                     "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
-                                    "\t\t<p>Cargo: " + quotationRow.amount + "</p>" +
-                                    "\t\t<p>Por: " + (quotationRow.timeUnits == 'day' ? 'Dia' : 'Hora') + "</p>" +
+                                    "\t\t<p>Cargo: " + quotationRow.tariff + "</p>" +
+                                    "\t\t<p>Por: " + (quotationRow.tariffTimeUnit == 'day' ? 'Dia' : 'Hora') + "</p>" +
                                     "\t<form action='/quotationRow' method='GET'>\n" +
                                     "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
                                     "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
