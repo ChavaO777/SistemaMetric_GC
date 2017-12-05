@@ -183,7 +183,6 @@ a:active{
 	transition: all 0.4s;
 	color: #fff;
 	border: 0;
-
 }
 
 .btn-rectangle{
@@ -368,6 +367,7 @@ a:active{
 	float: right;
 	background: #fff;
 	text-align: center;
+	width: 200px;
 }
 
 .box .box-name{
@@ -465,6 +465,25 @@ a:active{
 
 .modal-name{
 	font-weight: bold;
+}
+
+.modal select, 
+.modal select option{
+	padding: 10px 20px;
+	background: #fff;
+	margin: 10px 30px;
+}
+
+.modal .removeRowElement{
+	padding: 5px;
+	margin: 3px;
+	background: #fff;
+	color: #E53935;
+	font-weight: bold;
+}
+
+.modal .removeRowElement:hover{
+	cursor: pointer;
 }
 
 #agregarCotizacion{

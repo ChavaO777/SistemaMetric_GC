@@ -59,31 +59,23 @@
 				Nueva Cotización
 			</div>
 			<div class="modal-form">
-				<div>
-					<script>
-						$(document).ready(function () {
-							getEventListForSelection();
-						});
-					</script>
-					<select id="eventList">
-					</select>
-				</div>
-				<div class="quotationRowContainer">
-					<div class="quotationRow">
-						<select class="quotationRowElement"></select>
-					</div>
-				</div>
+				<input type="text" class="input-50" placeholder="iD" id="id">
+				<select id="eventList"></select>
+				<p>Elementos:</p>
+				<div class="quotationRowContainer"></div>
 				<p><a href="javascript:addQuotationRow('.quotationRowContainer');">Agregar...</a></p>
-				<input type="number" class="input-50" placeholder="Precio" id="tariff">
-				<select id="tariffTimeUnit">
-					<option value="hour">Por hora</option>
-					<option value="day">Por día</option>
-				</select>
-				<input type="number" class="input-50" placeholder="Existencias" id="quantity">
-				<input type="number" class="input-50" placeholder="Disponibles" id="availableQuantity">
-				<input type="text" class="input-100" placeholder="Comentarios" id="comment">
+				<input type="date" class="input-100" placeholder="Fecha" id="date">
+				<label>¿Es esta la versión final?</label>
+				<input type="radio" name="isFinal" id="isFinalTrue" value="true"><label for="isFinalTrue">Si</label>
+				<input type="radio" name="isFinal" id="isFinalFalse" value="false"><label for="isFinalFalse">No</label>
+				<br>
+				<input type="number" class="input-50" id="iva" placeholder="iva">
+				<input type="number" class="input-50" id="revenueFactor" placeholder="Revenue Factor">
+				<input type="number" class="input-50" id="metricPlus" placeholder="Metric plus">
+				<input type="number" class="input-50" id="discount" placeholder="Descuento">
+				<input type="number" class="input-50" id="version" placeholder="Version">
 				<span class="submit">
-					<a href="javascript:createQuotation();" class="btn-rectangle btn-green">Aceptar</a>
+					<a onclick="createQuotation()" class="btn-rectangle btn-green">Aceptar</a>
 				</span>
 			</div>
 		</div>
@@ -120,13 +112,25 @@
 		function showForm() {
 			var elem = document.getElementById('agregarCotizacion');
 			$(elem).show();
-			getToolListForSelection('.quotationRowElement');
-			getPersonnelListForSelection('.quotationRowElement');
+			addQuotationRow('.quotationRowContainer');
+			getEventListForSelection('#eventList');
 		}
 		function addQuotationRow(appendTo) {
-			getToolListForSelection('.quotationRowElement');
-			getPersonnelListForSelection('.quotationRowElement');
-			$(appendTo).append("<div class='quotationRow'><select class='quotationRowElement'></select></div>");
+			$('.quotationRowElement').empty();
+			var appendRowDiv = `<div class='quotationRow'>
+									<select class='quotationRowElement'>
+									</select>
+									<span class='removeRowElement' onclick='removeQuotationRow(this)'>x</span>
+								</div>`;
+			$(appendTo).append(appendRowDiv);
+			var selectListElement = $(appendTo).find('.quotationRow').find('.quotationRowElement');
+			console.log(selectListElement);
+			getToolListForSelection(selectListElement);
+			getPersonnelListForSelection(selectListElement);
+		}
+
+		function removeQuotationRow(element) {
+			$(element).parent("div").remove();
 		}
 	</script>
 </body>

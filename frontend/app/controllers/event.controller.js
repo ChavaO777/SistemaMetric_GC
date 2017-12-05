@@ -306,7 +306,7 @@ function getCustomerName(idPrefix, customerKey, eventCounter){
     }
 }
 
-function getEventListForSelection() {
+function getEventListForSelection(appendTo) {
 
     try {
 
@@ -327,7 +327,7 @@ function getEventListForSelection() {
 
                 // $(".msg").html("<p>Message</p>");
 
-                $("#eventList").empty();
+                $(appendTo).empty();
                 var totalEvents = response.data;
 
                 var myEventListForSelection = "";
@@ -350,7 +350,7 @@ function getEventListForSelection() {
                     });
                 }
 
-                $("#eventList").append(myEventListForSelection);
+                $(appendTo).append(myEventListForSelection);
             },
             error: function (error) {
                 alert(error);

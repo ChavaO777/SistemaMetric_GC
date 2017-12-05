@@ -43,6 +43,51 @@ function TokenObject() {
 
 function createQuotation() {
 
+    var myId = $('#id').val;
+    var myDate = $('#date').val();
+    var myEventKey = $('#eventList').val();
+    var myDiscount = $("#discount").val();
+    var myVersion = $("#version").val();
+    var myIsFinal = $("input:radio[name=isFinal]:checked").val();;
+    var myIva = $("#iva").val();
+    var myMetricPlus = $("#metricPlus").val();
+    var myRevenueFactor = $("#revenueFactor").val();
+
+    var quotation = new Quotation();
+    quotation.iD = myId;
+    quotation.date = myDate;
+    quotation.eventKey = myEventKey;
+    quotation.discount = myDiscount;
+    quotation.version = myVersion;
+    quotation.iva = myIva;
+    quotation.metricPlus = myMetricPlus;
+    quotation.isFinal = myIsFinal==="false"?false:true;
+
+    try {
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/insert",
+            data: quotation.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function () {
+
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The quotation was successfully created.");
+                window.location = "/myQuotations";
+            },
+            error: function (error) {
+
+                console.log("Not possible" + error.code);
+            }
+        });
+    }
+    catch (error) {
+
+        alert(error);
+    }
 }
 
 function deleteQuotation() {

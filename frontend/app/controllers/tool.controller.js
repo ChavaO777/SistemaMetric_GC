@@ -319,7 +319,6 @@ function getToolListForSelection(appendTo) {
             success: function (response) {
 
                 // $(".msg").html("<p>Message</p>");
-                $(appendTo).empty();
                 var totalTools = response.data;
                 var myListTools = "";
 
@@ -327,12 +326,13 @@ function getToolListForSelection(appendTo) {
                     myListTools += "<option>No disponible</option>";
                 else {
                     // Do a forEach even if the array only has one tool
+                    myListTools += "<option disabled><bold>Herramientas: </bold></option>";
                     totalTools.forEach(function (tool) {
-                        myListTools += "<option id='"+tool.entityKey+"'>"+tool.model+" ["+tool.brand+"]</option>";
+                        myListTools += "<option value='"+tool.entityKey+"'>"+tool.model+" ["+tool.brand+"]</option>";
                     });
                 }
 
-                $(appendTo).append(myListTools);
+                appendTo.append(myListTools);
             },
             error: function (error) {
                 alert(error);

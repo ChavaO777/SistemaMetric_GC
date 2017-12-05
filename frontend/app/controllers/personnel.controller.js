@@ -430,15 +430,16 @@ function getPersonnelListForSelection(appendTo) {
                     myListPersonnel += "<option>No hay personal disponible</option>";
                 else {
                     // Do a forEach even if the array only has one personnel
+                    myListPersonnel += "<option disabled><bold>Personal: </bold></option>";
                     totalPersonnel.forEach(function (personnel) {
 
                         //Place the content in the HTML
 
-                        myListPersonnel += "<option id='"+personnel.entityKey+"'>"+personnel.name+" ["+personnel.specialty+"]</option";
+                        myListPersonnel += "<option value='"+personnel.entityKey+"'>"+personnel.name+" ["+personnel.specialty+"]</option>";
                     });
                 }
 
-                $(appendTo).append(myListPersonnel);
+                appendTo.append(myListPersonnel);
             },
             error: function (error) {
 
