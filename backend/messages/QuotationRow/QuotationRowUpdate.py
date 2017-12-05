@@ -10,6 +10,4 @@ class QuotationRowUpdate(messages.Message):
     quotationKey = messages.StringField(2)
     resourceKey = messages.StringField(3)
     quantity = messages.IntegerField(4)
-    tariff = messages.FloatField(5)
-    tariffTimeUnit = messages.StringField(6)
-    entityKey = messages.StringField(7, required = True)
+    entityKey = messages.StringField(5, required = True)

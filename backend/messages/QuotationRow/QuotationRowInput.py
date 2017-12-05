@@ -11,5 +11,3 @@ class QuotationRowInput(messages.Message):
     quotationKey = messages.StringField(2)
     resourceKey = messages.StringField(3)
     quantity = messages.IntegerField(4)
-    tariff = messages.FloatField(5)
-    tariffTimeUnit = messages.StringField(6)

@@ -296,8 +296,6 @@ class QuotationRowAPI(remote.Service):
 											quotationKey = quotationRow.quotationKey.urlsafe(),
 											resourceKey = quotationRow.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
 											quantity = quotationRow.quantity,
-											tariff = quotationRow.tariff,
-											tariffTimeUnit = quotationRow.tariffTimeUnit,
 											entityKey = quotationRow.entityKey))
 
 			listMessage.data = list #ASIGNA a la salida la lista
@@ -326,8 +324,6 @@ class QuotationRowAPI(remote.Service):
 												quotationKey = i.quotationKey.urlsafe(),
 												resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
 												quantity = i.quantity,
-												tariff = i.tariff,
-												tariffTimeUnit = i.tariffTimeUnit,
 												entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
@@ -355,8 +351,6 @@ class QuotationRowAPI(remote.Service):
 												quotationKey = i.quotationKey.urlsafe(),
 												resourceKey = i.resourceKey, # This key is saved as a string because it can either be a Personnel key or a Tool key
 												quantity = i.quantity,
-												tariff = i.tariff,
-												tariffTimeUnit = i.tariffTimeUnit,
 												entityKey = i.entityKey))
 			listMessage.data = list
 			message = listMessage
@@ -383,8 +377,6 @@ class QuotationRowAPI(remote.Service):
 
 			quotationRowEntity.resourceKey = request.resourceKey
 			quotationRowEntity.quantity = request.quantity
-			quotationRowEntity.tariff = request.tariff
-			quotationRowEntity.tariffTimeUnit = request.tariffTimeUnit
 			
 			#Save the changes in the QuotationRow entity in the DB
 			quotationRowEntity.put()
