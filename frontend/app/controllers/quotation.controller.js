@@ -363,8 +363,8 @@ function getQuotationRows(quotationKey){
                                     "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
                                     "\t<div class='box-name'>\n" +
                                     // should show resource data (specific to tool/personnel)
-                                    "\t\t<p id=toolName>" + quotationRowCounter +"></p>" +
-                                    "\t\t<p id=personnelName>" + quotationRowCounter +"></p>" +
+                                    "\t\t<p id=toolName" + quotationRowCounter +"></p>" +
+                                    "\t\t<p id=personnelName" + quotationRowCounter +"></p>" +
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
                                     "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
