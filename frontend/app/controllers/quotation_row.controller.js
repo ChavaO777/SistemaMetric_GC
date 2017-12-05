@@ -1,4 +1,5 @@
 class QuotationRow{
+    
     constructor(token,
         quotationKey,
         resourceKey,
@@ -8,10 +9,12 @@ class QuotationRow{
         this.quotationyKey = quotationyKey;
         this.quantity = quantity;
     }
+
     toString() {
         return JSON.stringify(this);
     }
 }
+
 function TokenObject() {
     name
     this.token = sessionStorage.token;
@@ -21,6 +24,7 @@ function TokenObject() {
         return JSON.stringify(this);
     };
 }
+
 function getURLVariables() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {

@@ -351,7 +351,7 @@ function listPersonnel() {
                                             "<div class='hero-content-inner'>" +
                                                 "<p> No hay personal registrado </p>" + 
                                             "</div>" +
-                                        "</div>"
+                                        "</div>";
                 }
 
                 else{
@@ -375,10 +375,10 @@ function listPersonnel() {
                                                             "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
                                                             "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
                                                             "<input type='submit' value='Ver detalle'/>" + 
-                                                        "</div>"
+                                                        "</div>" +
                                                     "</form>" +
                                                 "</div>" +
-                                            "</div>"
+                                            "</div>";
                     });
                 }
 
