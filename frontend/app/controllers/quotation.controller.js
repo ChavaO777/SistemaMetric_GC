@@ -461,7 +461,7 @@ function getPersonnelData1(personnelKey, counter){
                 alert(JSON.stringify(totalPersonnel));
 
                 // Do a forEach even if the array only has one event
-                totalTools.forEach(function(personnel){
+                totalPersonnel.forEach(function(personnel){
 
                     $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
                 });
