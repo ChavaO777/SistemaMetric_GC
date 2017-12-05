@@ -358,15 +358,19 @@ function getQuotationRows(quotationKey){
 
                 totalQuotationRows = response.data;
                 myListQuotationRows = "";
+                quotationRowCounter = 0;
                 // Do a forEach even if the array only has one row
                 totalQuotationRows.forEach(function(quotationRow){
 
                     //Place the content in the HTML
                     // alert(tool);
                     myListQuotationRows += "<div class='box'> \n" +
+                                    "<script>getPersonnelData('" + quotationRow.resourceKey + "'," + quotationRowCounter + ")</script>" +
+                                    "<script>getToolData('" + quotationRow.resourceKey + "'," + quotationRowCounter + ")</script>" +
                                     "\t<div class='box-name'>\n" +
                                     // should show resource data (specific to tool/personnel)
-                                    "\t\t<p>" + quotationRow.resourceKey +"</p>" +
+                                    "\t\t<p id=toolName>" + quotationRowCounter +"></p>" +
+                                    "\t\t<p id=personnelName>" + quotationRowCounter +"></p>" +
                                     "\t</div>" +
                                     "\t<div class='box-content'>\n" +
                                     "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
@@ -380,6 +384,86 @@ function getQuotationRows(quotationKey){
                                     "</div>";
                 });
                 $("#quotationRows").append(myListQuotationRows);
+            },
+            error: function (error) {
+
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+
+        alert(error);
+    }
+}
+function getToolData(toolKey, counter){
+
+    try{
+        // alert("companyEventKey = " + companyEventKey);
+          var myTool = new Tool(token = sessionStorage.token, entityKey = toolKey);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/get",
+            data: myTool.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+
+                // $(".msg").html("<p>Message</p>");
+
+                totalTools = response.data;
+                //$("#companyEvent" + counter).empty();
+
+                // Do a forEach even if the array only has one event
+                totalTools.forEach(function(tool){
+
+                    $("#toolName" + counter).append(tool.brand + " " + tool.model);
+                });
+            },
+            error: function (error) {
+
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+
+        alert(error);
+    }
+}
+function getPersonnelData(personnelKey, counter){
+
+    try{
+        // alert("companyEventKey = " + companyEventKey);
+          var myPersonnel = new Personnel(token = sessionStorage.token, entityKey = personnelKey);
+
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/get",
+            data: myPersonnel.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+
+                // $(".msg").html("<p>Message</p>");
+
+                totalPersonnel = response.data;
+                //$("#companyEvent" + counter).empty();
+
+                // Do a forEach even if the array only has one event
+                totalTools.forEach(function(personnel){
+
+                    $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
+                });
             },
             error: function (error) {
 
