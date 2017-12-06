@@ -63,7 +63,7 @@ function createPersonnel() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/insert",
+            url: "./_ah/api/personnel_api/v1/personnel/insert",
             data: personnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -102,7 +102,7 @@ function deletePersonnel() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/delete",
+            url: "./_ah/api/personnel_api/v1/personnel/delete",
             data: personnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -154,7 +154,7 @@ function editPersonnel() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/update",
+            url: "./_ah/api/personnel_api/v1/personnel/update",
             data: personnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -188,7 +188,7 @@ function getPersonnel() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/get",
+            url: "./_ah/api/personnel_api/v1/personnel/get",
             data: myPersonnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -273,7 +273,7 @@ function getPersonnelData() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/get",
+            url: "./_ah/api/personnel_api/v1/personnel/get",
             data: myPersonnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -329,7 +329,7 @@ function listPersonnel() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/list",
+            url: "./_ah/api/personnel_api/v1/personnel/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -374,7 +374,7 @@ function listPersonnel() {
                                                             "<p>" + personnel.comment + "</p>" +
                                                             "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
                                                             "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
-                                                            "<input type='submit' value='Ver detalle'/>" + 
+                                                            "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                         "</div>" +
                                                     "</form>" +
                                                 "</div>" +
@@ -416,7 +416,7 @@ function getPersonnelListForSelection() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/list",
+            url: "./_ah/api/personnel_api/v1/personnel/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

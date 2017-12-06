@@ -4,7 +4,7 @@ function TokenObject() {
 
 export function listEvents(callback) {
     const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:8080/_ah/api/event_api/v1/event/list', true);
+    xhr.open('post', './_ah/api/event_api/v1/event/list', true);
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.responseType = 'json';
     xhr.onloadend = () => {

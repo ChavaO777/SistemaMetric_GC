@@ -8,6 +8,19 @@ function User() {
       return JSON.stringify(this);
     };
 }
+function TokenObject() {
+    
+    if(sessionStorage.token == null) {
+      this.token = "";
+    }
+    else
+      this.token = sessionStorage.token;
+    
+    this.toJsonString = function () { 
+        
+        return JSON.stringify(this); 
+    };
+};
 function login() {
   var user = new User();
   user.email = $("#email").val();
@@ -16,7 +29,7 @@ function login() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/_ah/api/user_api/v1/user/login",
+        url: "./_ah/api/user_api/v1/user/login",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -43,6 +56,31 @@ function login() {
     alert(error);
   }
 }
+function isLoggedIn() {
+  try{
+    myTokenObject = new TokenObject();
+    jQuery.ajax({
+        type: "POST",
+        url: "./_ah/api/user_api/v1/user/checkLogin",
+        data: JSON.stringify(myTokenObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        before: function(){
+            $(".msg").html("<p>Esperando respuesta...</p>");
+        },
+        success: function (response) {
+            if(response.code != "1")
+              window.location = "/login";
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+  }
+  catch(error){
+    alert(error);
+  }
+}
 function create() {
   var user = new User();
   user.email = $("#email").val();
@@ -52,7 +90,7 @@ function create() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/create",
+        url: "./backend/apis/public/user/create",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -76,7 +114,7 @@ function list() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/list",
+        url: "./backend/apis/public/user/list",
         data: {},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -100,7 +138,7 @@ function list() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/list",
+        url: "./backend/apis/public/user/list",
         data: {},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -126,7 +164,7 @@ function get() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/get",
+        url: "./backend/apis/public/user/get",
         data: {email : email},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -159,7 +197,7 @@ function update() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/update",
+        url: "./backend/apis/public/user/update",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -183,7 +221,7 @@ function remove() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/delete",
+        url: "./backend/apis/public/user/delete",
         data: {email : email},
         contentType: "application/json; charset=utf-8",
         dataType: "json",

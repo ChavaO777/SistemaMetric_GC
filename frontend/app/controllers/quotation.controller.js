@@ -66,7 +66,7 @@ function createQuotation() {
     try {
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/insert",
+            url: "./_ah/api/quotation_api/v1/quotation/insert",
             data: quotation.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -108,7 +108,7 @@ function getQuotation() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/get",
+            url: "./_ah/api/quotation_api/v1/quotation/get",
             data: myQuotation.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -175,7 +175,7 @@ function listQuotations() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/list",
+            url: "./_ah/api/quotation_api/v1/quotation/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -224,7 +224,7 @@ function listQuotations() {
                                                             "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                                             "<p>Versión: " + quotation.version + "</p>" +
                                                             "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
-                                                            "<input type='submit' value='Ver detalle'/>" +
+                                                            "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" +
                                                         "</div>"
                                                     "</form>" +
                                                 "</div>" +
@@ -268,7 +268,7 @@ function getCompanyEventName(companyEventKey, counter){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
+            url: "./_ah/api/event_api/v1/event/get",
             data: myCompanyEvent.toString(),
             async: false,
             contentType: "application/json; charset=utf-8",
@@ -317,7 +317,7 @@ function getCustomerNameForQuotation(customerKey, counter){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            url: "./_ah/api/customer_api/v1/customer/get",
             data: myCustomer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -357,7 +357,7 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotation_row_api/v1/quotationRow/listByQuotation",
+            url: "./_ah/api/quotation_row_api/v1/quotationRow/listByQuotation",
             data: myQuotation.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -432,7 +432,7 @@ function getToolData(toolKey, counter, resourceQuantity){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/get",
+            url: "./_ah/api/tool_api/v1/tool/get",
             data: myTool.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -488,7 +488,7 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/personnel_api/v1/personnel/get",
+            url: "./_ah/api/personnel_api/v1/personnel/get",
             data: myPersonnel.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

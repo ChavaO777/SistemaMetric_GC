@@ -55,7 +55,7 @@ function createCustomer() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/insert",
+            url: "./_ah/api/customer_api/v1/customer/insert",
             data: customer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -105,7 +105,7 @@ function editCustomer() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/update",
+            url: "./_ah/api/customer_api/v1/customer/update",
             data: customer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -144,7 +144,7 @@ function deleteCustomer() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/delete",
+            url: "./_ah/api/customer_api/v1/customer/delete",
             data: customer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -182,7 +182,7 @@ function getCustomer() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            url: "./_ah/api/customer_api/v1/customer/get",
             data: myCustomer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -264,7 +264,7 @@ function getCustomerData() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            url: "./_ah/api/customer_api/v1/customer/get",
             data: myCustomer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -316,7 +316,7 @@ function listCustomers() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/list",
+            url: "./_ah/api/customer_api/v1/customer/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -361,7 +361,7 @@ function listCustomers() {
                                                         "<p>" + customer.phone + "</p>" + 
                                                         "<p>" + customer.rfc + "</p>" +
                                                         "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                         "</div>" + 
                                                     "</form>" +
                                                 "</div>" +
@@ -392,7 +392,7 @@ function getCustomerListForSelection(){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/list",
+            url: "./_ah/api/customer_api/v1/customer/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

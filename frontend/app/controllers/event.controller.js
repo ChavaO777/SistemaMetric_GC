@@ -71,7 +71,7 @@ function createNewCompanyEvent() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/insert",
+            url: "./_ah/api/event_api/v1/event/insert",
             data: event.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -103,7 +103,7 @@ function listEvents() {
         
         jQuery.ajax( {
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/list",
+            url: "./_ah/api/event_api/v1/event/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -143,7 +143,7 @@ function listEvents() {
                                                         "<p>Duración: " + event.days + " días</p>" + 
                                                         "<p>Lugar: " + event.place + "</p>" + 
                                                         "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" + 
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                     "</div>" + 
                                                 "</form>" + 
                                             "</div>" + 
@@ -175,7 +175,7 @@ function getEvent() {
                                       entityKey = eventKey);
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
+            url: "./_ah/api/event_api/v1/event/get",
             data: myEvent.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -271,7 +271,7 @@ function editEvent() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/update",
+            url: "./_ah/api/event_api/v1/event/update",
             data: event.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -310,7 +310,7 @@ function deleteEvent() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/delete",
+            url: "./_ah/api/event_api/v1/event/delete",
             data: event.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -343,7 +343,7 @@ function getCustomerName(idPrefix, customerKey, eventCounter){
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/customer_api/v1/customer/get",
+            url: "./_ah/api/customer_api/v1/customer/get",
             data: myCustomer.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -385,7 +385,7 @@ function getEventListForSelection(appendTo) {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/event_api/v1/event/list",
+            url: "./_ah/api/event_api/v1/event/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

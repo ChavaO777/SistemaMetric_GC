@@ -51,7 +51,7 @@ function createQuotationRow() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/quotation_row_api/v1/quotationRow/insert",
+            url: "./_ah/api/quotation_row_api/v1/quotationRow/insert",
             data: myQuotationRow.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
