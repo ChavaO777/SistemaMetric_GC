@@ -8,6 +8,19 @@ function User() {
       return JSON.stringify(this);
     };
 }
+function TokenObject() {
+    
+    if(sessionStorage.token == null) {
+      this.token = "";
+    }
+    else
+      this.token = sessionStorage.token;
+    
+    this.toJsonString = function () { 
+        
+        return JSON.stringify(this); 
+    };
+};
 function login() {
   var user = new User();
   user.email = $("#email").val();
@@ -33,6 +46,31 @@ function login() {
                 $(".msg").html("<p>" + sessionStorage.token + "</p>");
                 window.location = "/";
             }
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+  }
+  catch(error){
+    alert(error);
+  }
+}
+function isLoggedIn() {
+  try{
+    myTokenObject = new TokenObject();
+    jQuery.ajax({
+        type: "POST",
+        url: "http://localhost:8080/_ah/api/user_api/v1/user/checkLogin",
+        data: JSON.stringify(myTokenObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        before: function(){
+            $(".msg").html("<p>Esperando respuesta...</p>");
+        },
+        success: function (response) {
+            if(response.code != "1")
+              window.location = "/login";
         },
         error: function (error) {
             alert(error);

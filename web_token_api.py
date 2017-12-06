@@ -1263,6 +1263,23 @@ class UserAPI(remote.Service):
 
 		return message
 
+	@endpoints.method(Token, CodeMessage, path='user/checkLogin', http_method='POST', name='user.checkLogin')
+	def users_checkLogin(cls, request):
+		try:
+
+			token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py
+
+			message = CodeMessage(code = 1, message = 'User is logged in')
+
+		except jwt.DecodeError:
+			message = CodeMessage(code = -2, message = 'Invalid token')
+
+		except jwt.ExpiredSignatureError:
+			message = CodeMessage(code = -1, message = 'Token expired')
+
+		return message
+
 	@endpoints.method(UserUpdate, CodeMessage, path = 'user/update', http_method = 'POST', name = 'user.update')
 	def user_update(cls, request):
 		try:

@@ -7,7 +7,18 @@
 	<link rel="shortcut icon" href="logos/ico.ico">
 	<link href="https://fonts.googleapis.com/css?family=Pontano+Sans|Lato" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous">
+	</script>
+
 	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/user.controller.js"></script>
+	<script>
+		isLoggedIn();
+	</script>
 </head>
 <body onload="listTools()">
 
@@ -81,11 +92,6 @@
 	</div>
 
 	<script src="https://use.fontawesome.com/5144437903.js"></script>
-	<script
-	  src="https://code.jquery.com/jquery-3.2.1.min.js"
-	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	  crossorigin="anonymous">
-	</script>
 	<script type="text/javascript">
 		$(function(){
 		    $('.nav a').click(function(){
