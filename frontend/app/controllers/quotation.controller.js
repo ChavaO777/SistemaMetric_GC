@@ -61,6 +61,7 @@ function createQuotation() {
     quotation.version = myVersion;
     quotation.iva = myIva;
     quotation.metricPlus = myMetricPlus;
+    quotation.revenueFactor = myRevenueFactor;
     quotation.isFinal = myIsFinal==="false"?false:true;
 
     try {
@@ -102,6 +103,10 @@ function getQuotation() {
         var myQuotation = new Quotation();
         myQuotation.entityKey = quotationKey;
 
+        var myQuotationRevenueFactor = 0;
+        var myQuotationIva = 0;
+        var myQuotationDiscount = 0;
+
         // alert(myQuotation.toString());
 
         var myQuotationStr = "";
@@ -140,6 +145,10 @@ function getQuotation() {
                                     "<p><b>Fecha:</b> " + quotation.date + "</p>" + 
                                     "<p><br><br></p>";
 
+                    myQuotationRevenueFactor = Number(quotation.revenueFactor);
+                    myQuotationIva = Number(quotation.iva);
+                    myQuotationDiscount = Number(quotation.discount);
+
                     myQuotationBottomStr =  "<p><br><br></p>" +
                                                 "<p><b>Versión:</b> " + quotation.version + "</p>" +
                                                 "<p><b>Versión final:</b> " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
@@ -161,7 +170,7 @@ function getQuotation() {
             }
         }).done(function(request){
         
-            getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr);
+            getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr, myQuotationRevenueFactor, myQuotationIva, myQuotationDiscount);
         });
     }
     catch(error){
@@ -352,7 +361,7 @@ function getCustomerNameForQuotation(customerKey, counter){
         alert(error);
     }
 }
-function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
+function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr, myQuotationRevenueFactor, myQuotationIva, myQuotationDiscount){
 
     try{
         var myQuotation = new Quotation();
@@ -400,8 +409,8 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
                         // alert(tool);
                         // myListQuotationRows += "<div class='box'> \n" +
 
-                        quotationTable +=  "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
-                                            "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
+                        quotationTable +=  "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "','" + myQuotationRevenueFactor + "','" +  myQuotationIva + "','" + myQuotationDiscount + "');</script>" +
+                                            "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "','" + myQuotationRevenueFactor + "','" +  myQuotationIva + "','" + myQuotationDiscount + "');</script>" +
                                             "<tr id=resourceData" + quotationRowCounter + "></tr>";
     
                         quotationRowCounter += 1;
@@ -428,9 +437,10 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
         alert(error);
     }
 }
-function getToolData(toolKey, counter, resourceQuantity){
+function getToolData(toolKey, counter, resourceQuantity, myQuotationRevenueFactor, myQuotationIva, myQuotationDiscount){
 
     var totalTools;
+    var total = 1.0;
 
     try{
         // alert("companyEventKey = " + companyEventKey);
@@ -482,8 +492,15 @@ function getToolData(toolKey, counter, resourceQuantity){
                     console.log("resourceTotalEventCostCounter = " + resourceTotalEventCostCounter);
                     var totalQuotationCost = Number($("#totalQuotationCost").text());
                     console.log("totalQuotationCost = " + totalQuotationCost);
-                    $("#totalQuotationCost").empty();
-                    $("#totalQuotationCost").text(Number(totalQuotationCost) + Number(resourceTotalEventCostCounter));
+                    // $("#totalQuotationCost").empty();
+                    var subtotal = Number(totalQuotationCost) + Number(resourceTotalEventCostCounter);
+                    
+                    var factor1 = 1.0 + Number(myQuotationRevenueFactor);
+                    total = (subtotal*factor1);
+                    total -= total*(1.0 - Number(myQuotationDiscount)); 
+                    total += total*(1.0 + Number(myQuotationIva)); 
+                    
+                    $("#totalQuotationCost").text(total);
                 });
             }
         });
@@ -493,7 +510,7 @@ function getToolData(toolKey, counter, resourceQuantity){
         alert(error);
     }
 }
-function getPersonnelData1(personnelKey, counter, resourceQuantity){
+function getPersonnelData1(personnelKey, counter, resourceQuantity, myQuotationRevenueFactor, myQuotationIva, myQuotationDiscount){
 
     try{
         var myPersonnel = new Personnel();
@@ -542,8 +559,15 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity){
                         console.log("resourceTotalEventCostCounter = " + resourceTotalEventCostCounter);
                         var totalQuotationCost = Number($("#totalQuotationCost").text());
                         console.log("totalQuotationCost = " + totalQuotationCost);
-                        $("#totalQuotationCost").empty();
-                        $("#totalQuotationCost").text(Number(totalQuotationCost) + Number(resourceTotalEventCostCounter));
+                        // $("#totalQuotationCost").empty();
+                        
+                        var subtotal = Number(totalQuotationCost) + Number(resourceTotalEventCostCounter);
+                        
+                        var total = subtotal*(1.0 + Number(myQuotationRevenueFactor));
+                        total -= total*(1.0 - Number(myQuotationDiscount)); 
+                        total += total*(1.0 + Number(myQuotationIva)); 
+                        
+                        $("#totalQuotationCost").text(total);
                     });
                 }
             },
