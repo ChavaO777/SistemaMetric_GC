@@ -188,6 +188,7 @@ a:active{
 .btn-rectangle{
 	padding: 8px 22px;
 	border-radius: 2px;
+	margin: 10px;
 }
 
 .btn-circle{
