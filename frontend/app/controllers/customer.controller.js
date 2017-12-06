@@ -66,7 +66,7 @@ function createCustomer() {
             success: function (response) {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
-                alert("The customer was successfully created.");
+                showNotification("success");
                 window.location = "/myCustomers";
             },
             error: function (error) {
