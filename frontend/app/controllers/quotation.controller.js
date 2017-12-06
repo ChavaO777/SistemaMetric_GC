@@ -142,7 +142,7 @@ function getQuotation() {
                     myQuotationBottomStr =  "<p><br><br></p>" +
                                                 "<p><b>Versión:</b> " + quotation.version + "</p>" +
                                                 "<p><b>Versión final:</b> " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
-                                                "<p><b>Total:</b> COMPUTE QUOTATION TOTAL MXN</p>" +
+                                                "<p><b>Total:</b></p> <p id='totalQuotationCost'>0</p>" +
                                                 "<p><br></p>" +
                                                 "<span><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></span>"+
                                                 "<span><a href='javascript:printPDF();' class='btn-rectangle btn-blue'>Imprimir</a></span>" +
@@ -152,6 +152,8 @@ function getQuotation() {
                                                 "\t</div>" +
                                                 "</div>";
                 });
+
+                //ids -> resourceTotalEventCostCounter, totalQuotationCost
             },
             error: function (error) {
                 alert(error);
@@ -408,6 +410,9 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
                 quotationTable += "</table>";
                 
                 myQuotationStr += quotationTable;
+
+                //Get the total sum of the quotation:
+                //ids -> resourceTotalEventCostCounter, totalQuotationCost
                 myQuotationStr += myQuotationBottomStr;
                 $("#singleQuotation").append(myQuotationStr);
             },
@@ -468,9 +473,16 @@ function getToolData(toolKey, counter, resourceQuantity){
                     if(tool.tariffTimeUnit === "hour")
                         toolCost *= 8;
 
-                    resourceDataStr += "<th><p style='font-weight:normal'>" + toolCost + "</p></th>";
-
+                    resourceDataStr += "<th><p id='resourceTotalEventCost" + counter + "' style='font-weight:normal'>" + toolCost + "</p></th>";
                     $("#resourceData" + counter).append(resourceDataStr);
+
+                    //ids -> resourceTotalEventCostCounter, totalQuotationCost
+                    var resourceTotalEventCostCounter = Number($("#resourceTotalEventCost" + counter).text());
+                    console.log("resourceTotalEventCostCounter = " + resourceTotalEventCostCounter);
+                    var totalQuotationCost = Number($("#totalQuotationCost").text());
+                    console.log("totalQuotationCost = " + totalQuotationCost);
+                    $("#totalQuotationCost").empty();
+                    $("#totalQuotationCost").text(Number(totalQuotationCost) + Number(resourceTotalEventCostCounter));
                 });
             }
         });
@@ -520,8 +532,17 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity){
                         if(personnel.tariffTimeUnit === "hour")
                             personnelCost *= 8;
     
-                        resourceDataStr += "<th><p style='font-weight:normal'>" + personnelCost + "</p></th>";
+                        resourceDataStr += "<th><p id='resourceTotalEventCost" + counter + "' style='font-weight:normal'>" + personnelCost + "</p></th>";
                         $("#resourceData" + counter).append(resourceDataStr);
+
+
+                        //ids -> resourceTotalEventCostCounter, totalQuotationCost
+                        var resourceTotalEventCostCounter = Number($("#resourceTotalEventCost" + counter).text());
+                        console.log("resourceTotalEventCostCounter = " + resourceTotalEventCostCounter);
+                        var totalQuotationCost = Number($("#totalQuotationCost").text());
+                        console.log("totalQuotationCost = " + totalQuotationCost);
+                        $("#totalQuotationCost").empty();
+                        $("#totalQuotationCost").text(Number(totalQuotationCost) + Number(resourceTotalEventCostCounter));
                     });
                 }
             },
