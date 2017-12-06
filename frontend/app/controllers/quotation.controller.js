@@ -92,6 +92,39 @@ function createQuotation() {
 
 function deleteQuotation() {
 
+    var urlVariables = getURLVariables();
+    var quotationKey = urlVariables.quotationID;
+
+    var quotation = new Quotation();
+    quotation.entityKey = quotationKey;
+
+    console.log(quotation.toString());
+
+    try {
+        jQuery.ajax({
+            type: "POST",
+            url: "./_ah/api/quotation_api/v1/quotation/delete",
+            data: quotation.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function () {
+
+            },
+            success: function (response) {
+                // $(".msg").html("<p>Herramienta creado</p>");
+                showNotification("success");
+                window.location = "/myQuotations";
+            },
+            error: function (error) {
+
+                console.log("Not possible");
+            }
+        });
+    }
+    catch (error) {
+
+        alert(error);
+    }
 }
 
 function getQuotation() {

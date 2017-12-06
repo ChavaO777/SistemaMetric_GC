@@ -22,3 +22,8 @@ function showNotification(type) {
     $('#notifications').css("opacity", "1");
     $('#notifications').html(notificationHtml);
 }
+
+function logout(){
+    sessionStorage.token = null;
+    window.location = '/login';
+}

@@ -137,8 +137,6 @@ function deleteCustomer() {
     var customer = new Customer();
     customer.entityKey = customerKey;
 
-    alert(customer.toString());
-
     try{
         jQuery.ajax({
             type: "POST",
