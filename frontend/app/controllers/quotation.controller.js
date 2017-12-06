@@ -237,18 +237,20 @@ function listQuotations() {
                         // alert(quotation);
                        
                         myQuotationsList += "<div class='hero-element'>" +
-                                                "<div class='hero-content-inner'>" +
+                                                "<div class='box'>" +
                                                     "<form action='/quotation' method='GET'>" +
                                                         "<script>getCompanyEventName('" + quotation.eventKey + "','" + quotationCounter + "')</script>" +
-                                                        "<p id=companyEvent" + quotationCounter + "></p>" +
-                                                        "<p id=customer" + quotationCounter + "></p>" +
-                                                        "<p>ID: " + quotation.iD + "</p>" +
-                                                        "<p>Fecha: " + quotation.date + "</p>" +
-                                                        "<p>Versión final: " + quotation.isFinal + "</p>" +
-                                                        "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
-                                                        "<p>Versión: " + quotation.version + "</p>" +
-                                                        "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
-                                                        "<input type='submit' value='Ver detalle'/>" +
+                                                        "<div class='box-name'><p id=companyEvent" + quotationCounter + "></p></div>" +
+                                                        "<div class='box-content'>" +
+                                                            "<p id=customer" + quotationCounter + "></p>" +
+                                                            "<p>ID: " + quotation.iD + "</p>" +
+                                                            "<p>Fecha: " + quotation.date + "</p>" +
+                                                            "<p>Versión final: " + quotation.isFinal + "</p>" +
+                                                            "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
+                                                            "<p>Versión: " + quotation.version + "</p>" +
+                                                            "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
+                                                            "<input type='submit' value='Ver detalle'/>" +
+                                                        "</div>" +
                                                     "</form>" +
                                                 "</div>" +
                                             "</div>";
