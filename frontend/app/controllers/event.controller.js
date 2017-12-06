@@ -80,7 +80,6 @@ function createNewCompanyEvent() {
             success: function (response) {                   
                 // $(".msg").html("<p>Herramienta creado</p>");
                 showNotification("success");
-                sleep(3000);
                 window.location = "/myEvents";
             },
             error: function (error) {

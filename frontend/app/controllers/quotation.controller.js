@@ -76,7 +76,6 @@ function createQuotation() {
             success: function (response) {
                 // $(".msg").html("<p>Herramienta creado</p>");
                 showNotification("success");
-                console.log("The quotation was successfully created.");
                 window.location = "/myQuotations";
             },
             error: function (error) {

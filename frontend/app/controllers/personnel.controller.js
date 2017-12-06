@@ -73,7 +73,6 @@ function createPersonnel() {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
                 showNotification("success");
-                sleep(3000);
                 window.location = "/myPersonnel";
             },
             error: function (error) {
