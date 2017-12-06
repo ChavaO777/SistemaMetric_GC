@@ -43,7 +43,7 @@ function TokenObject() {
 
 function createQuotation() {
 
-    var myId = $('#id').val;
+    var myId = $('#id').val();
     var myDate = $('#date').val();
     var myEventKey = $('#eventList').val();
     var myDiscount = $("#discount").val();
@@ -387,33 +387,41 @@ function getQuotationRows(quotationKey){
                 totalQuotationRows = response.data;
                 myListQuotationRows = "";
                 quotationRowCounter = 0;
-                // Do a forEach even if the array only has one row
-                totalQuotationRows.forEach(function(quotationRow){
 
-                    //Place the content in the HTML
-                    // alert(tool);
-                    myListQuotationRows += "<div class='box'> \n" +
-                                    "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
-                                    "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
-                                    "\t<div class='box-name'>\n" +
-                                    // should show resource data (specific to tool/personnel)
-                                    "\t\t<p id=toolName" + quotationRowCounter +"></p>" +
-                                    "\t\t<p id=personnelName" + quotationRowCounter +"></p>" +
-                                    "\t</div>" +
-                                    "\t<div class='box-content'>\n" +
-                                    "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
-                                    "\t\t<p id=entityTariff" + quotationRowCounter + ">Cargo: </p>" +
-                                    "\t\t<p id=entityTariffTimeUnit" + quotationRowCounter + ">Por: </p>" +
-                                    "\t<form action='/quotationRow' method='GET'>\n" +
-                                    "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
-                                    "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
-                                    "\t</form>" +
-                                    "\t</div>" +
-                                    "</div>";
+                if(totalQuotationRows == null){
 
-                    quotationRowCounter += 1;
-                });
-                
+                    myListQuotationRows += "<p>No hay elementos en esta cotización</p>";
+                }
+
+                else{
+                    // Do a forEach even if the array only has one row
+                    totalQuotationRows.forEach(function(quotationRow){
+                        
+                        //Place the content in the HTML
+                        // alert(tool);
+                        myListQuotationRows += "<div class='box'> \n" +
+                                        "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
+                                        "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
+                                        "\t<div class='box-name'>\n" +
+                                        // should show resource data (specific to tool/personnel)
+                                        "\t\t<p id=toolName" + quotationRowCounter +"></p>" +
+                                        "\t\t<p id=personnelName" + quotationRowCounter +"></p>" +
+                                        "\t</div>" +
+                                        "\t<div class='box-content'>\n" +
+                                        "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
+                                        "\t\t<p id=entityTariff" + quotationRowCounter + ">Cargo: </p>" +
+                                        "\t\t<p id=entityTariffTimeUnit" + quotationRowCounter + ">Por: </p>" +
+                                        "\t<form action='/quotationRow' method='GET'>\n" +
+                                        "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
+                                        "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
+                                        "\t</form>" +
+                                        "\t</div>" +
+                                        "</div>";
+    
+                        quotationRowCounter += 1;
+                    });
+                }
+
                 $("#quotationRows").append(myListQuotationRows);
             },
             error: function (error) {
@@ -496,10 +504,10 @@ function getPersonnelData1(personnelKey, counter){
                 totalPersonnel = response.data;
                 //$("#companyEvent" + counter).empty();
 
-                alert(JSON.stringify(totalPersonnel));
-
                 if(totalPersonnel != null){
 
+                    // alert(JSON.stringify(totalPersonnel));
+                
                     // Do a forEach even if the array only has one event
                     totalPersonnel.forEach(function(personnel){
     

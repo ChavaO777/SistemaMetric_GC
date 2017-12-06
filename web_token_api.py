@@ -869,7 +869,6 @@ class PersonnelAPI(remote.Service):
 		try:
 
 			token = jwt.decode(request.token, 'secret')  #checa token
-			# fixedEntityKey = request.entityKey[1:] #The padding error occurs because there was a '\n' character at the beginning of the string
 			personnelEntity = ndb.Key(urlsafe = request.entityKey) # TypeError: Incorrect padding -> The problem is in request.entityKey
 			personnel = Personnel.get_by_id(personnelEntity.id()) #obtiene usuario
 

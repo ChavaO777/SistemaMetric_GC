@@ -1,13 +1,14 @@
 class QuotationRow{
     
     constructor(token,
-        quotationKey,
-        resourceKey,
-        quantity) {
+                quotationKey,
+                resourceKey,
+                quantity) {
+
         this.token = sessionStorage.token;
+        this.quotationKey = quotationKey;
         this.resourceKey = resourceKey;
-        this.quotationyKey = quotationyKey;
-        this.quantity = quantity;
+        this.quantity = Number(quantity);
     }
 
     toString() {
@@ -16,7 +17,7 @@ class QuotationRow{
 }
 
 function TokenObject() {
-    name
+    
     this.token = sessionStorage.token;
 
     this.toJsonString = function () {
@@ -26,19 +27,32 @@ function TokenObject() {
 }
 
 function getURLVariables() {
+    
     var vars = {};
+    
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
     });
+    
     return vars;
 }
 
 function createQuotationRow() {
+
     try {
+
+        var urlVariables = getURLVariables();
+        var quotationKey = urlVariables.quotationID;
+
+        var myQuotationRow = new QuotationRow();
+        myQuotationRow.quotationKey = quotationKey;
+        myQuotationRow.resourceKey = $('#quotationRowResource').val(); 
+        myQuotationRow.quantity = Number($('#quotationRowQuantity').val());
+
         jQuery.ajax({
             type: "POST",
             url: "http://localhost:8080/_ah/api/quotation_row_api/v1/quotationRow/insert",
-            data: quotationRow.toString(),
+            data: myQuotationRow.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             before: function () {
@@ -46,7 +60,7 @@ function createQuotationRow() {
             },
             success: function (response) {
                 
-                window.location = "/myQuotation";
+                window.location = "/quotation?quotationID=" + quotationKey;
             },
             error: function (error) {
                 alert(error);

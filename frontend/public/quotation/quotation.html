@@ -10,9 +10,16 @@
    <script type="text/javascript" src="../app/models/customer.model.js"></script>
 	<script type="text/javascript" src="../app/models/companyEvent.model.js"></script>
 	<script type="text/javascript" src="../app/controllers/quotation.controller.js"></script>
+	<script type="text/javascript" src="../app/controllers/quotation_row.controller.js"></script>
 	<script type="text/javascript" src="../app/controllers/event.controller.js"></script>
 	<script type="text/javascript" src="../app/controllers/tool.controller.js"></script>
 	<script type="text/javascript" src="../app/controllers/personnel.controller.js"></script>
+
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous">
+  	</script>
 
 </head>
 <body onload="getQuotation()">
@@ -39,18 +46,19 @@
 	</div>
 
 	<div class="content">
-      <div class="hero">
+      	<div class="hero">
 			<div class="hero-title">
 				Cotización
 			</div>
 			<div class="hero-content" id="singleQuotation">
 			</div>
-         <div class="hero-content" id="quotationRows">
-         </div>
-      </div>
-		<div class="modal" id='formID'>
+			<div class="hero-content" id="quotationRows">
+			</div>
+      	</div>
+		
+		<div class="modal" id='formID_quotation'>
 			<div class="modal-content">
-				<span class="modal-close" onclick="javascript:hideForm();">X</span>
+				<span class="modal-close" onclick="javascript:hideForm('formID_quotation');">X</span>
 				<div class="modal-header">
 					Editar Cotizacion
 				</div>
@@ -76,8 +84,38 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal" id='formID_quotationRow'>
+			<div class="modal-content">
+				<span class="modal-close" onclick="javascript:hideForm('formID_quotationRow');">X</span>
+				<div class="modal-header">
+					Agregar elemento a la cotización
+				</div>
+				<div class="modal-form">
+					<div class='quotationRow'>
+						<select class='quotationRowElement' id='quotationRowResource'>
+							<script>
+								getToolListForSelection();
+								getPersonnelListForSelection();
+							</script>
+						</select>
+						
+						<input type="text" class="input-50" placeholder="Cantidad" id="quotationRowQuantity">
+
+						<!-- <span class='removeRowElement' onclick='removeQuotationRow(this)'>x</span> -->
+					</div>
+
+					<span class="submit">
+						<a href="javascript:createQuotationRow();" class="btn-rectangle btn-green">Agregar elemento</a>
+					</span>
+					<!-- <p>Agregado por: <span class="modal-name">Miguel</span></p> -->
+				</div>
+			</div>
+		</div>
+
 		<div class="fixed-buttons">
-			<a href="javascript:showForm();" class="big-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
+			<a href="javascript:showForm('formID_quotationRow');" class="big-fixed btn-circle btn-green"><i class="fa fa-plus" aria-hidden="true"></i></a>
+			<a href="javascript:showForm('formID_quotation');" class="big-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>
 			<a href="javascript:deleteQuotation();" class='small-fixed btn-circle btn-red'><i class='fa fa-minus' aria-hidden='true'></i></a>
 		</div>
 	<div id="notifications" class="btn btn-green">
@@ -85,11 +123,6 @@
 	</div>
 
 	<script src="https://use.fontawesome.com/5144437903.js"></script>
-	<script
-	  src="https://code.jquery.com/jquery-3.2.1.min.js"
-	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	  crossorigin="anonymous">
-	</script>
 	<script type="text/javascript">
 		$(function(){
 		    $('.nav a').click(function(){
@@ -111,15 +144,16 @@
 		    });
 		    */
 		});
-		function hideForm() {
-			var elem = document.getElementById('formID');
+		function hideForm(elementId) {
+			var elem = document.getElementById(elementId);
 			$(elem).hide();
 		}
-		function showForm() {
-			var elem = document.getElementById('formID');
+		function showForm(elementId) {
+			var elem = document.getElementById(elementId);
 			$(elem).show();
 		}
-		hideForm();
+		hideForm('formID_quotation');
+		hideForm('formID_quotationRow');
 	</script>
 </body>
 </html>

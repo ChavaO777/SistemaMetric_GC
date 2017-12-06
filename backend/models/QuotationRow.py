@@ -24,16 +24,12 @@ class QuotationRow(CustomBaseModel):
     _message_fields_schema = ('userKey', 
                               'quotationKey',
                               'resourceKey', # This entity key is the key of a tool or a personnel
-                              'quantity',
-                              'tariff',
-                              'tariffTimeUnit')
+                              'quantity')
 
     userKey = ndb.KeyProperty(kind = User)
     quotationKey = ndb.KeyProperty(kind = Quotation)
     resourceKey = ndb.StringProperty(); # Save it as a string because it can either be a Personnel key or a Tool key
     quantity = ndb.IntegerProperty();
-    tariff = ndb.FloatProperty();
-    tariffTimeUnit = ndb.StringProperty();
 
     def quotationRow_m(self, data, userKey, quotationKey):
         quotationRow = QuotationRow() #Crea una variable de tipo Quotation Row

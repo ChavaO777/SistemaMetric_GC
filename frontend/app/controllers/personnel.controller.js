@@ -408,7 +408,7 @@ function getURLVariables() {
     return vars;
 }
 
-function getPersonnelListForSelection(appendTo) {
+function getPersonnelListForSelection() {
     try {
 
         // alert("token : " + sessionStorage.token);
@@ -435,11 +435,11 @@ function getPersonnelListForSelection(appendTo) {
 
                         //Place the content in the HTML
 
-                        myListPersonnel += "<option value='"+personnel.entityKey+"'>"+personnel.name+" ["+personnel.specialty+"]</option>";
+                        myListPersonnel += "<option value='" + personnel.entityKey + "'>" + personnel.name + " [" + personnel.specialty + "]</option>";
                     });
                 }
 
-                $(appendTo).append(myListPersonnel);
+                $("#quotationRowResource").append(myListPersonnel);
             },
             error: function (error) {
 

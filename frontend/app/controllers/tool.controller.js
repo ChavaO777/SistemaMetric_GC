@@ -302,7 +302,7 @@ function editTool() {
 }
 
 
-function getToolListForSelection(appendTo) {
+function getToolListForSelection() {
     try {
 
         var myData = new TokenObject();
@@ -328,11 +328,11 @@ function getToolListForSelection(appendTo) {
                     // Do a forEach even if the array only has one tool
                     myListTools += "<option disabled><bold>Herramientas: </bold></option>";
                     totalTools.forEach(function (tool) {
-                        myListTools += "<option value='"+tool.entityKey+"'>"+tool.model+" ["+tool.brand+"]</option>";
+                        myListTools += "<option value='" + tool.entityKey + "'>" + tool.model + " [" + tool.brand + "]</option>";
                     });
                 }
 
-                $(appendTo).append(myListTools);
+                $("#quotationRowResource").append(myListTools);
             },
             error: function (error) {
                 alert(error);
