@@ -42,7 +42,7 @@ function login() {
             }
             else{
                 sessionStorage.token = response.token;
-                $(".msg").html("<p>" + sessionStorage.token + "</p>");
+                $(".msg").html("<p>Adelante...</p>");
                 window.location = "/";
             }
         },
