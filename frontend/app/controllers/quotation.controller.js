@@ -265,7 +265,7 @@ function listQuotations() {
                                                             "<p>ID: " + quotation.iD + "</p>" +
                                                             "<p>Fecha: " + quotation.date + "</p>" +
                                                             "<p>Versión final: " + quotation.isFinal + "</p>" +
-                                                            "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
+                                                            // "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                                             "<p>Versión: " + quotation.version + "</p>" +
                                                             "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
                                                             "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" +
@@ -545,6 +545,8 @@ function getToolData(toolKey, counter, resourceQuantity, myQuotationRevenueFacto
 }
 function getPersonnelData1(personnelKey, counter, resourceQuantity, myQuotationRevenueFactor, myQuotationIva, myQuotationDiscount){
 
+    var total = 1.0;
+
     try{
         var myPersonnel = new Personnel();
         myPersonnel.entityKey = personnelKey;
@@ -586,19 +588,19 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity, myQuotationR
                         resourceDataStr += "<th><p id='resourceTotalEventCost" + counter + "' style='font-weight:normal'>" + personnelCost + "</p></th>";
                         $("#resourceData" + counter).append(resourceDataStr);
 
-
                         //ids -> resourceTotalEventCostCounter, totalQuotationCost
                         var resourceTotalEventCostCounter = Number($("#resourceTotalEventCost" + counter).text());
                         console.log("resourceTotalEventCostCounter = " + resourceTotalEventCostCounter);
                         var totalQuotationCost = Number($("#totalQuotationCost").text());
                         console.log("totalQuotationCost = " + totalQuotationCost);
                         // $("#totalQuotationCost").empty();
-                        
                         var subtotal = Number(totalQuotationCost) + Number(resourceTotalEventCostCounter);
                         
-                        var total = subtotal*(1.0 + Number(myQuotationRevenueFactor));
-                        total -= total*(1.0 - Number(myQuotationDiscount)); 
-                        total += total*(1.0 + Number(myQuotationIva)); 
+                        console.log("total = " + total);
+                        var factor1 = 1.0 + Number(myQuotationRevenueFactor);
+                        total = (subtotal*factor1);
+                        total -= total*(Number(myQuotationDiscount)); 
+                        total += total*(Number(myQuotationIva)); 
                         
                         $("#totalQuotationCost").text(total);
                     });
