@@ -60,7 +60,7 @@ function createTool() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/_ah/api/tool_api/v1/tool/insert",
+        url: "./_ah/api/tool_api/v1/tool/insert",
         data: tool.toString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -88,7 +88,7 @@ function listTools() {
 
         jQuery.ajax( {
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/list",
+            url: "./_ah/api/tool_api/v1/tool/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -162,7 +162,7 @@ function getTool() {
                                       entityKey = toolKey);
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/get",
+            url: "./_ah/api/tool_api/v1/tool/get",
             data: myTool.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -239,7 +239,7 @@ function deleteTool() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/delete",
+            url: "./_ah/api/tool_api/v1/tool/delete",
             data: tool.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -279,7 +279,7 @@ function editTool() {
     try{
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/update",
+            url: "./_ah/api/tool_api/v1/tool/update",
             data: tool.toString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -309,7 +309,7 @@ function getToolListForSelection() {
 
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:8080/_ah/api/tool_api/v1/tool/list",
+            url: "./_ah/api/tool_api/v1/tool/list",
             data: myData.toJsonString(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

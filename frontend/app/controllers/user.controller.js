@@ -29,7 +29,7 @@ function login() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/_ah/api/user_api/v1/user/login",
+        url: "./_ah/api/user_api/v1/user/login",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -61,7 +61,7 @@ function isLoggedIn() {
     myTokenObject = new TokenObject();
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/_ah/api/user_api/v1/user/checkLogin",
+        url: "./_ah/api/user_api/v1/user/checkLogin",
         data: JSON.stringify(myTokenObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -90,7 +90,7 @@ function create() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/create",
+        url: "./backend/apis/public/user/create",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -114,7 +114,7 @@ function list() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/list",
+        url: "./backend/apis/public/user/list",
         data: {},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -138,7 +138,7 @@ function list() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/list",
+        url: "./backend/apis/public/user/list",
         data: {},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -164,7 +164,7 @@ function get() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/get",
+        url: "./backend/apis/public/user/get",
         data: {email : email},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -197,7 +197,7 @@ function update() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/update",
+        url: "./backend/apis/public/user/update",
         data: user.toJsonString(),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -221,7 +221,7 @@ function remove() {
   try{
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:8080/backend/apis/public/user/delete",
+        url: "./backend/apis/public/user/delete",
         data: {email : email},
         contentType: "application/json; charset=utf-8",
         dataType: "json",
