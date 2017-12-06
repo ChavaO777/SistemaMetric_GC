@@ -58,8 +58,6 @@ function createPersonnel() {
     personnel.tariff = myTariff;
     personnel.tariffTimeUnit = myTariffUnit;
 
-    alert(personnel.toString());
-
     try{
         jQuery.ajax({
             type: "POST",
@@ -75,6 +73,7 @@ function createPersonnel() {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
                 showNotification("success");
+                sleep(3000);
                 window.location = "/myPersonnel";
             },
             error: function (error) {
@@ -96,8 +95,6 @@ function deletePersonnel() {
 
     var personnel = new Personnel();
     personnel.entityKey = personnelKey;
-
-    alert(personnel.toString());
 
     try{
         jQuery.ajax({
@@ -182,7 +179,6 @@ function getPersonnel() {
 
         var urlVariables = getURLVariables();
         var personnelKey = urlVariables.personnelID;
-        alert("personnelKey = " + personnelKey);
         var myPersonnel = new Personnel(token = sessionStorage.token,
                                         entityKey = personnelKey);
 
@@ -267,7 +263,6 @@ function getPersonnelData() {
 
         var urlVariables = getURLVariables();
         var personnelKey = urlVariables.personnelID;
-        alert("personnelKey = " + personnelKey);
         var myPersonnel = new Personnel(token = sessionStorage.token,
                                       entityKey = personnelKey);
 
@@ -296,8 +291,6 @@ function getPersonnelData() {
 
                 // Do a forEach even if the array only has one customer
                 totalPersonnel.forEach(function(personnel){
-
-                    alert(personnel.toString());
 
                     $("#name").val(personnel.name);
                     $("#lastName").val(personnel.lastName);
@@ -355,8 +348,6 @@ function listPersonnel() {
                 }
 
                 else{
-
-                    alert(JSON.stringify(response.data));
 
                     // Do a forEach even if the array only has one personnel
                     totalPersonnel.forEach(function(personnel){

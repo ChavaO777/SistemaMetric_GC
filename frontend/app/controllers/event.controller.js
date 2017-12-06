@@ -66,7 +66,6 @@ function createNewCompanyEvent() {
     event.hidden = myHidden;
     event.customerKey = myCustomerKey;
 
-    alert(event.toString());
 
     try{
         jQuery.ajax({
@@ -81,6 +80,7 @@ function createNewCompanyEvent() {
             success: function (response) {                   
                 // $(".msg").html("<p>Herramienta creado</p>");
                 showNotification("success");
+                sleep(3000);
                 window.location = "/myEvents";
             },
             error: function (error) {
@@ -254,7 +254,6 @@ function editEvent() {
     var myDays = $('#days').val();
     var myPlace = $('#place').val();
     var myCustomerKey = $('#customerKey').val();
-    alert(myCustomerKey);
 
     var event = new Event();
     event.entityKey = eventKey;
@@ -266,7 +265,6 @@ function editEvent() {
     event.customerKey = myCustomerKey;
     event.hidden = false;
 
-    alert(event.toString());
 
     try{
         jQuery.ajax({
@@ -305,7 +303,6 @@ function deleteEvent() {
     var event = new Event();
     event.entityKey = eventKey;
 
-    alert(event.toString());
 
     try{
         jQuery.ajax({

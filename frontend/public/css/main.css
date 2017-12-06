@@ -431,7 +431,7 @@ a:active{
 	width: 100%;
 	background: rgba(28,28,28,0.9);
 	position: fixed;
-	z-index: 100;
+	z-index: 10;
 	top: 0;
 	overflow: scroll;
 }
