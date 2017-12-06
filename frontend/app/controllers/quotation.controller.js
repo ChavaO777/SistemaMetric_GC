@@ -103,6 +103,9 @@ function getQuotation() {
 
         // alert(myQuotation.toString());
 
+        var myQuotationStr = "";
+        var myQuotationBottomStr = "";
+
         jQuery.ajax({
             type: "POST",
             url: "http://localhost:8080/_ah/api/quotation_api/v1/quotation/get",
@@ -116,47 +119,18 @@ function getQuotation() {
                 // $(".msg").html("<p>Message</p>");
                 totalQuotations = response.data;
                 
-                console.log("quotation retrieved " + JSON.stringify(totalQuotations));
-                /*
-                $("#singleQuotation").empty();
-                $("$userKey").empty();
-                $("$eventKey").empty();
-                $("$iD").empty();
-                $("$date").empty();
-                $("$isFinal").empty();
-                $("$subtotal").empty();
-                $("$revenueFactor").empty();
-                $("$iva").empty();
-                $("$discount").empty();
-                $("$total").empty();
-                $("$metricPlus").empty();
-                $("$version").empty();
-                */
-                var myQuotationStr = "";
+                // console.log("quotation retrieved " + JSON.stringify(totalQuotations));
+                
                 // Do a forEach even if the array only has one quotation
                 totalQuotations.forEach(function(quotation){
                     //add data to the form
-                    /*
-                    $("$userKey").val(quotation.userKey);
-                    $("$eventKey").val(quotation.eventKey);
-                    $("$iD").val(quotation.iD);
-                    $("$date").val(quotation.date);
-                    $("$isFinal").val(quotation.isFinal);
-                    $("$subtotal").val(quotation.subtotal);
-                    $("$revenueFactor").val(quotation.revenueFactor);
-                    $("$iva").val(quotation.iva);
-                    $("$discount").val(quotation.discount);
-                    $("$total").val(quotation.total);
-                    $("$metricPlus").val(quotation.metricPlus);
-                    $("$version").val(quotation.version);
-                    */
                     //Place the content in the HTML
                     // alert(quotation);
                     myQuotationStr += "<div class='quotationBox'> \n" +
                                     "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
                                     "\t<div class='quotationBox-name'>" +
                                     "\t\t<div id=companyEventName0><b>Evento: </b></div>" +
-                                    "\t\t<div id=companyEventDays0><b>Días: </b></div>" +
+                                    "\t\t<div id=companyEventDays0><b>Días: </b><div id=companyEventDaysValue0></div></div>" +
                                     "\t</div>" +
                                     "\t<div class='quotationBox-content'>\n" +
                                     "<p id=companyEvent0></p>" +
@@ -165,7 +139,7 @@ function getQuotation() {
                                     "<p><b>Fecha:</b> " + quotation.date + "</p>" + 
                                     "<p><br><br></p>";
 
-                    var myQuotationBottomStr =  "<p><br><br></p>" +
+                    myQuotationBottomStr =  "<p><br><br></p>" +
                                                 "<p><b>Versión:</b> " + quotation.version + "</p>" +
                                                 "<p><b>Versión final:</b> " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
                                                 "<p><b>Total:</b> COMPUTE QUOTATION TOTAL MXN</p>" +
@@ -177,13 +151,14 @@ function getQuotation() {
                                                 "\t</form>" +
                                                 "\t</div>" +
                                                 "</div>";
-
-                    getQuotationRows(quotation.entityKey, myQuotationStr, myQuotationBottomStr);
                 });
             },
             error: function (error) {
                 alert(error);
             }
+        }).done(function(request){
+        
+            getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr);
         });
     }
     catch(error){
@@ -229,8 +204,6 @@ function listQuotations() {
 
                     // A counter used to know where (which quotation) to assign the name of the customer given its entityKey
                     var quotationCounter = 0;
-
-                    console.log(JSON.stringify(totalQuotations));
 
                     // Do a forEach even if the array only has one quotation
                     totalQuotations.forEach(function(quotation){
@@ -297,7 +270,9 @@ function getCompanyEventName(companyEventKey, counter){
             type: "POST",
             url: "http://localhost:8080/_ah/api/event_api/v1/event/get",
             data: myCompanyEvent.toString(),
+            async: false,
             contentType: "application/json; charset=utf-8",
+
             dataType: "json",
             before: function(){
 
@@ -309,13 +284,16 @@ function getCompanyEventName(companyEventKey, counter){
 
                 totalEvents = response.data;
 
-                // Do a forEach even if the array only has one event
-                totalEvents.forEach(function(event){
+                if(totalEvents != undefined){
 
-                    $("#companyEventName" + counter).append("<p>" + event.name + "</p>");
-                    $("#companyEventDays" + counter).append("<p id=companyEventDaysValue" + counter + ">" + event.days + "</p>");
-                    getCustomerNameForQuotation(event.customerKey, counter);
-                });
+                     // Do a forEach even if the array only has one event
+                    totalEvents.forEach(function(event){
+                    
+                        $("#companyEventName" + counter).append("<p>" + event.name + "</p>");
+                        $("#companyEventDaysValue" + counter).append(event.days);
+                        getCustomerNameForQuotation(event.customerKey, counter);
+                    });
+                }
             },
             error: function (error) {
 
@@ -391,8 +369,6 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
 
                 // $(".msg").html("<p>Message</p>");
 
-                console.log("myQuotationStr = " + myQuotationStr);
-
                 totalQuotationRows = response.data;
                 var quotationTable = "";
                 quotationRowCounter = 0;
@@ -420,6 +396,7 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
                         //Place the content in the HTML
                         // alert(tool);
                         // myListQuotationRows += "<div class='box'> \n" +
+
                         quotationTable +=  "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
                                             "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
                                             "<tr id=resourceData" + quotationRowCounter + "></tr>";
@@ -447,9 +424,11 @@ function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
 }
 function getToolData(toolKey, counter, resourceQuantity){
 
+    var totalTools;
+
     try{
         // alert("companyEventKey = " + companyEventKey);
-          var myTool = new Tool(token = sessionStorage.token, entityKey = toolKey);
+        var myTool = new Tool(token = sessionStorage.token, entityKey = toolKey);
 
         jQuery.ajax({
             type: "POST",
@@ -466,37 +445,33 @@ function getToolData(toolKey, counter, resourceQuantity){
                 // $(".msg").html("<p>Message</p>");
 
                 totalTools = response.data;
-                //$("#companyEvent" + counter).empty();
-
-                // Do a forEach even if the array only has one event
-
-                if(totalTools != null){
-
-                    totalTools.forEach(function(tool){
-                        
-                        var toolName = tool.brand + " " + tool.model;
-                        var resourceDataStr = "<th><p style='font-weight:normal'>" + toolName + "</p></th>";
-                        resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
-                        
-                        //As of now, when the assignment of eventDays is done, the div 'companyEventDaysValue0' doesn't exist yet :(
-                        var eventDays = $("#companyEventDaysValue0").val();
-                        console.log("eventDays = " + eventDays);
-                        var toolCost =  eventDays*tool.tariff;
-
-                        if(tool.tariffTimeUnit === "hour")
-                            toolCost *= 8;
-
-                        console.log("toolCost = " + toolCost);
-
-                        resourceDataStr += "<th><p style='font-weight:normal'>" + toolCost + "</p></th>";
-
-                        $("#resourceData" + counter).append(resourceDataStr);
-                    });
-                }
             },
             error: function (error) {
 
                 alert(error);
+            }
+        }).done(function(data){
+
+            if(totalTools != undefined){
+
+                totalTools.forEach(function(tool){
+                    
+                    var toolName = tool.brand + " " + tool.model;
+                    var resourceDataStr = "<th><p style='font-weight:normal'>" + toolName + "</p></th>";
+                    resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
+                    
+                    //As of now, when the assignment of eventDays is done, the div 'companyEventDaysValue0' doesn't exist yet :(
+                    
+                    var eventDays = $("#companyEventDaysValue0").text();
+                    var toolCost =  eventDays*tool.tariff;
+
+                    if(tool.tariffTimeUnit === "hour")
+                        toolCost *= 8;
+
+                    resourceDataStr += "<th><p style='font-weight:normal'>" + toolCost + "</p></th>";
+
+                    $("#resourceData" + counter).append(resourceDataStr);
+                });
             }
         });
     }
@@ -528,7 +503,7 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity){
                 totalPersonnel = response.data;
                 //$("#companyEvent" + counter).empty();
 
-                if(totalPersonnel != null){
+                if(totalPersonnel != undefined){
 
                     // alert(JSON.stringify(totalPersonnel));
                 
@@ -538,8 +513,14 @@ function getPersonnelData1(personnelKey, counter, resourceQuantity){
                         var fullName = personnel.name + " " + personnel.lastName;
                         var resourceDataStr = "<th><p style='font-weight:normal'>" + fullName + "</p></th>";
                         resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
-                        resourceDataStr += "<th><p style='font-weight:normal'>" + personnel.tariff + " / " + personnel.tariffTimeUnit + "</p></th>";
 
+                        var eventDays = $("#companyEventDaysValue0").text();
+                        var personnelCost =  eventDays*personnel.tariff;
+                        
+                        if(personnel.tariffTimeUnit === "hour")
+                            personnelCost *= 8;
+    
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + personnelCost + "</p></th>";
                         $("#resourceData" + counter).append(resourceDataStr);
                     });
                 }

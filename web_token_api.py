@@ -720,9 +720,9 @@ class ToolAPI(remote.Service):
 			tool = Tool.get_by_id(toolEntity.id()) #obtiene usuario
 
 			list = []  #crea lista
-			listMessage = ToolList(code = 1) # crea objeto mensaje
 
 			if tool is not None:
+				listMessage = ToolList(code = 1) # crea objeto mensaje
 				list.append(ToolUpdate(token = '',
 									iD = tool.iD,
 									category = tool.category,
@@ -736,7 +736,11 @@ class ToolAPI(remote.Service):
 									comment = tool.comment,
 									entityKey = tool.entityKey))
 
-			listMessage.data = list #ASIGNA a la salida la lista
+				listMessage.data = list #ASIGNA a la salida la lista
+
+			else:
+				listMessage = ToolList(code = -99, data =[])
+			
 			message = listMessage
 
 		except jwt.DecodeError:
