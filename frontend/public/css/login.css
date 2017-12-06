@@ -2,13 +2,20 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Lato', sans-serif;
+	background: url(../img/login.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 .login{
-	max-width: 500px;
-	margin: 100px auto;
+	max-width: 300px;
+	margin: 200px auto;
 	border: 1px solid #1c1c1c;
 	padding: 50px;
 	border-radius: 4px;
+	border: 16px solid #353535;
+	background: rgba(53, 53, 53, 0.7);
 }
 .login input{
 	padding: 10px;
@@ -18,9 +25,10 @@
 	width: 90%;
 	margin: 20px;
 	font-size: 1em;
+	background: rgba(255,255,255,0.9);
 }
 .login a{
-	background-color: #4CAF50;
+	background: #4CAF50;
 	color: #fff;
 	padding: 15px 25px;
 	margin: 20px auto;
