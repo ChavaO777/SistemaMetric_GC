@@ -21,11 +21,16 @@
 	padding: 10px;
 	outline: none;
 	border: 0;
-	border-bottom: 1px solid #1c1c1c;
+	border-bottom: 2px solid #fff;
 	width: 90%;
 	margin: 20px;
 	font-size: 1em;
-	background: rgba(255,255,255,0.9);
+	background: transparent;
+	color: #fff;
+}
+
+.login input::placeholder {
+	color: #fff;
 }
 .login a{
 	background: #4CAF50;
@@ -38,4 +43,18 @@
 .login a:hover{
 	cursor: pointer;
 	background: #46a049;
+}
+
+.login .msg p{
+	background: rgba(53, 53, 53, 0.7);
+	font-size: 1.2em;
+	color: #fff;
+}
+
+img{
+	width: 150px;
+	height: 150px;
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
 }
