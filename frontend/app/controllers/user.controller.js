@@ -25,7 +25,6 @@ function login() {
   var user = new User();
   user.email = $("#email").val();
   user.password = $("#password").val();
-  alert(user.toJsonString());
   try{
     jQuery.ajax({
         type: "POST",
@@ -43,7 +42,7 @@ function login() {
             }
             else{
                 sessionStorage.token = response.token;
-                $(".msg").html("<p>" + sessionStorage.token + "</p>");
+                $(".msg").html("<p>Adelante...</p>");
                 window.location = "/";
             }
         },
