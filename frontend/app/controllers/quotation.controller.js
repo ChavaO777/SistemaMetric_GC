@@ -527,10 +527,11 @@ function getToolData(toolKey, counter, resourceQuantity, myQuotationRevenueFacto
                     // $("#totalQuotationCost").empty();
                     var subtotal = Number(totalQuotationCost) + Number(resourceTotalEventCostCounter);
                     
+                    console.log("total = " + total);
                     var factor1 = 1.0 + Number(myQuotationRevenueFactor);
                     total = (subtotal*factor1);
-                    total -= total*(1.0 - Number(myQuotationDiscount)); 
-                    total += total*(1.0 + Number(myQuotationIva)); 
+                    total -= total*(Number(myQuotationDiscount)); 
+                    total += total*(Number(myQuotationIva)); 
                     
                     $("#totalQuotationCost").text(total);
                 });
