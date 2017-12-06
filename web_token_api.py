@@ -1090,6 +1090,7 @@ class EventAPI(remote.Service):
 	def event_update(cls, request):
 		try:
 			token = jwt.decode(request.token, 'secret') #CHECA EL TOKEN
+			user = User.get_by_id(token['user_id'])
 			companyKey = user.companyKey
 			customerEntity = ndb.Key(urlsafe = request.customerKey)
 

@@ -186,6 +186,15 @@ function getEvent() {
                 // $(".msg").html("<p>Message</p>");
                 $("#singleEvent").empty();
                 totalEvents = response.data;
+
+                $("#customerKey").empty();
+                $("#hidden").empty();
+                $("#name").empty();
+                $("#description").empty();
+                $("#date").empty();
+                $("#days").empty();
+                $("#place").empty();
+
                 var myEvent = "";
                 var eventCounter = 0;
                     // console.log(totalEvents);
@@ -193,9 +202,16 @@ function getEvent() {
 
                     totalEvents.forEach(function(event){
 
+                        $("#customerKey").val(event.customerKey);
+                        $("#hidden").val(event.hidden);
+                        $("#name").val(event.name);
+                        $("#description").val(event.description);
+                        $("#date").val(event.date);
+                        $("#days").val(event.days);
+                        $("#place").val(event.place);
+
                         myEvent += "<div class='hero-element'>" +
                                             "<div class='box'>" +
-                                                "<form action='/editEvent' method='GET'>" +
                                                     "<div class='box-name'><p><b>" + event.name + "</b></p></div>" + 
                                                     "<div class='event-content>" + 
                                                         "<script>getCustomerName('event','" + event.customerKey + "'," + eventCounter + ")</script>" +
@@ -203,8 +219,8 @@ function getEvent() {
                                                         "<p>Fecha de inicio: " + event.date + "</p>" + 
                                                         "<p>Duración: " + event.days + " días</p>" + 
                                                         "<p>Lugar: " + event.place + "</p>" + 
+                                                        "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
                                                         "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" +
-                                                        "<input type='submit' value='Editar'/>" + 
                                                     "</div>" + 
                                                 "</form>" +
                                             "</div>" + 
@@ -223,6 +239,60 @@ function getEvent() {
         });
     }
     catch(error){
+        alert(error);
+    }
+}
+
+function editEvent() {
+    
+    var urlVariables = getURLVariables();
+    var eventKey = urlVariables.eventID;
+
+    var myName = $('#name').val();
+    var myDescription = $('#description').val();
+    var myDate = $('#date').val();
+    var myDays = $('#days').val();
+    var myPlace = $('#place').val();
+    var myCustomerKey = $('#customerKey').val();
+    alert(myCustomerKey);
+
+    var event = new Event();
+    event.entityKey = eventKey;
+    event.name = myName;
+    event.description = myDescription;
+    event.date = myDate;
+    event.days = myDays;
+    event.place = myPlace;
+    event.customerKey = myCustomerKey;
+    event.hidden = false;
+
+    alert(event.toString());
+
+    try{
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:8080/_ah/api/event_api/v1/event/update",
+            data: event.toString(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            before: function(){
+                
+                // $(".msg").html("<p>Esperando respuesta...</p>");
+            },
+            success: function (response) {
+                
+                // $(".msg").html("<p>Herramienta creado</p>");
+                alert("The event was successfully updated.");
+                window.location = "/myEvents";
+            },
+            error: function (error) {
+                
+                alert(error);
+            }
+        });
+    }
+    catch(error){
+      
         alert(error);
     }
 }
