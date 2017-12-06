@@ -361,7 +361,7 @@ function listCustomers() {
                                                         "<p>" + customer.phone + "</p>" + 
                                                         "<p>" + customer.rfc + "</p>" +
                                                         "<input type='hidden' name=customerID value='" + customer.entityKey + "'/>" +
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                         "</div>" + 
                                                     "</form>" +
                                                 "</div>" +

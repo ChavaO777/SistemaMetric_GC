@@ -143,7 +143,7 @@ function listEvents() {
                                                         "<p>Duración: " + event.days + " días</p>" + 
                                                         "<p>Lugar: " + event.place + "</p>" + 
                                                         "<input type='hidden' name=eventID value='" + event.entityKey + "'/>" + 
-                                                        "<input type='submit' value='Ver detalle'/>" + 
+                                                        "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                     "</div>" + 
                                                 "</form>" + 
                                             "</div>" + 

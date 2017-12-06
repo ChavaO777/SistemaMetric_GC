@@ -250,7 +250,7 @@ function listQuotations() {
                                                             "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
                                                             "<p>Versión: " + quotation.version + "</p>" +
                                                             "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
-                                                            "<input type='submit' value='Ver detalle'/>" +
+                                                            "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" +
                                                         "</div>"
                                                     "</form>" +
                                                 "</div>" +

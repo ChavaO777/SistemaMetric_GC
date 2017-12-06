@@ -374,7 +374,7 @@ function listPersonnel() {
                                                             "<p>" + personnel.comment + "</p>" +
                                                             "<p>" + personnel.tariff + " MXN / " + personnel.tariffTimeUnit +"</p>" +
                                                             "<input type='hidden' name=personnelID value='" + personnel.entityKey + "'/>" +
-                                                            "<input type='submit' value='Ver detalle'/>" + 
+                                                            "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" + 
                                                         "</div>" +
                                                     "</form>" +
                                                 "</div>" +
