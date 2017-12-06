@@ -379,10 +379,41 @@ a:active{
 
 .box .box-content{
 	padding: 10px;
+	/* max-width: 80%; */
 }
 
 .box .box-content p{
-	margin: 8px;
+	margin: 10px;
+	/* max-width: 80%; */
+}
+
+/*****QuotationBoxes*****/
+
+.quotationBox{
+	color: #1c1c1c;
+	margin: 20px;
+	border-radius: 2px 2px 20px 2px;
+	float: right;
+	background: #fff;
+	/* text-align: center; */
+	width: 95%;
+}
+
+.quotationBox .quotationBox-name{
+	/* font-weight: bold; */
+	padding: 10px;
+	background: #fff;
+	margin: 0;
+}
+
+.quotationBox .quotationBox-content{
+	padding: 10px;
+	/* max-width: 80%; */
+}
+
+.quotationBox .quotationBox-content{
+	margin: 10px;
+	/* max-width: 80%; */
 }
 
 /* Responsive ----------- */
@@ -528,4 +559,8 @@ a:active{
 
 #modalForm {
 	display: none;
+}
+
+#th{
+    font-weight: normal;
 }

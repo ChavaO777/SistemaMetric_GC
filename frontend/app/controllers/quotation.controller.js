@@ -132,7 +132,7 @@ function getQuotation() {
                 $("$metricPlus").empty();
                 $("$version").empty();
                 */
-                var myQuotation = "";
+                var myQuotationStr = "";
                 // Do a forEach even if the array only has one quotation
                 totalQuotations.forEach(function(quotation){
                     //add data to the form
@@ -152,29 +152,32 @@ function getQuotation() {
                     */
                     //Place the content in the HTML
                     // alert(quotation);
-                    myQuotation += "<div class='box'> \n" +
+                    myQuotationStr += "<div class='quotationBox'> \n" +
                                     "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
-                                    "\t<div class='box-name'>\n" +
-                                    "\t\t<div id=companyEvent0></div> - " + quotation.date +
+                                    "\t<div class='quotationBox-name'>" +
+                                    "\t\t<div id=companyEvent0></div>" +
                                     "\t</div>" +
-                                    "\t<div class='box-content'>\n" +
+                                    "\t<div class='quotationBox-content'>\n" +
                                     "<p id=companyEvent0></p>" +
                                     "<p id=customer0></p>" +
-                                    "<p>ID: " + quotation.iD + "</p>" +
-                                    "<p>Fecha: " + quotation.date + "</p>" +
-                                    "<p>Versión final: " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
-                                    "<p>Total: COMPUTE QUOTATION TOTAL MXN</p>" +
-                                    "<p>Versión: " + quotation.version + "</p>" +
-                                    "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
-                                    "\t<form action='/quotation' method='GET'>\n" +
-                                    "<input type='hidden' name=quotationID value='"+ quotation.entityKey + "'/>" +
-                                    "\t</form>" +
-                                    "\t</div>" +
-                                    "</div>";
+                                    "<p><b>ID:</b> " + quotation.iD + "</p>" +
+                                    "<p><b>Fecha:</b> " + quotation.date + "</p>" + 
+                                    "<p><br><br></p>";
 
-                    getQuotationRows(quotation.entityKey);
+                    var myQuotationBottomStr =  "<p><br><br></p>" +
+                                                "<p><b>Versión:</b> " + quotation.version + "</p>" +
+                                                "<p><b>Versión final:</b> " + (quotation.isFinal ? "Sí" : "No") + "</p>" +
+                                                "<p><b>Total:</b> COMPUTE QUOTATION TOTAL MXN</p>" +
+                                                "<p><br></p>" +
+                                                "<p><a href='javascript:showForm();' class='btn-rectangle btn-blue'>Editar</a></p>"+
+                                                "\t<form action='/quotation' method='GET'>\n" +
+                                                "<input type='hidden' name=quotationID value='"+ quotation.entityKey + "'/>" +
+                                                "\t</form>" +
+                                                "\t</div>" +
+                                                "</div>";
+
+                    getQuotationRows(quotation.entityKey, myQuotationStr, myQuotationBottomStr);
                 });
-                $("#singleQuotation").append(myQuotation);
             },
             error: function (error) {
                 alert(error);
@@ -306,7 +309,7 @@ function getCompanyEventName(companyEventKey, counter){
                 // Do a forEach even if the array only has one event
                 totalEvents.forEach(function(event){
 
-                    $("#companyEvent" + counter).append("Evento: " + event.name);
+                    $("#companyEvent" + counter).append("<b>Evento:</b> " + event.name);
                     getCustomerNameForQuotation(event.customerKey, counter);
                 });
             },
@@ -350,7 +353,7 @@ function getCustomerNameForQuotation(customerKey, counter){
                 // Do a forEach even if the array only has one customer
                 totalCustomers.forEach(function(customer){
 
-                    $("#customer" + counter).append("Cliente: " + customer.name + " " + customer.lastName);
+                    $("#customer" + counter).append("<b>Cliente:</b> " + customer.name + " " + customer.lastName);
                 });
             },
             error: function (error) {
@@ -364,7 +367,7 @@ function getCustomerNameForQuotation(customerKey, counter){
         alert(error);
     }
 }
-function getQuotationRows(quotationKey){
+function getQuotationRows(quotationKey, myQuotationStr, myQuotationBottomStr){
 
     try{
         var myQuotation = new Quotation();
@@ -384,45 +387,48 @@ function getQuotationRows(quotationKey){
 
                 // $(".msg").html("<p>Message</p>");
 
+                console.log("myQuotationStr = " + myQuotationStr);
+
                 totalQuotationRows = response.data;
-                myListQuotationRows = "";
+                var quotationTable = "";
                 quotationRowCounter = 0;
 
                 if(totalQuotationRows == null){
 
-                    myListQuotationRows += "<p>No hay elementos en esta cotización</p>";
+                    quotationTable += "<p>No hay elementos en esta cotización</p>";
                 }
 
                 else{
+
+                    quotationTable = "<table style='width:100%'>";
+
+                    //Define table columns
+
+                    quotationTable +=   "<tr>" +
+                                            "<th>Elemento</th>" +
+                                            "<th>Cantidad</th>" + 
+                                            "<th>Cargo</th>" +
+                                        "</tr>";
+                    
                     // Do a forEach even if the array only has one row
                     totalQuotationRows.forEach(function(quotationRow){
                         
                         //Place the content in the HTML
                         // alert(tool);
-                        myListQuotationRows += "<div class='box'> \n" +
-                                        "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
-                                        "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "');</script>" +
-                                        "\t<div class='box-name'>\n" +
-                                        // should show resource data (specific to tool/personnel)
-                                        "\t\t<p id=toolName" + quotationRowCounter +"></p>" +
-                                        "\t\t<p id=personnelName" + quotationRowCounter +"></p>" +
-                                        "\t</div>" +
-                                        "\t<div class='box-content'>\n" +
-                                        "\t\t<p>Cantidad: " + quotationRow.quantity + "</p>" +
-                                        "\t\t<p id=entityTariff" + quotationRowCounter + ">Cargo: </p>" +
-                                        "\t\t<p id=entityTariffTimeUnit" + quotationRowCounter + ">Por: </p>" +
-                                        "\t<form action='/quotationRow' method='GET'>\n" +
-                                        "<input type='hidden' name=quotationRowID value='"+ quotationRow.entityKey + "'/>" +
-                                        "<input type='submit' value='Ver detalle' class='btn-rectangle btn-blue'/>" +
-                                        "\t</form>" +
-                                        "\t</div>" +
-                                        "</div>";
+                        // myListQuotationRows += "<div class='box'> \n" +
+                        quotationTable +=  "<script>getPersonnelData1('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
+                                            "<script>getToolData('" + quotationRow.resourceKey + "','" + quotationRowCounter + "','" + quotationRow.quantity + "');</script>" +
+                                            "<tr id=resourceData" + quotationRowCounter + "></tr>";
     
                         quotationRowCounter += 1;
                     });
                 }
 
-                $("#quotationRows").append(myListQuotationRows);
+                quotationTable += "</table>";
+                
+                myQuotationStr += quotationTable;
+                myQuotationStr += myQuotationBottomStr;
+                $("#singleQuotation").append(myQuotationStr);
             },
             error: function (error) {
 
@@ -435,7 +441,7 @@ function getQuotationRows(quotationKey){
         alert(error);
     }
 }
-function getToolData(toolKey, counter){
+function getToolData(toolKey, counter, resourceQuantity){
 
     try{
         // alert("companyEventKey = " + companyEventKey);
@@ -464,9 +470,12 @@ function getToolData(toolKey, counter){
 
                     totalTools.forEach(function(tool){
                         
-                        $("#toolName" + counter).append(tool.brand + " " + tool.model);
-                        $("#entityTariff" + counter).append(tool.tariff + " MXN");
-                        $("#entityTariffTimeUnit" + counter).append(tool.tariffTimeUnit);
+                        var toolName = tool.brand + " " + tool.model;
+                        var resourceDataStr = "<th><p style='font-weight:normal'>" + toolName + "</p></th>";
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + tool.tariff + " / " + tool.tariffTimeUnit + "</p></th>";
+
+                        $("#resourceData" + counter).append(resourceDataStr);
                     });
                 }
             },
@@ -481,7 +490,7 @@ function getToolData(toolKey, counter){
         alert(error);
     }
 }
-function getPersonnelData1(personnelKey, counter){
+function getPersonnelData1(personnelKey, counter, resourceQuantity){
 
     try{
         var myPersonnel = new Personnel();
@@ -510,10 +519,13 @@ function getPersonnelData1(personnelKey, counter){
                 
                     // Do a forEach even if the array only has one event
                     totalPersonnel.forEach(function(personnel){
-    
-                        $("#personnelName" + counter).append(personnel.name + " " + personnel.lastName);
-                        $("#entityTariff" + counter).append(personnel.tariff + " MXN");
-                        $("#entityTariffTimeUnit" + counter).append(personnel.tariffTimeUnit);
+                        
+                        var fullName = personnel.name + " " + personnel.lastName;
+                        var resourceDataStr = "<th><p style='font-weight:normal'>" + fullName + "</p></th>";
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + personnel.tariff + " / " + personnel.tariffTimeUnit + "</p></th>";
+
+                        $("#resourceData" + counter).append(resourceDataStr);
                     });
                 }
             },
