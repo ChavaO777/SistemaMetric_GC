@@ -155,7 +155,8 @@ function getQuotation() {
                     myQuotationStr += "<div class='quotationBox'> \n" +
                                     "<script>getCompanyEventName('" + quotation.eventKey + "',0)</script>" +
                                     "\t<div class='quotationBox-name'>" +
-                                    "\t\t<div id=companyEvent0></div>" +
+                                    "\t\t<div id=companyEventName0><b>Evento: </b></div>" +
+                                    "\t\t<div id=companyEventDays0><b>Días: </b></div>" +
                                     "\t</div>" +
                                     "\t<div class='quotationBox-content'>\n" +
                                     "<p id=companyEvent0></p>" +
@@ -304,12 +305,12 @@ function getCompanyEventName(companyEventKey, counter){
                 // $(".msg").html("<p>Message</p>");
 
                 totalEvents = response.data;
-                $("#companyEvent" + counter).empty();
 
                 // Do a forEach even if the array only has one event
                 totalEvents.forEach(function(event){
 
-                    $("#companyEvent" + counter).append("<b>Evento:</b> " + event.name);
+                    $("#companyEventName" + counter).append("<p>" + event.name + "</p>");
+                    $("#companyEventDays" + counter).append("<p id=companyEventDaysValue" + counter + ">" + event.days + "</p>");
                     getCustomerNameForQuotation(event.customerKey, counter);
                 });
             },
@@ -473,7 +474,18 @@ function getToolData(toolKey, counter, resourceQuantity){
                         var toolName = tool.brand + " " + tool.model;
                         var resourceDataStr = "<th><p style='font-weight:normal'>" + toolName + "</p></th>";
                         resourceDataStr += "<th><p style='font-weight:normal'>" + resourceQuantity + "</p></th>";
-                        resourceDataStr += "<th><p style='font-weight:normal'>" + tool.tariff + " / " + tool.tariffTimeUnit + "</p></th>";
+                        
+                        //As of now, when the assignment of eventDays is done, the div 'companyEventDaysValue0' doesn't exist yet :(
+                        var eventDays = $("#companyEventDaysValue0").val();
+                        console.log("eventDays = " + eventDays);
+                        var toolCost =  eventDays*tool.tariff;
+
+                        if(tool.tariffTimeUnit === "hour")
+                            toolCost *= 8;
+
+                        console.log("toolCost = " + toolCost);
+
+                        resourceDataStr += "<th><p style='font-weight:normal'>" + toolCost + "</p></th>";
 
                         $("#resourceData" + counter).append(resourceDataStr);
                     });
