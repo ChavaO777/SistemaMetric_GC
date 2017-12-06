@@ -1113,7 +1113,10 @@ class EventAPI(remote.Service):
 			eventEntity.days = request.days
 			eventEntity.place = request.place
 			eventEntity.hidden = request.hidden
-			eventEntity.customerKey = request.customerKey
+
+			# Get the key object of the customer key from the request
+			customerKeyObj = ndb.Key(urlsafe = request.customerKey)
+			eventEntity.customerKey = customerKeyObj
 
 			#Save the changes in the Event entity in the DB
 			eventEntity.put()
