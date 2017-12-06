@@ -226,7 +226,7 @@ function listQuotations() {
                                                             "<p>Versión: " + quotation.version + "</p>" +
                                                             "<input type='hidden' name=quotationID value='" + quotation.entityKey + "'/>" +
                                                             "<input type='submit' class='btn-rectangle btn-blue' value='Ver detalle'/>" +
-                                                        "</div>"
+                                                        "</div>"+
                                                     "</form>" +
                                                 "</div>" +
                                             "</div>";

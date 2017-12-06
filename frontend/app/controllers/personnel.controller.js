@@ -74,7 +74,7 @@ function createPersonnel() {
             success: function (response) {
                 
                 // $(".msg").html("<p>Herramienta creado</p>");
-                alert("The personnel was successfully created.");
+                showNotification("success");
                 window.location = "/myPersonnel";
             },
             error: function (error) {

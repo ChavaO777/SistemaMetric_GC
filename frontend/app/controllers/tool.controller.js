@@ -288,7 +288,7 @@ function editTool() {
             },
             success: function (response) {
                 // $(".msg").html("<p>Herramienta creado</p>");
-                alert("The tool was successfully updated.");
+                showNotification("success");
                 window.location = "/myTools";
             },
             error: function (error) {
