@@ -235,7 +235,8 @@ a:active{
 	z-index: 100;
 	font-size: 0.9em;
 	opacity: 0;
-	padding: 10px 30px;
+	padding: 13px 35px;
+	transition: all 0.3s;
 }
 
 /* Responsive ----------- */
@@ -431,7 +432,7 @@ a:active{
 	width: 100%;
 	background: rgba(28,28,28,0.9);
 	position: fixed;
-	z-index: 100;
+	z-index: 10;
 	top: 0;
 	overflow: scroll;
 }

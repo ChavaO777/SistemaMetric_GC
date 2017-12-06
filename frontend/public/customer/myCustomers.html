@@ -14,8 +14,8 @@
 	  crossorigin="anonymous">
 	</script>
 
-	<script src="../app/controllers/customer.controller.js"></script>
 	<script type="text/javascript" src="../app/controllers/gui.controller.js"></script>
+	<script src="../app/controllers/customer.controller.js"></script>
 	<script type="text/javascript" src="../app/controllers/user.controller.js"></script>
 	<script>
 		isLoggedIn();
@@ -42,7 +42,7 @@
 			<a href="/myTools">Herramientas</a>
 			<a href="#">Cotizadores</a>
 		</div>
-		<a href="#" class="back btn btn-red">Cerrar sesión</a>
+		<a href="#" class="back btn btn-red" onclick="logout()">Cerrar sesión</a>
 	</div>
 
 	<div class="content">
@@ -74,7 +74,7 @@
 		</div>
 	</div>
 
-	<div class="notifications"></div>
+	<div id="notifications"></div>
 
 	<div class="fixed-buttons">
 		<a href="#" class="small-fixed btn-circle btn-blue"><i class="fa fa-book" aria-hidden="true"></i></a>

@@ -50,8 +50,6 @@ function createCustomer() {
     customer.rfc = myRfc;
     customer.phone = myPhone;
 
-    alert(customer.toString());
-
     try{
         jQuery.ajax({
             type: "POST",
@@ -138,8 +136,6 @@ function deleteCustomer() {
 
     var customer = new Customer();
     customer.entityKey = customerKey;
-
-    alert(customer.toString());
 
     try{
         jQuery.ajax({
@@ -343,8 +339,6 @@ function listCustomers() {
                 }
 
                 else{
-
-                    alert(JSON.stringify(response.data));
 
                     // Do a forEach even if the array only has one customer
                     totalCustomers.forEach(function(customer){
